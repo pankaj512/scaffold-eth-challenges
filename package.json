@@ -67,8 +67,12 @@
       "**/hardhat-ts/**"
     ]
   },
-  "dependencies": {},
   "devDependencies": {
     "husky": "^7.0.2"
+  },
+  "dependencies": {
+    "apollo-boost": "^0.4.9",
+    "apollo-client": "^2.6.10",
+    "apollo-utilities": "^1.3.4"
   }
 }

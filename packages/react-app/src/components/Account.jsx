@@ -91,7 +91,7 @@ export default function Account({
   ) : (
     <span>
       {web3Modal && web3Modal.cachedProvider ? (
-        <>
+        <div style={{ display: "flex" }}>
           {address && <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />}
           <Balance address={address} provider={localProvider} price={price} />
           <Wallet
@@ -102,7 +102,7 @@ export default function Account({
             price={price}
             color={currentTheme === "light" ? "#1890ff" : "#2caad9"}
           />
-        </>
+        </div>
       ) : useBurner ? (
         ""
       ) : isContract ? (
@@ -114,7 +114,7 @@ export default function Account({
         ""
       )}
       {useBurner && web3Modal && !web3Modal.cachedProvider ? (
-        <>
+        <div style={{ display: "flex" }}>
           <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />
           <Balance address={address} provider={localProvider} price={price} />
           <Wallet
@@ -125,7 +125,7 @@ export default function Account({
             price={price}
             color={currentTheme === "light" ? "#1890ff" : "#2caad9"}
           />
-        </>
+        </div>
       ) : (
         <></>
       )}
@@ -133,7 +133,7 @@ export default function Account({
   );
 
   return (
-    <div>
+    <div style={{ display: "flex" }}>
       {display}
       {modalButtons}
     </div>

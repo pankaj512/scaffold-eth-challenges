@@ -117,59 +117,60 @@ export default function Dex(props) {
   return (
     <div className="container">
       <div className="box user-data">
-        <div className="items operation swap">
-          <Card style={{ height: "100%" }} title="Exchange">
-            <div style={{ padding: 8 }}>
-              <Select
-                showSearch
-                defaultValue={values["exchange"]}
-                style={{ width: "100%" }}
-                onChange={e => {
-                  let newValues = { ...values };
-                  newValues["exchange"] = e;
-                  console.log(newValues);
-                  setValues(newValues);
-                }}
-              >
-                <Select.Option value="ETH">ETH</Select.Option>
-                <Select.Option value="Balloons">Balloons</Select.Option>
-              </Select>
-            </div>
-            <div style={{ padding: 8 }}>
-              <Input
-                style={{ textAlign: "center" }}
-                placeholder={values["exchange"] === "Balloons" ? "🎈 amount" : " Ξ amount"}
-                value={values["exchangeValue"]}
-                onChange={e => {
-                  let newValues = { ...values };
-                  newValues["exchangeValue"] = e.target.value;
-                  console.log(newValues);
-                  setValues(newValues);
-                }}
-              />
-            </div>
-            <div style={{ padding: 8 }}>
-              <Button
-                style={{ width: "100%" }}
-                type={"primary"}
-                onClick={() => {
-                  values["exchange"] === "Balloons"
-                    ? tokenToEth(values["exchangeValue"])
-                    : ethToToken(values["exchangeValue"]);
-                  let newValues = { ...values };
-                  newValues["exchangeValue"] = "";
-                  setValues(newValues);
-                }}
-              >
-                Swap {values["exchange"] === "Balloons" ? "Balloons" : "ETH"}
-              </Button>
-            </div>
-          </Card>
-        </div>
+        <div className="left-side">
+          <div className="items operation swap">
+            <Card style={{ height: "100%" }} title="Exchange">
+              <div style={{ padding: 8 }}>
+                <Select
+                  showSearch
+                  defaultValue={values["exchange"]}
+                  style={{ width: "100%" }}
+                  onChange={e => {
+                    let newValues = { ...values };
+                    newValues["exchange"] = e;
+                    console.log(newValues);
+                    setValues(newValues);
+                  }}
+                >
+                  <Select.Option value="ETH">ETH</Select.Option>
+                  <Select.Option value="Balloons">Balloons</Select.Option>
+                </Select>
+              </div>
+              <div style={{ padding: 8 }}>
+                <Input
+                  style={{ textAlign: "center" }}
+                  placeholder={values["exchange"] === "Balloons" ? "🎈 amount" : " Ξ amount"}
+                  value={values["exchangeValue"]}
+                  onChange={e => {
+                    let newValues = { ...values };
+                    newValues["exchangeValue"] = e.target.value;
+                    console.log(newValues);
+                    setValues(newValues);
+                  }}
+                />
+              </div>
+              <div style={{ padding: 8 }}>
+                <Button
+                  style={{ width: "100%" }}
+                  type={"primary"}
+                  onClick={() => {
+                    values["exchange"] === "Balloons"
+                      ? tokenToEth(values["exchangeValue"])
+                      : ethToToken(values["exchangeValue"]);
+                    let newValues = { ...values };
+                    newValues["exchangeValue"] = "";
+                    setValues(newValues);
+                  }}
+                >
+                  Swap {values["exchange"] === "Balloons" ? "Balloons" : "ETH"}
+                </Button>
+              </div>
+            </Card>
+          </div>
 
-        <div className="items contract balloon-contract">
-          <Card style={{ height: "100%" }} title="Balloons Interface">
-            {/* <div className="box contract-dex">
+          <div className="items contract balloon-contract">
+            <Card style={{ height: "100%" }} title="Balloons Interface">
+              {/* <div className="box contract-dex">
               <div style={{ padding: 8 }}>
                 <Address value={balloonsContractAddress} />
               </div>
@@ -177,141 +178,142 @@ export default function Dex(props) {
                 {parseFloat(ethers.utils.formatEther(balloonsContractBalance)).toFixed(4)}
               </div>
             </div> */}
-            <div>
-              <div style={{ padding: 8 }}>
-                <Select
-                  showSearch
-                  defaultValue={values["balloonQuery"]}
-                  style={{ width: "100%" }}
-                  onChange={e => {
-                    let newValues = { ...values };
-                    newValues["approveOutput"] = "";
-                    newValues["balloonQuery"] = e;
-                    console.log(newValues);
-                    setValues(newValues);
-                  }}
-                >
-                  <Select.Option value="Approve">Approve</Select.Option>
-                  <Select.Option value="Balance">Balance</Select.Option>
-                </Select>
-              </div>
-              <div style={{ padding: 8 }}>
-                <Input
-                  style={{ textAlign: "center" }}
-                  placeholder={"address"}
-                  value={values["ApproveAddress"]}
-                  onChange={e => {
-                    let newValues = { ...values };
-                    newValues["approveOutput"] = "";
-                    newValues["ApproveAddress"] = e.target.value;
-                    console.log(newValues);
-                    setValues(newValues);
-                  }}
-                />
-              </div>
-              {values && values["balloonQuery"] === "Approve" && (
+              <div>
+                <div style={{ padding: 8 }}>
+                  <Select
+                    showSearch
+                    defaultValue={values["balloonQuery"]}
+                    style={{ width: "100%" }}
+                    onChange={e => {
+                      let newValues = { ...values };
+                      newValues["approveOutput"] = "";
+                      newValues["balloonQuery"] = e;
+                      console.log(newValues);
+                      setValues(newValues);
+                    }}
+                  >
+                    <Select.Option value="Approve">Approve</Select.Option>
+                    <Select.Option value="Balance">Balance</Select.Option>
+                  </Select>
+                </div>
                 <div style={{ padding: 8 }}>
                   <Input
                     style={{ textAlign: "center" }}
-                    placeholder={"Ξ amount"}
-                    value={values["approveAmount"]}
+                    placeholder={"address"}
+                    value={values["ApproveAddress"]}
                     onChange={e => {
                       let newValues = { ...values };
-                      newValues["approveAmount"] = e.target.value;
+                      newValues["approveOutput"] = "";
+                      newValues["ApproveAddress"] = e.target.value;
                       console.log(newValues);
                       setValues(newValues);
                     }}
                   />
                 </div>
-              )}
+                {values && values["balloonQuery"] === "Approve" && (
+                  <div style={{ padding: 8 }}>
+                    <Input
+                      style={{ textAlign: "center" }}
+                      placeholder={"Ξ amount"}
+                      value={values["approveAmount"]}
+                      onChange={e => {
+                        let newValues = { ...values };
+                        newValues["approveAmount"] = e.target.value;
+                        console.log(newValues);
+                        setValues(newValues);
+                      }}
+                    />
+                  </div>
+                )}
+                <div style={{ padding: 8 }}>
+                  <Button
+                    style={{ width: "100%" }}
+                    type={"primary"}
+                    onClick={() => {
+                      let newValues = { ...values };
+                      values["balloonQuery"] === "Approve"
+                        ? approveToken(values["ApproveAddress"], values["approveAmount"])
+                        : getBalance(values["ApproveAddress"]);
+                      setValues(newValues);
+                    }}
+                  >
+                    {values["balloonQuery"]}
+                  </Button>
+                </div>
+                <div>{values["approveOutput"] && "🎈 " + values["approveOutput"]}</div>
+              </div>
+            </Card>
+          </div>
+
+          <div className="items operation stake">
+            <Card style={{ height: "100%" }} title="Stake">
+              <div style={{ padding: 8 }}>
+                <Select
+                  showSearch
+                  defaultValue={values["stake"]}
+                  style={{ width: "100%" }}
+                  onChange={e => {
+                    let newValues = { ...values };
+                    newValues["stake"] = e;
+                    console.log(newValues);
+                    setValues(newValues);
+                  }}
+                >
+                  <Select.Option value="Deposit">Deposit</Select.Option>
+                  <Select.Option value="Withdraw">Withdraw</Select.Option>
+                </Select>
+              </div>
+              <div style={{ padding: 8 }}>
+                <Input
+                  style={{ textAlign: "center" }}
+                  placeholder={"Ξ amount"}
+                  value={values["stakeAmount"]}
+                  onChange={e => {
+                    let newValues = { ...values };
+                    newValues["stakeAmount"] = e.target.value;
+                    console.log(newValues);
+                    setValues(newValues);
+                  }}
+                />
+              </div>
               <div style={{ padding: 8 }}>
                 <Button
                   style={{ width: "100%" }}
                   type={"primary"}
                   onClick={() => {
+                    values["stake"] === "Deposit" ? deposit(values["stakeAmount"]) : withdraw(values["stakeAmount"]);
                     let newValues = { ...values };
-                    values["balloonQuery"] === "Approve"
-                      ? approveToken(values["ApproveAddress"], values["approveAmount"])
-                      : getBalance(values["ApproveAddress"]);
+                    newValues["stakeAmount"] = "";
                     setValues(newValues);
                   }}
                 >
-                  {values["balloonQuery"]}
+                  {values["stake"]}
                 </Button>
               </div>
-              <div>{values["approveOutput"] && "🎈 " + values["approveOutput"]}</div>
-            </div>
-          </Card>
+            </Card>
+          </div>
         </div>
 
-        <div className="items operation stake">
-          <Card style={{ height: "100%" }} title="Stake">
-            <div style={{ padding: 8 }}>
-              <Select
-                showSearch
-                defaultValue={values["stake"]}
-                style={{ width: "100%" }}
-                onChange={e => {
-                  let newValues = { ...values };
-                  newValues["stake"] = e;
-                  console.log(newValues);
-                  setValues(newValues);
-                }}
-              >
-                <Select.Option value="Deposit">Deposit</Select.Option>
-                <Select.Option value="Withdraw">Withdraw</Select.Option>
-              </Select>
-            </div>
-            <div style={{ padding: 8 }}>
-              <Input
-                style={{ textAlign: "center" }}
-                placeholder={"Ξ amount"}
-                value={values["stakeAmount"]}
-                onChange={e => {
-                  let newValues = { ...values };
-                  newValues["stakeAmount"] = e.target.value;
-                  console.log(newValues);
-                  setValues(newValues);
-                }}
-              />
-            </div>
-            <div style={{ padding: 8 }}>
-              <Button
-                style={{ width: "100%" }}
-                type={"primary"}
-                onClick={() => {
-                  values["stake"] === "Deposit" ? deposit(values["stakeAmount"]) : withdraw(values["stakeAmount"]);
-                  let newValues = { ...values };
-                  newValues["stakeAmount"] = "";
-                  setValues(newValues);
-                }}
-              >
-                {values["stake"]}
-              </Button>
-            </div>
-          </Card>
-        </div>
-      </div>
-
-      <div className="box graph">
-        <div style={{ padding: 20 }}>
-          <Curve
-            style={{ height: "100%" }}
-            addingEth={
-              values && values["exchange"] && values["exchange"] === "ETH" && values["exchangeValue"]
-                ? values["exchangeValue"]
-                : 0
-            }
-            addingToken={
-              values && values["exchange"] && values["exchange"] === "Balloons" && values["exchangeValue"]
-                ? values["exchangeValue"]
-                : 0
-            }
-            ethReserve={ethBalanceFloat}
-            tokenReserve={tokenBalanceFloat}
-            width={400}
-            height={500}
-          />
+        <div className="graph">
+          <div style={{ padding: 20 }}>
+            <Curve
+              style={{ height: "100%" }}
+              addingEth={
+                values && values["exchange"] && values["exchange"] === "ETH" && values["exchangeValue"]
+                  ? values["exchangeValue"]
+                  : 0
+              }
+              addingToken={
+                values && values["exchange"] && values["exchange"] === "Balloons" && values["exchangeValue"]
+                  ? values["exchangeValue"]
+                  : 0
+              }
+              ethReserve={ethBalanceFloat}
+              tokenReserve={tokenBalanceFloat}
+              width={330}
+              height={400}
+            />
+          </div>
         </div>
       </div>
 

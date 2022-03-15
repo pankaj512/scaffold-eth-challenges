@@ -16,16 +16,20 @@ code {
 }
 
 .container .box .items {
-  /* background: #333; */
   margin: 1px;
   padding: 1px;
 }
 
 .container .user-data {
   display: flex;
-  max-height: 280px;
-  min-width: 200px;
   justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.container .user-data .left-side {
+  display: flex;
+  flex-wrap: wrap;
+  max-height: 280px;
 }
 
 .top-bar {

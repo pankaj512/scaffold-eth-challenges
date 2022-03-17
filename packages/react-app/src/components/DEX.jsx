@@ -310,7 +310,7 @@ export default function Dex(props) {
               }
               ethReserve={ethBalanceFloat}
               tokenReserve={tokenBalanceFloat}
-              width={330}
+              width={500}
               height={400}
             />
           </div>

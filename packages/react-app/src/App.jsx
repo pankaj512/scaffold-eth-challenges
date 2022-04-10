@@ -7,6 +7,7 @@ import {
   useGasPrice,
   useOnBlock,
   useUserProviderAndSigner,
+  useUserAddress,
 } from "eth-hooks";
 import { useExchangeEthPrice } from "eth-hooks/dapps/dex";
 import React, { useCallback, useEffect, useState } from "react";
@@ -29,8 +30,9 @@ import externalContracts from "./contracts/external_contracts";
 // contracts
 import deployedContracts from "./contracts/hardhat_contracts.json";
 import { Transactor, Web3ModalSetup } from "./helpers";
-import { Home, ExampleUI, Hints, Subgraph } from "./views";
-import { useStaticJsonRPC } from "./hooks";
+import { Home, MultiSigEvent, Owners, Transactions, CreateTransaction } from "./views";
+import { useStaticJsonRPC, useUserProvider } from "./hooks";
+import { useEventListener } from "eth-hooks/events/useEventListener";
 
 const { ethers } = require("ethers");
 /*
@@ -53,7 +55,7 @@ const { ethers } = require("ethers");
 */
 
 /// 📡 What chain are your contracts deployed to?
-const initialNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+const initialNetwork = NETWORKS.kovan; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -69,6 +71,9 @@ const providers = [
   `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`,
   "https://rpc.scaffoldeth.io:48544",
 ];
+
+// const poolServerUrl = "https://backend.multisig.holdings:49832/"
+const poolServerUrl = "http://localhost:49832/";
 
 function App(props) {
   // specify all the chains your app is available on. Eg: ['localhost', 'mainnet', ...otherNetworks ]
@@ -112,6 +117,7 @@ function App(props) {
   /* 🔥 This hook will get the price of Gas from ⛽️ EtherGasStation */
   const gasPrice = useGasPrice(targetNetwork, "fast");
   // Use your injected provider from 🦊 Metamask or if you don't have it then instantly generate a 🔥 burner wallet.
+  //const userProviderAndSigner = useUserProvider(injectedProvider, localProvider);
   const userProviderAndSigner = useUserProviderAndSigner(injectedProvider, localProvider, USE_BURNER_WALLET);
   const userSigner = userProviderAndSigner.signer;
 
@@ -151,6 +157,29 @@ function App(props) {
   // If you want to make 🔐 write transactions to your contracts, use the userSigner:
   const writeContracts = useContractLoader(userSigner, contractConfig, localChainId);
 
+  const contractName = "MultiSigWallet";
+
+  // 📟 Listen for broadcast events
+  const executeTransactionEvents = useEventListener(
+    readContracts,
+    contractName,
+    "ExecuteTransaction",
+    localProvider,
+    1,
+  );
+  if (DEBUG) console.log("📟 executeTransactionEvents:", executeTransactionEvents);
+
+  // keep track of a variable from the contract in the local React state:
+  const nonce = useContractReader(readContracts, contractName, "nonce");
+  if (DEBUG) console.log("# nonce:", nonce);
+
+  //📟 Listen for broadcast events
+  const ownerEvents = useEventListener(readContracts, contractName, "Signer", localProvider, 1);
+  if (DEBUG) console.log("📟 ownerEvents:", ownerEvents);
+
+  const signaturesRequired = useContractReader(readContracts, contractName, "minSignature");
+  if (DEBUG) console.log("✳️ signaturesRequired:", signaturesRequired);
+
   // EXTERNAL CONTRACT EXAMPLE:
   //
   // If you want to bring in the mainnet DAI contract it would look like:
@@ -167,7 +196,7 @@ function App(props) {
   ]);
 
   // keep track of a variable from the contract in the local React state:
-  const purpose = useContractReader(readContracts, "YourContract", "purpose");
+  const purpose = useContractReader(readContracts, "MultiSigWallet", "purpose");
 
   /*
   const addressFromENS = useResolveName(mainnetProvider, "austingriffith.eth");
@@ -242,12 +271,17 @@ function App(props) {
     }
   }, [loadWeb3Modal]);
 
+  const [route, setRoute] = useState();
+  useEffect(() => {
+    setRoute(window.location.pathname);
+  }, [setRoute]);
+
   const faucetAvailable = localProvider && localProvider.connection && targetNetwork.name.indexOf("local") !== -1;
 
   return (
     <div className="App">
       {/* ✏️ Edit the header and change the title to your project name */}
-      <Header />
+      <Header subTitle={"Multi Signature Wallet"} />
       <NetworkDisplay
         NETWORKCHECK={NETWORKCHECK}
         localChainId={localChainId}
@@ -260,27 +294,77 @@ function App(props) {
         <Menu.Item key="/">
           <Link to="/">App Home</Link>
         </Menu.Item>
+        <Menu.Item key="/events">
+          <Link to="/events">Events</Link>
+        </Menu.Item>
+        <Menu.Item key="/pool">
+          <Link to="/pool">Transaction</Link>
+        </Menu.Item>
         <Menu.Item key="/debug">
           <Link to="/debug">Debug Contracts</Link>
-        </Menu.Item>
-        <Menu.Item key="/hints">
-          <Link to="/hints">Hints</Link>
-        </Menu.Item>
-        <Menu.Item key="/exampleui">
-          <Link to="/exampleui">ExampleUI</Link>
-        </Menu.Item>
-        <Menu.Item key="/mainnetdai">
-          <Link to="/mainnetdai">Mainnet DAI</Link>
-        </Menu.Item>
-        <Menu.Item key="/subgraph">
-          <Link to="/subgraph">Subgraph</Link>
         </Menu.Item>
       </Menu>
 
       <Switch>
         <Route exact path="/">
-          {/* pass in any web3 props to this Home component. For example, yourLocalBalance */}
-          <Home yourLocalBalance={yourLocalBalance} readContracts={readContracts} />
+          {/* <Home yourLocalBalance={yourLocalBalance} contractName={contractName} readContracts={readContracts} /> */}
+          <Home
+            mainnetProvider={mainnetProvider}
+            localProvider={localProvider}
+            blockExplorer={blockExplorer}
+            nonce={nonce}
+            ownerEvents={ownerEvents}
+            signaturesRequired={signaturesRequired}
+            poolServerUrl={poolServerUrl}
+            contractName={contractName}
+            address={address}
+            userProvider={userProviderAndSigner}
+            yourLocalBalance={yourLocalBalance}
+            price={price}
+            tx={tx}
+            writeContracts={writeContracts}
+            readContracts={readContracts}
+            setRoute={setRoute}
+          />
+        </Route>
+        <Route exact path="/events">
+          <MultiSigEvent
+            mainnetProvider={mainnetProvider}
+            localProvider={localProvider}
+            blockExplorer={blockExplorer}
+            nonce={nonce}
+            ownerEvents={ownerEvents}
+            signaturesRequired={signaturesRequired}
+            poolServerUrl={poolServerUrl}
+            contractName={contractName}
+            address={address}
+            userProvider={userProviderAndSigner}
+            yourLocalBalance={yourLocalBalance}
+            price={price}
+            tx={tx}
+            writeContracts={writeContracts}
+            readContracts={readContracts}
+            setRoute={setRoute}
+            executeTransactionEvents={executeTransactionEvents}
+          ></MultiSigEvent>
+        </Route>
+        <Route exact path="/pool">
+          <Transactions
+            poolServerUrl={poolServerUrl}
+            contractName={contractName}
+            address={address}
+            userProvider={userProviderAndSigner}
+            mainnetProvider={mainnetProvider}
+            localProvider={localProvider}
+            yourLocalBalance={yourLocalBalance}
+            price={price}
+            tx={tx}
+            writeContracts={writeContracts}
+            readContracts={readContracts}
+            blockExplorer={blockExplorer}
+            nonce={nonce}
+            signaturesRequired={signaturesRequired}
+          />
         </Route>
         <Route exact path="/debug">
           {/*
@@ -290,65 +374,13 @@ function App(props) {
             */}
 
           <Contract
-            name="YourContract"
+            name="MultiSigWallet"
             price={price}
             signer={userSigner}
             provider={localProvider}
             address={address}
             blockExplorer={blockExplorer}
             contractConfig={contractConfig}
-          />
-        </Route>
-        <Route path="/hints">
-          <Hints
-            address={address}
-            yourLocalBalance={yourLocalBalance}
-            mainnetProvider={mainnetProvider}
-            price={price}
-          />
-        </Route>
-        <Route path="/exampleui">
-          <ExampleUI
-            address={address}
-            userSigner={userSigner}
-            mainnetProvider={mainnetProvider}
-            localProvider={localProvider}
-            yourLocalBalance={yourLocalBalance}
-            price={price}
-            tx={tx}
-            writeContracts={writeContracts}
-            readContracts={readContracts}
-            purpose={purpose}
-          />
-        </Route>
-        <Route path="/mainnetdai">
-          <Contract
-            name="DAI"
-            customContract={mainnetContracts && mainnetContracts.contracts && mainnetContracts.contracts.DAI}
-            signer={userSigner}
-            provider={mainnetProvider}
-            address={address}
-            blockExplorer="https://etherscan.io/"
-            contractConfig={contractConfig}
-            chainId={1}
-          />
-          {/*
-            <Contract
-              name="UNI"
-              customContract={mainnetContracts && mainnetContracts.contracts && mainnetContracts.contracts.UNI}
-              signer={userSigner}
-              provider={mainnetProvider}
-              address={address}
-              blockExplorer="https://etherscan.io/"
-            />
-            */}
-        </Route>
-        <Route path="/subgraph">
-          <Subgraph
-            subgraphUri={props.subgraphUri}
-            tx={tx}
-            writeContracts={writeContracts}
-            mainnetProvider={mainnetProvider}
           />
         </Route>
       </Switch>

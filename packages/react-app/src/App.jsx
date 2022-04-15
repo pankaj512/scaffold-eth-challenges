@@ -1,4 +1,4 @@
-import { Button, Col, Menu, Row } from "antd";
+import { Button, Col, Menu, Row, Select, Alert } from "antd";
 import "antd/dist/antd.css";
 import {
   useBalance,
@@ -24,11 +24,13 @@ import {
   NetworkDisplay,
   FaucetHint,
   NetworkSwitch,
+  CreateMultiSigModal,
 } from "./components";
 import { NETWORKS, ALCHEMY_KEY } from "./constants";
 import externalContracts from "./contracts/external_contracts";
 // contracts
 import deployedContracts from "./contracts/hardhat_contracts.json";
+import multiSigWalletABI from "./contracts/multi_sig_wallet";
 import { Transactor, Web3ModalSetup } from "./helpers";
 import { Home, MultiSigEvent, Owners, Transactions, CreateTransaction } from "./views";
 import { useStaticJsonRPC, useUserProvider } from "./hooks";
@@ -55,7 +57,7 @@ const { ethers } = require("ethers");
 */
 
 /// 📡 What chain are your contracts deployed to?
-const initialNetwork = NETWORKS.kovan; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+const initialNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -157,29 +159,6 @@ function App(props) {
   // If you want to make 🔐 write transactions to your contracts, use the userSigner:
   const writeContracts = useContractLoader(userSigner, contractConfig, localChainId);
 
-  const contractName = "MultiSigWallet";
-
-  // 📟 Listen for broadcast events
-  const executeTransactionEvents = useEventListener(
-    readContracts,
-    contractName,
-    "ExecuteTransaction",
-    localProvider,
-    1,
-  );
-  if (DEBUG) console.log("📟 executeTransactionEvents:", executeTransactionEvents);
-
-  // keep track of a variable from the contract in the local React state:
-  const nonce = useContractReader(readContracts, contractName, "nonce");
-  if (DEBUG) console.log("# nonce:", nonce);
-
-  //📟 Listen for broadcast events
-  const ownerEvents = useEventListener(readContracts, contractName, "Signer", localProvider, 1);
-  if (DEBUG) console.log("📟 ownerEvents:", ownerEvents);
-
-  const signaturesRequired = useContractReader(readContracts, contractName, "minSignature");
-  if (DEBUG) console.log("✳️ signaturesRequired:", signaturesRequired);
-
   // EXTERNAL CONTRACT EXAMPLE:
   //
   // If you want to bring in the mainnet DAI contract it would look like:
@@ -195,14 +174,7 @@ function App(props) {
     "0x34aA3F359A9D614239015126635CE7732c18fDF3",
   ]);
 
-  // keep track of a variable from the contract in the local React state:
-  const purpose = useContractReader(readContracts, "MultiSigWallet", "purpose");
-
-  /*
-  const addressFromENS = useResolveName(mainnetProvider, "austingriffith.eth");
-  console.log("🏷 Resolved austingriffith.eth as:",addressFromENS)
-  */
-
+  const faucetAvailable = localProvider && localProvider.connection && targetNetwork.name.indexOf("local") !== -1;
   //
   // 🧫 DEBUG 👨🏻‍🔬
   //
@@ -276,7 +248,110 @@ function App(props) {
     setRoute(window.location.pathname);
   }, [setRoute]);
 
-  const faucetAvailable = localProvider && localProvider.connection && targetNetwork.name.indexOf("local") !== -1;
+  const contractFactoryName = "MultiSigFactory";
+  const contractName = "MultiSigWallet";
+
+  // MultiSigFactory Events:
+  const ownersMultiSigEvents = useEventListener(readContracts, contractFactoryName, "Owners", localProvider, 1);
+  if (DEBUG) console.log("📟 ownersMultiSigEvents:", ownersMultiSigEvents);
+
+  // all multisig where this address is owner
+  const [multiSigs, setMultiSigs] = useState([]);
+  // current multisig selected by the user
+  const [currentMultiSigAddress, setCurrentMultiSigAddress] = useState();
+  console.log("currentMultiSigAddress:", currentMultiSigAddress);
+
+  useEffect(() => {
+    if (address) {
+      const multiSigsForUser = ownersMultiSigEvents.reduce((filtered, createEvent) => {
+        if (createEvent.args.owners.includes(address) && !filtered.includes(createEvent.args.contractAddress)) {
+          filtered.push(createEvent.args.contractAddress);
+        }
+
+        return filtered;
+      }, []);
+
+      if (multiSigsForUser.length > 0) {
+        if (!currentMultiSigAddress) {
+          const recentMultiSigAddress = multiSigsForUser[multiSigsForUser.length - 1];
+          setCurrentMultiSigAddress(recentMultiSigAddress);
+        }
+        setMultiSigs(multiSigsForUser);
+      }
+    }
+  }, [ownersMultiSigEvents, address, currentMultiSigAddress]);
+
+  const handleMultiSigChange = value => {
+    setCurrentMultiSigAddress(value);
+    console.log("XXXXXXXXXXXXX:", currentMultiSigAddress);
+  };
+
+  const userHasMultiSigs = currentMultiSigAddress ? true : false;
+
+  const [nonce, setNonce] = useState(0);
+  const [signaturesRequired, setSignaturesRequired] = useState(0);
+
+  useEffect(() => {
+    async function getContractValues() {
+      const nonce = await readContracts.MultiSigWallet.nonce();
+      setNonce(nonce);
+      const min_signatures = await readContracts.MultiSigWallet.minSignature();
+      setSignaturesRequired(min_signatures);
+    }
+
+    if (currentMultiSigAddress) {
+      readContracts.MultiSigWallet = new ethers.Contract(currentMultiSigAddress, multiSigWalletABI, localProvider);
+      writeContracts.MultiSigWallet = new ethers.Contract(currentMultiSigAddress, multiSigWalletABI, userSigner);
+      getContractValues();
+    }
+  }, [currentMultiSigAddress, readContracts, writeContracts]);
+
+  // keep track of a variable from the contract in the local React state:
+
+  if (DEBUG) console.log("# nonce:", nonce);
+
+  // MultiSigWallet Events:
+  const allExecuteTransactionEvents = useEventListener(
+    currentMultiSigAddress ? readContracts : null,
+    contractName,
+    "ExecuteTransaction",
+    localProvider,
+    1,
+  );
+  if (DEBUG) console.log("📟 executeTransactionEvents:", allExecuteTransactionEvents);
+
+  const allOwnerEvents = useEventListener(
+    currentMultiSigAddress ? readContracts : null,
+    contractName,
+    "Signer",
+    localProvider,
+    1,
+  );
+  if (DEBUG) console.log("📟 ownerEvents:", allOwnerEvents);
+
+  const [ownerEvents, setOwnerEvents] = useState();
+  const [executeTransactionEvents, setExecuteTransactionEvents] = useState();
+
+  useEffect(() => {
+    async function getContractValues() {
+      const nonce = await readContracts.MultiSigWallet.nonce();
+      setNonce(nonce);
+      const min_signatures = await readContracts.MultiSigWallet.minSignature();
+      setSignaturesRequired(min_signatures);
+    }
+
+    setExecuteTransactionEvents(
+      allExecuteTransactionEvents.filter(contractEvent => contractEvent.address === currentMultiSigAddress),
+    );
+    setOwnerEvents(allOwnerEvents.filter(contractEvent => contractEvent.address === currentMultiSigAddress));
+
+    if (currentMultiSigAddress) getContractValues();
+  }, [allExecuteTransactionEvents, allOwnerEvents, currentMultiSigAddress, readContracts.MultiSigWallet]);
+
+  if (DEBUG) console.log("📟 executeTransactionEvents:", executeTransactionEvents);
+  if (DEBUG) console.log("📟 ownerEvents:", ownerEvents);
+  if (DEBUG) console.log("✳️ signaturesRequired:", signaturesRequired);
+  const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
 
   return (
     <div className="App">
@@ -290,7 +365,34 @@ function App(props) {
         logoutOfWeb3Modal={logoutOfWeb3Modal}
         USE_NETWORK_SELECTOR={USE_NETWORK_SELECTOR}
       />
-      <Menu style={{ textAlign: "center", marginTop: 40 }} selectedKeys={[location.pathname]} mode="horizontal">
+      <div style={{ position: "relative" }}>
+        <div style={{ position: "absolute", left: 20 }}>
+          <CreateMultiSigModal
+            price={price}
+            selectedChainId={selectedChainId}
+            mainnetProvider={mainnetProvider}
+            address={address}
+            tx={tx}
+            writeContracts={writeContracts}
+            contractName={contractFactoryName}
+            isCreateModalVisible={isCreateModalVisible}
+            setIsCreateModalVisible={setIsCreateModalVisible}
+          />
+          <Select value={currentMultiSigAddress} style={{ minWidth: 120 }} onChange={handleMultiSigChange}>
+            {multiSigs.map((address, index) => (
+              <Select.Option key={index} value={address}>
+                {address?.substr(0, 8) + "..." + address?.substr(-8)}
+              </Select.Option>
+            ))}
+          </Select>
+        </div>
+      </div>
+      <Menu
+        disabled={!userHasMultiSigs}
+        style={{ textAlign: "center", marginTop: 40 }}
+        selectedKeys={[location.pathname]}
+        mode="horizontal"
+      >
         <Menu.Item key="/">
           <Link to="/">App Home</Link>
         </Menu.Item>
@@ -308,24 +410,44 @@ function App(props) {
       <Switch>
         <Route exact path="/">
           {/* <Home yourLocalBalance={yourLocalBalance} contractName={contractName} readContracts={readContracts} /> */}
-          <Home
-            mainnetProvider={mainnetProvider}
-            localProvider={localProvider}
-            blockExplorer={blockExplorer}
-            nonce={nonce}
-            ownerEvents={ownerEvents}
-            signaturesRequired={signaturesRequired}
-            poolServerUrl={poolServerUrl}
-            contractName={contractName}
-            address={address}
-            userProvider={userProviderAndSigner}
-            yourLocalBalance={yourLocalBalance}
-            price={price}
-            tx={tx}
-            writeContracts={writeContracts}
-            readContracts={readContracts}
-            setRoute={setRoute}
-          />
+          {!userHasMultiSigs ? (
+            <Row style={{ marginTop: 40 }}>
+              <Col span={12} offset={6}>
+                <Alert
+                  message={
+                    <>
+                      ✨{" "}
+                      <Button onClick={() => setIsCreateModalVisible(true)} type="link" style={{ padding: 0 }}>
+                        Create
+                      </Button>{" "}
+                      or select your Multi-Sig ✨
+                    </>
+                  }
+                  type="info"
+                />
+              </Col>
+            </Row>
+          ) : (
+            <Home
+              mainnetProvider={mainnetProvider}
+              localProvider={localProvider}
+              blockExplorer={blockExplorer}
+              nonce={nonce}
+              ownerEvents={ownerEvents}
+              signaturesRequired={signaturesRequired}
+              poolServerUrl={poolServerUrl}
+              contractName={contractName}
+              multisigAddress={currentMultiSigAddress}
+              address={address}
+              userProvider={userProviderAndSigner}
+              yourLocalBalance={yourLocalBalance}
+              price={price}
+              tx={tx}
+              writeContracts={writeContracts}
+              readContracts={readContracts}
+              setRoute={setRoute}
+            />
+          )}
         </Route>
         <Route exact path="/events">
           <MultiSigEvent
@@ -374,7 +496,7 @@ function App(props) {
             */}
 
           <Contract
-            name="MultiSigWallet"
+            name={contractFactoryName}
             price={price}
             signer={userSigner}
             provider={localProvider}

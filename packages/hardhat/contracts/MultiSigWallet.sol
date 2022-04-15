@@ -2,14 +2,15 @@ pragma solidity >=0.8.0 <0.9.0;
 //SPDX-License-Identifier: MIT
 
 import "hardhat/console.sol";
-
 // import "@openzeppelin/contracts/access/Ownable.sol";
 // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol
 
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "./MultiSigFactory.sol";
 
 contract MultiSigWallet {
     using ECDSA for bytes32;
+    MultiSigFactory private multiSigFactory;
 
     // events for contact
     event Deposit(address indexed from, uint256 amount, string message);
@@ -19,9 +20,9 @@ contract MultiSigWallet {
         uint256 amount,
         string message
     );
-    event Signer(address indexed owener, bool added);
+    event Signer(address indexed owner, bool added);
     event UpdateMinSignature(
-        address indexed owener,
+        address indexed owner,
         uint256 newMinSignatueCount
     );
 
@@ -47,12 +48,19 @@ contract MultiSigWallet {
         _;
     }
 
+    modifier onlyOwner() {
+        require(owners[msg.sender], "Not owner");
+        _;
+    }
+
     constructor(
-        uint256 _minSignatue,
+        uint256 _chainID,
         address[] memory _owners,
-        uint256 _chainID
-    ) {
+        uint256 _minSignatue,
+        address _factory
+    ) payable {
         require(_minSignatue > 0, "Signature count should be greater than 0");
+        multiSigFactory = MultiSigFactory(_factory);
         minSignature = _minSignatue;
         for (uint256 index = 0; index < _owners.length; index++) {
             require(

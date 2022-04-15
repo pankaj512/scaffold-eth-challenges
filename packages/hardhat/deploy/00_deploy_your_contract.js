@@ -17,10 +17,17 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   const { deployer } = await getNamedAccounts();
   const chainId = await getChainId();
 
-  await deploy("MultiSigWallet", {
+  // await deploy("MultiSigWallet", {
+  //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+  //   from: deployer,
+  //   args: [1, ["0xc170eFe968AD2334cDb3507d354C7B154A9A588a"], chainId],
+  //   log: true,
+  //   waitConfirmations: 5,
+  // });
+
+  await deploy("MultiSigFactory", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
-    args: [1, ["0xc170eFe968AD2334cDb3507d354C7B154A9A588a"], chainId],
     log: true,
     waitConfirmations: 5,
   });
@@ -76,4 +83,4 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   //   console.error(error);
   // }
 };
-module.exports.tags = ["MultiSigWallet"];
+module.exports.tags = ["MultiSigFactory"];

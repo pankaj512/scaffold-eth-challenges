@@ -27,31 +27,26 @@ function Home({
   tx,
   writeContracts,
   readContracts,
+  multisigAddress,
   setRoute,
   yourLocalBalance,
   price,
 }) {
   // you can also use hooks locally in your component of choice
   // in this case, let's keep track of 'purpose' variable from our contract
-  console.log(readContracts);
   return (
     <div className="home">
-      {readContracts && readContracts[contractName] && (
+      {multisigAddress && (
         <div className="home-item home-address" style={{ margin: 32 }}>
           <div>
             <h2>MultiSigWallet 💰 </h2>
           </div>
           <div>
-            <Balance
-              address={readContracts[contractName].address}
-              provider={localProvider}
-              dollarMultiplier={price}
-              fontSize={64}
-            />
+            <Balance address={multisigAddress} provider={localProvider} dollarMultiplier={price} fontSize={64} />
           </div>
           <div>
             <QR
-              value={readContracts[contractName].address}
+              value={multisigAddress}
               size="180"
               level="H"
               includeMargin
@@ -61,7 +56,7 @@ function Home({
           </div>
           <div>
             <Address
-              address={readContracts[contractName].address}
+              address={multisigAddress}
               ensProvider={mainnetProvider}
               blockExplorer={blockExplorer}
               fontSize={32}

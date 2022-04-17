@@ -30,7 +30,7 @@ import { NETWORKS, ALCHEMY_KEY } from "./constants";
 import externalContracts from "./contracts/external_contracts";
 // contracts
 import deployedContracts from "./contracts/hardhat_contracts.json";
-import multiSigWalletABI from "./contracts/multi_sig_wallet";
+import multiSigWalletABI from "./contracts/MultiSigWallet.json";
 import { Transactor, Web3ModalSetup } from "./helpers";
 import { Home, MultiSigEvent, Owners, Transactions, CreateTransaction } from "./views";
 import { useStaticJsonRPC, useUserProvider } from "./hooks";
@@ -57,7 +57,7 @@ const { ethers } = require("ethers");
 */
 
 /// 📡 What chain are your contracts deployed to?
-const initialNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+const initialNetwork = NETWORKS.kovan; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -75,7 +75,8 @@ const providers = [
 ];
 
 // const poolServerUrl = "https://backend.multisig.holdings:49832/"
-const poolServerUrl = "http://localhost:49832/";
+const poolServerUrl = "https://meta-multi-sig-backend.herokuapp.com/";
+//const poolServerUrl = "http://localhost:49832/";
 
 function App(props) {
   // specify all the chains your app is available on. Eg: ['localhost', 'mainnet', ...otherNetworks ]
@@ -283,7 +284,6 @@ function App(props) {
 
   const handleMultiSigChange = value => {
     setCurrentMultiSigAddress(value);
-    console.log("XXXXXXXXXXXXX:", currentMultiSigAddress);
   };
 
   const userHasMultiSigs = currentMultiSigAddress ? true : false;
@@ -318,7 +318,7 @@ function App(props) {
     localProvider,
     1,
   );
-  if (DEBUG) console.log("📟 executeTransactionEvents:", allExecuteTransactionEvents);
+  if (DEBUG) console.log("📟 All executeTransactionEvents:", allExecuteTransactionEvents);
 
   const allOwnerEvents = useEventListener(
     currentMultiSigAddress ? readContracts : null,
@@ -327,7 +327,7 @@ function App(props) {
     localProvider,
     1,
   );
-  if (DEBUG) console.log("📟 ownerEvents:", allOwnerEvents);
+  if (DEBUG) console.log("📟 all ownerEvents:", allOwnerEvents);
 
   const [ownerEvents, setOwnerEvents] = useState();
   const [executeTransactionEvents, setExecuteTransactionEvents] = useState();
@@ -474,6 +474,7 @@ function App(props) {
           <Transactions
             poolServerUrl={poolServerUrl}
             contractName={contractName}
+            contractAddress={currentMultiSigAddress}
             address={address}
             userProvider={userProviderAndSigner}
             mainnetProvider={mainnetProvider}

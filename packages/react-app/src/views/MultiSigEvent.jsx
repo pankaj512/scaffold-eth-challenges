@@ -3,8 +3,20 @@ import { Table } from "antd";
 import { Address, Balance, Blockie, TransactionDetailsModal } from "../components";
 import { parseEther, formatEther } from "@ethersproject/units";
 
-function MultSigEvent({ executeTransactionEvents, mainnetProvider, blockExplorer, price }) {
+function MultSigEvent({
+  contractName,
+  readContracts,
+  executeTransactionEvents,
+  mainnetProvider,
+  blockExplorer,
+  price,
+}) {
   const columns = [
+    {
+      title: "Method",
+      dataIndex: "method",
+      key: "method",
+    },
     {
       title: "Executor",
       dataIndex: "owner",
@@ -26,6 +38,8 @@ function MultSigEvent({ executeTransactionEvents, mainnetProvider, blockExplorer
       dataIndex: "nonce",
       key: "nonce",
       render: text => <span>{<b>#{typeof text === "number" ? text : text.toNumber()}</b>}</span>,
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.nonce - b.nonce,
     },
     {
       title: "Tx Hash",
@@ -57,7 +71,14 @@ function MultSigEvent({ executeTransactionEvents, mainnetProvider, blockExplorer
     if (executeTransactionEvents) {
       const events = [];
       for (const event of executeTransactionEvents) {
+        let txnData;
+        try {
+          txnData = readContracts[contractName].interface.parseTransaction(event.args);
+        } catch (error) {
+          console.log("ERROR", error);
+        }
         const eventObj = {
+          method: txnData && txnData.functionFragment ? txnData.functionFragment.name : "Default",
           owner: event.args[0],
           to: event.args[1],
           nonce: event.args[4],
@@ -70,8 +91,6 @@ function MultSigEvent({ executeTransactionEvents, mainnetProvider, blockExplorer
       setExecutionEvents(events);
     }
   });
-
-  console.log(executionEvents);
 
   return (
     <div className="history">

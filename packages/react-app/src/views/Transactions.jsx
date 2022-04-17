@@ -27,6 +27,7 @@ export default function Transactions({
   blockExplorer,
 }) {
   const [transactions, setTransactions] = useState();
+  const [operationExecuting, setOperationExecuting] = useState(false);
 
   const getTransactions = async () => {
     if (true) console.log("🛰 Requesting Transaction List");
@@ -102,6 +103,8 @@ export default function Transactions({
   // };
 
   const signTransaction = async transaction => {
+    if (operationExecuting) return;
+    setOperationExecuting(true);
     console.log("item.signatures", transaction.signatures);
 
     const newHash = await readContracts[contractName].getTransactionHash(
@@ -128,9 +131,12 @@ export default function Transactions({
         signers: finalSigners,
       });
     }
+    setOperationExecuting(false);
   };
 
   const executeTransaction = async transaction => {
+    if (operationExecuting) return;
+    setOperationExecuting(true);
     const newHash = await readContracts[contractName].getTransactionHash(
       transaction.nonce,
       transaction.to,
@@ -151,6 +157,17 @@ export default function Transactions({
         finalSigList,
       ),
     );
+    setOperationExecuting(false);
+  };
+
+  const rejectTransaction = async transaction => {
+    if (operationExecuting) return;
+    setOperationExecuting(true);
+    const contractAddress = await readContracts[contractName].address;
+    const url = await (poolServerUrl + contractAddress + "_" + localProvider._network.chainId);
+    console.log(transaction);
+    await axios.delete(url, { data: { hash: transaction.hash } });
+    setOperationExecuting(false);
   };
 
   if (!signaturesRequired) {
@@ -200,6 +217,14 @@ export default function Transactions({
                   style={{ marginLeft: 10 }}
                 >
                   Exec
+                </Button>
+                <Button
+                  onClick={e => {
+                    rejectTransaction(transaction);
+                  }}
+                  style={{ marginLeft: 10 }}
+                >
+                  Reject
                 </Button>
               </TransactionListItem>
             </List.Item>

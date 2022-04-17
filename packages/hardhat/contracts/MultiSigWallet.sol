@@ -40,6 +40,7 @@ contract MultiSigWallet {
     // states of contact
     uint256 public minSignature;
     mapping(address => bool) public owners;
+    address[] public currentOwners;
     uint256 public chainID;
     uint256 public nonce;
 
@@ -73,6 +74,7 @@ contract MultiSigWallet {
             );
             owners[_owners[index]] = true;
             emit Signer(_owners[index], true);
+            currentOwners.push(_owners[index]);
         }
         chainID = _chainID;
         emit UpdateMinSignature(msg.sender, _minSignatue);
@@ -83,7 +85,9 @@ contract MultiSigWallet {
         require(_address != address(0), "Owner can't be zero address");
         require(owners[_address] != true, "Already an owner of wallet");
         owners[_address] = true;
+        currentOwners.push(_address);
         emit Signer(_address, true);
+        multiSigFactory.emitOwners(address(this), currentOwners, minSignature);
     }
 
     // remove an existing signer from wallet, only contact should call it
@@ -91,7 +95,26 @@ contract MultiSigWallet {
         require(_address != address(0), "Can't be zero address");
         require(owners[_address] == true, "Not a owner of wallet");
         delete owners[_address];
+        deleteFromArray(_address);
         emit Signer(_address, false);
+        multiSigFactory.emitOwners(address(this), currentOwners, minSignature);
+    }
+
+    function deleteFromArray(address _oldSigner) private {
+        uint256 ownersLength = currentOwners.length;
+        address[] memory poppedOwners = new address[](currentOwners.length);
+        for (uint256 i = ownersLength - 1; i >= 0; i--) {
+            if (currentOwners[i] != _oldSigner) {
+                poppedOwners[i] = currentOwners[i];
+                currentOwners.pop();
+            } else {
+                currentOwners.pop();
+                for (uint256 j = i; j < ownersLength - 1; j++) {
+                    currentOwners.push(poppedOwners[j]);
+                }
+                return;
+            }
+        }
     }
 
     // update minimum signature required, only contact should call it

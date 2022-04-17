@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, List } from "antd";
 
 import { Address, Balance, Blockie, TransactionDetailsModal } from "../components";
 import { EllipsisOutlined } from "@ant-design/icons";
 import { parseEther, formatEther } from "@ethersproject/units";
+import { parseExternalContractTransaction } from "../helpers";
 
 const TransactionListItem = function ({
   item,
@@ -15,7 +16,25 @@ const TransactionListItem = function ({
   children,
 }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [txnInfo, setTxnInfo] = useState(null);
+  const [txnData, setTxnData] = useState(null);
+
+  useEffect(() => {
+    if (!txnData) {
+      try {
+        const parsedData = item.data !== "0x" ? readContracts[contractName].interface.parseTransaction(item) : null;
+        setTxnData(parsedData);
+      } catch (argumentError) {
+        console.log("ERROR", argumentError);
+
+        const getParsedTransaction = async () => {
+          const parsedTransaction = await parseExternalContractTransaction(item.to, item.data);
+          setTxnData(parsedTransaction);
+        };
+
+        getParsedTransaction();
+      }
+    }
+  }, [item]);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -26,13 +45,8 @@ const TransactionListItem = function ({
   };
 
   console.log("🔥🔥🔥🔥", item);
-  let txnData;
-  try {
-    txnData = readContracts[contractName].interface.parseTransaction(item);
-  } catch (error) {
-    console.log("ERROR", error);
-  }
   console.log("🔥🔥🔥🔥", txnData);
+
   return (
     <>
       <TransactionDetailsModal

@@ -32,6 +32,8 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     waitConfirmations: 5,
   });
 
+  const YourContract = await ethers.getContract("MultiSigFactory", deployer);
+
   // Getting a previously deployed contract
   // const YourContract = await ethers.getContract("YourContract", deployer);
   /*  await YourContract.setPurpose("Hello");
@@ -71,16 +73,16 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
 
   // You can also Verify your contracts with Etherscan here...
   // You don't want to verify on localhost
-  // try {
-  //   if (chainId !== localChainId) {
-  //     await run("verify:verify", {
-  //       address: YourContract.address,
-  //       contract: "contracts/YourContract.sol:YourContract",
-  //       constructorArguments: [],
-  //     });
-  //   }
-  // } catch (error) {
-  //   console.error(error);
-  // }
+  try {
+    if (chainId !== localChainId) {
+      await run("verify:verify", {
+        address: YourContract.address,
+        contract: "contracts/MultiSigFactory.sol:MultiSigFactory",
+        constructorArguments: [],
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 module.exports.tags = ["MultiSigFactory"];

@@ -17,16 +17,30 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   const { deployer } = await getNamedAccounts();
   const chainId = await getChainId();
 
+  // await deploy("YourLibary", {
+  //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+  //   from: deployer,
+  //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+  //   log: true,
+  //   waitConfirmations: 5,
+  // });
+  // const YourLibaryAddress = await ethers.getContract("YourLibary", deployer)
+  //   .address;
+
+  const YourLibaryAddress = "0x4EE6eCAD1c2Dae9f525404De8555724e3c35d07B";
   await deploy("YourCollectible", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
     // args: [ "Hello", ethers.utils.parseEther("1.5") ],
     log: true,
     waitConfirmations: 5,
+    libraries: {
+      YourLibary: YourLibaryAddress,
+    },
   });
 
   // Getting a previously deployed contract
-  const YourCollectible = await ethers.getContract("YourCollectible", deployer);
+  // const YourCollectible = await ethers.getContract("YourCollectible", deployer);
   /*  await YourCollectible.setPurpose("Hello");
   
     // To take ownership of YourCollectible using the ownable library uncomment next line and add the 

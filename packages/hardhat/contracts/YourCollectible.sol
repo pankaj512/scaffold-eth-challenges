@@ -203,11 +203,17 @@ contract YourCollectible is ERC721Enumerable, Ownable {
             keccak256(abi.encodePacked(neck)) !=
             keccak256(abi.encodePacked("")) ||
             keccak256(abi.encodePacked(head)) != keccak256(abi.encodePacked(""))
-        ) wearing = string.concat(wearing, "wearing");
+        ) wearing = string.concat(wearing, "wearing ");
 
         if (
             keccak256(abi.encodePacked(neck)) != keccak256(abi.encodePacked(""))
-        ) wearing = string.concat(wearing, neck, " and ");
+        ) wearing = string.concat(wearing, neck);
+
+        if (
+            keccak256(abi.encodePacked(neck)) !=
+            keccak256(abi.encodePacked("")) &&
+            keccak256(abi.encodePacked(head)) != keccak256(abi.encodePacked(""))
+        ) wearing = string.concat(wearing, " and ");
 
         if (
             keccak256(abi.encodePacked(head)) != keccak256(abi.encodePacked(""))

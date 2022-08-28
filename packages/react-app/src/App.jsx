@@ -34,7 +34,6 @@ import { useStaticJsonRPC } from "./hooks";
 
 const { ethers } = require("ethers");
 /*
-    Welcome to Oh Pandas !
 
     Code:
     https://github.com/scaffold-eth/scaffold-eth
@@ -135,7 +134,7 @@ function App(props) {
   // The transactor wraps transactions and provides notificiations
   const tx = Transactor(userSigner, gasPrice);
 
-  // Oh Pandas is full of handy hooks like this one to get your balance:
+  // handy hooks like this one to get your balance:
   const yourLocalBalance = useBalance(localProvider, address);
 
   // Just plug in different 🛰 providers to get your balance on different chains:
@@ -203,7 +202,7 @@ function App(props) {
   return (
     <div className="App">
       {/* ✏️ Edit the header and change the title to your project name */}
-      <Header>
+      <Header title="Parrot">
         {/* 👨‍💼 Your account is in the top right with a wallet at connect options */}
         <div style={{ position: "relative", display: "flex", flexDirection: "column" }}>
           <div style={{ display: "flex", flex: 1 }}>
@@ -244,7 +243,7 @@ function App(props) {
       />
       <Menu style={{ textAlign: "center", marginTop: 20 }} selectedKeys={[location.pathname]} mode="horizontal">
         <Menu.Item key="/">
-          <Link to="/">Oh Pandas</Link>
+          <Link to="/">Your Collectible</Link>
         </Menu.Item>
         <Menu.Item key="/debug">
           <Link to="/debug">Smart Contracts</Link>

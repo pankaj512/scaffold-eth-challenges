@@ -16,7 +16,7 @@ require("@nomiclabs/hardhat-etherscan");
 const { isAddress, getAddress, formatUnits, parseUnits } = utils;
 
 /*
-      📡 This is where you configure your deploy configuration for Oh Pandas
+      📡 This is where you configure your deploy configuration for YourCollectible
 
       check out `packages/scripts/deploy.js` to customize your deployment
 

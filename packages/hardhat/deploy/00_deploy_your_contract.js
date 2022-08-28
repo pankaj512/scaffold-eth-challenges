@@ -27,7 +27,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   // const YourLibaryAddress = await ethers.getContract("YourLibary", deployer)
   //   .address;
 
-  const YourLibaryAddress = "0x4EE6eCAD1c2Dae9f525404De8555724e3c35d07B";
+  const YourLibaryAddress = "0x09635F643e140090A9A8Dcd712eD6285858ceBef";
   await deploy("YourCollectible", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,

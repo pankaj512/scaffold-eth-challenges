@@ -242,7 +242,7 @@ contract YourCollectible is ERC721Enumerable, Ownable {
                                 name,
                                 '","description":"',
                                 description,
-                                '","external_url":"https://ohpandas.com/token/',
+                                '","external_url":"https://yourCollectible.com/token/',
                                 id.toString(),
                                 '","attributes":[{"trait_type":"head","value":"',
                                 head,

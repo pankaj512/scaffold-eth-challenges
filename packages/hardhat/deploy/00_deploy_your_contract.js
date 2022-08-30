@@ -17,27 +17,76 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   const { deployer } = await getNamedAccounts();
   const chainId = await getChainId();
 
-  // await deploy("YourLibary", {
-  //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
-  //   from: deployer,
-  //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
-  //   log: true,
-  //   waitConfirmations: 5,
-  // });
-  // const YourLibaryAddress = await ethers.getContract("YourLibary", deployer)
-  //   .address;
-
-  const YourLibaryAddress = "0x09635F643e140090A9A8Dcd712eD6285858ceBef";
-  await deploy("YourCollectible", {
+  await deploy("Style", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
     // args: [ "Hello", ethers.utils.parseEther("1.5") ],
     log: true,
     waitConfirmations: 5,
-    libraries: {
-      YourLibary: YourLibaryAddress,
-    },
   });
+  const StyleLibraryAddress = await ethers.getContract("Style", deployer)
+    .address;
+
+  await deploy("Body", {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    log: true,
+    waitConfirmations: 5,
+  });
+  const BodyLibraryAddress = await ethers.getContract("Body", deployer).address;
+
+  await deploy("Eye", {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    log: true,
+    waitConfirmations: 5,
+  });
+  const EyeLibraryAddress = await ethers.getContract("Eye", deployer).address;
+
+  await deploy("Head", {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    log: true,
+    waitConfirmations: 5,
+  });
+  const HeadLibraryAddress = await ethers.getContract("Head", deployer).address;
+
+  await deploy("Neck", {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    log: true,
+    waitConfirmations: 5,
+  });
+  const NeckLibraryAddress = await ethers.getContract("Neck", deployer).address;
+
+  await deploy("Perch", {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    log: true,
+    waitConfirmations: 5,
+  });
+  const PerchLibraryAddress = await ethers.getContract("Perch", deployer)
+    .address;
+
+  // await deploy("YourCollectible", {
+  //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+  //   from: deployer,
+  //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+  //   log: true,
+  //   waitConfirmations: 5,
+  //   libraries: {
+  //     EyeLibary: EyeLibraryAddress,
+  //     HeadLibary: HeadLibraryAddress,
+  //     NeckLibary: NeckLibraryAddress,
+  //     PerchLibary: PerchLibraryAddress,
+  //     StylesheetsLibary: StyleLibraryAddress,
+  //   },
+  // });
 
   // Getting a previously deployed contract
   // const YourCollectible = await ethers.getContract("YourCollectible", deployer);

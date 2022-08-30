@@ -7,7 +7,12 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "base64-sol/base64.sol";
 
-import "./YourLibary.sol";
+import "./BodyLibrary.sol";
+import "./EyeLibrary.sol";
+import "./HeadLibrary.sol";
+import "./NeckLibrary.sol";
+import "./PerchLibrary.sol";
+import "./StyleLibrary.sol";
 import "hardhat/console.sol";
 
 // GET LISTED ON OPENSEA: https://testnets.opensea.io/get-listed/step-two
@@ -45,8 +50,8 @@ contract YourCollectible is ERC721Enumerable, Ownable {
         eyes = ["red", "glasses", "angry", "monocle", "cross"];
         necks = ["", "bow tie", "spike collar", "amulet", "ska tie"];
         perches = [
-            "birch branch",
             "oka branch",
+            "birch branch",
             "bones",
             "staff",
             "skateboard"
@@ -143,22 +148,22 @@ contract YourCollectible is ERC721Enumerable, Ownable {
                 ')" x="-6.2" y="-0.06" width="883.11" height="888.96" />',
                 "</g>",
                 '<g id="Tail">',
-                YourLibary.GetTail(color0, color1, color3),
+                Body.GetTail(color0, color1, color3),
                 "</g>",
                 '<g id="Perch">',
-                YourLibary.GetPerch(perch),
+                Perch.GetPerch(perch),
                 "</g>",
                 '<g id="Body">',
-                YourLibary.GetBody(color0, color1, color2, color3, color4),
+                Body.GetBody(color0, color1, color2, color3, color4),
                 "</g>",
                 '<g id="Neck">',
-                YourLibary.GetNeck(neck),
+                Neck.GetNeck(neck),
                 "</g>",
                 '<g id="Head">',
-                YourLibary.GetHead(head),
+                Head.GetHead(head),
                 "</g>",
                 '<g id="Eye">',
-                YourLibary.GetEye(eye),
+                Eye.GetEye(eye),
                 "</g>",
                 "</g>"
             )

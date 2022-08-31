@@ -46,15 +46,15 @@ contract YourCollectible is ERC721Enumerable, Ownable {
     string[5] public perches;
 
     constructor() ERC721("Parrot", "PRT") {
-        heads = ["", "floof", "punk hat", "wizard hat", "helmet"];
-        eyes = ["red", "glasses", "angry", "monocle", "cross"];
+        heads = ["", "floof", "punk hat", "helmet", "wizard hat"];
+        eyes = ["red", "glasses", "angry", "cross", "monocle"];
         necks = ["", "bow tie", "spike collar", "amulet", "ska tie"];
         perches = [
-            "oka branch",
+            "oak branch",
             "birch branch",
             "bones",
-            "staff",
-            "skateboard"
+            "skateboard",
+            "staff"
         ];
 
         //   056b68 9b0e00 222844 f7f8e7 ffb93b   -- set 1
@@ -114,7 +114,7 @@ contract YourCollectible is ERC721Enumerable, Ownable {
             )
         );
 
-        parrots[id].bgIndex = uint256((uint8(predictableRandom[0])) % 5);
+        parrots[id].bgIndex = uint256((uint8(predictableRandom[0])) % 9);
         parrots[id].colorIndex = uint256((uint8(predictableRandom[1])) % 5);
         parrots[id].headIndex = uint256((uint8(predictableRandom[2])) % 5);
         parrots[id].neckIndex = uint256((uint8(predictableRandom[3])) % 5);
@@ -126,25 +126,27 @@ contract YourCollectible is ERC721Enumerable, Ownable {
 
     // Visibility is `public` to enable it being called by other contracts for composition.
     function renderTokenById(uint256 id) public view returns (string memory) {
-        uint256 head = parrots[id].headIndex;
-        uint256 eye = parrots[id].eyeIndex;
-        uint256 neck = parrots[id].neckIndex;
-        uint256 perch = parrots[id].perchIndex;
-        uint256 palletType = parrots[id].colorIndex;
-        uint256 backgroundId = parrots[id].bgIndex;
+        (
+            uint256 pallet,
+            uint256 background,
+            uint256 head,
+            uint256 neck,
+            uint256 eye,
+            uint256 perch
+        ) = getPropertiesById(id);
 
-        string memory color0 = colorPallet[palletType][0];
-        string memory color1 = colorPallet[palletType][1];
-        string memory color2 = colorPallet[palletType][2];
-        string memory color3 = colorPallet[palletType][3];
-        string memory color4 = colorPallet[palletType][4];
+        string memory color0 = colorPallet[pallet][0];
+        string memory color1 = colorPallet[pallet][1];
+        string memory color2 = colorPallet[pallet][2];
+        string memory color3 = colorPallet[pallet][3];
+        string memory color4 = colorPallet[pallet][4];
 
         string memory render = string(
             abi.encodePacked(
                 '<g class="cls-1">',
                 '<g id="BGs">',
                 '<rect style="fill: url(#radial-gradient-',
-                backgroundId.toString(),
+                background.toString(),
                 ')" x="-6.2" y="-0.06" width="883.11" height="888.96" />',
                 "</g>",
                 '<g id="Tail">',
@@ -181,7 +183,7 @@ contract YourCollectible is ERC721Enumerable, Ownable {
         string memory svg = string(
             abi.encodePacked(
                 '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 880 880">',
-                YourLibary.GetStyle(),
+                Style.GetStyle(),
                 renderTokenById(id),
                 "</svg>"
             )
@@ -193,10 +195,12 @@ contract YourCollectible is ERC721Enumerable, Ownable {
         require(_exists(id), "!exist");
 
         (
-            string memory head,
-            string memory neck,
-            string memory eye,
-            string memory perch
+            ,
+            ,
+            uint256 head,
+            uint256 neck,
+            uint256 eye,
+            uint256 perch
         ) = getPropertiesById(id);
 
         string memory name = string(
@@ -204,32 +208,21 @@ contract YourCollectible is ERC721Enumerable, Ownable {
         );
 
         string memory wearing = "";
-        if (
-            keccak256(abi.encodePacked(neck)) !=
-            keccak256(abi.encodePacked("")) ||
-            keccak256(abi.encodePacked(head)) != keccak256(abi.encodePacked(""))
-        ) wearing = string.concat(wearing, "wearing ");
+        if (neck != 0 || head != 0)
+            wearing = string.concat(wearing, "wearing ");
 
-        if (
-            keccak256(abi.encodePacked(neck)) != keccak256(abi.encodePacked(""))
-        ) wearing = string.concat(wearing, neck);
+        if (neck != 0) wearing = string.concat(wearing, necks[neck]);
 
-        if (
-            keccak256(abi.encodePacked(neck)) !=
-            keccak256(abi.encodePacked("")) &&
-            keccak256(abi.encodePacked(head)) != keccak256(abi.encodePacked(""))
-        ) wearing = string.concat(wearing, " and ");
+        if (neck != 0 && head != 0) wearing = string.concat(wearing, " and ");
 
-        if (
-            keccak256(abi.encodePacked(head)) != keccak256(abi.encodePacked(""))
-        ) wearing = string.concat(wearing, head);
+        if (head != 0) wearing = string.concat(wearing, heads[head]);
 
         string memory description = string(
             abi.encodePacked(
                 " Parrot with ",
-                eye,
+                eyes[eye],
                 " eyes sitting on ",
-                perch,
+                perches[perch],
                 " perch ",
                 wearing
             )
@@ -250,13 +243,13 @@ contract YourCollectible is ERC721Enumerable, Ownable {
                                 '","external_url":"https://yourCollectible.com/token/',
                                 id.toString(),
                                 '","attributes":[{"trait_type":"head","value":"',
-                                head,
+                                heads[head],
                                 '"},{"trait_type":"neck","value":"',
-                                neck,
+                                necks[neck],
                                 '"},{"trait_type":"eye","value":"',
-                                eye,
+                                eyes[eye],
                                 '"},{"trait_type":"perch","value":"',
-                                perch,
+                                perches[perch],
                                 '"}], "owner":"',
                                 (uint160(ownerOf(id))).toHexString(20),
                                 '","image": "',
@@ -275,15 +268,24 @@ contract YourCollectible is ERC721Enumerable, Ownable {
         public
         view
         returns (
-            string memory head,
-            string memory neck,
-            string memory eye,
-            string memory perch
+            uint256 pallet,
+            uint256 background,
+            uint256 head,
+            uint256 neck,
+            uint256 eye,
+            uint256 perch
         )
     {
-        head = heads[parrots[id].headIndex];
-        neck = necks[parrots[id].neckIndex];
-        eye = eyes[parrots[id].eyeIndex];
-        perch = perches[parrots[id].perchIndex];
+        pallet = parrots[id].colorIndex;
+        background = parrots[id].bgIndex;
+        head = parrots[id].headIndex;
+        neck = parrots[id].neckIndex;
+        eye = parrots[id].eyeIndex;
+        perch = parrots[id].perchIndex;
+
+        // console.log("neck ", neck, necks[neck]);
+        // console.log("perch ", perch, perches[perch]);
+        // console.log("eye ", eye, eyes[eye]);
+        // console.log("head ", head, heads[head]);
     }
 }

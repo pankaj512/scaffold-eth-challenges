@@ -22,7 +22,12 @@ library Style {
                 "       .cls-9 {",
                 "           stroke: #000;",
                 "           stroke-miterlimit: 10;",
-                "       }",
+                "       }"
+            )
+        );
+        style = string(
+            abi.encodePacked(
+                style,
                 "       .cls-2,",
                 "       .cls-3,",
                 "       .cls-4,",
@@ -34,7 +39,12 @@ library Style {
                 "       .cls-11,",
                 "       .cls-5 {",
                 "           mix-blend-mode: multiply;",
-                "       }",
+                "       }"
+            )
+        );
+        style = string(
+            abi.encodePacked(
+                style,
                 "       .cls-5 {",
                 "           opacity: 0.31;",
                 "       }",
@@ -47,7 +57,12 @@ library Style {
                 "       .cls-11 {",
                 "           opacity: 0.27;",
                 "       }",
-                "   </style>",
+                "   </style>"
+            )
+        );
+        style = string(
+            abi.encodePacked(
+                style,
                 "   <radialGradient",
                 '       id="radial-gradient-0"',
                 '       cx="868.1"',
@@ -58,7 +73,12 @@ library Style {
                 "   >",
                 '       <stop offset="0" stop-color="#c8a5db" />',
                 '       <stop offset="1" stop-color="#412951" />',
-                "   </radialGradient>",
+                "   </radialGradient>"
+            )
+        );
+        style = string(
+            abi.encodePacked(
+                style,
                 "   <radialGradient",
                 '       id="radial-gradient-1"',
                 '       cx="441.55"',
@@ -69,7 +89,12 @@ library Style {
                 "   >",
                 '       <stop offset="0.23" stop-color="#ff4803" />',
                 '       <stop offset="1" stop-color="#ffb93b" />',
-                "   </radialGradient>",
+                "   </radialGradient>"
+            )
+        );
+        style = string(
+            abi.encodePacked(
+                style,
                 "   <radialGradient",
                 '       id="radial-gradient-2"',
                 '       cx="441.55"',
@@ -80,7 +105,12 @@ library Style {
                 "   >",
                 '       <stop offset="0.3" stop-color="#c8a5db" />',
                 '       <stop offset="1" stop-color="#c5f9d0" />',
-                "   </radialGradient>",
+                "   </radialGradient>"
+            )
+        );
+        style = string(
+            abi.encodePacked(
+                style,
                 "   <radialGradient",
                 '       id="radial-gradient-3"',
                 '       cx="784.61"',
@@ -91,7 +121,12 @@ library Style {
                 "   >",
                 '       <stop offset="0" stop-color="#9cff55" />',
                 '       <stop offset="1" stop-color="#ff0" />',
-                "   </radialGradient>",
+                "   </radialGradient>"
+            )
+        );
+        style = string(
+            abi.encodePacked(
+                style,
                 "   <radialGradient",
                 '       id="radial-gradient-4"',
                 '       cx="930.24"',
@@ -105,7 +140,12 @@ library Style {
                 '       <stop offset="0.38" stop-color="#a753a9" />',
                 '       <stop offset="0.71" stop-color="#bf87c6" />',
                 '       <stop offset="1" stop-color="#d6bbe4" />',
-                "   </radialGradient>",
+                "   </radialGradient>"
+            )
+        );
+        style = string(
+            abi.encodePacked(
+                style,
                 "   <radialGradient",
                 '       id="radial-gradient-5"',
                 '       cx="992.47"',
@@ -119,7 +159,12 @@ library Style {
                 '       <stop offset="0.39" stop-color="#287a93" />',
                 '       <stop offset="0.71" stop-color="#14aab7" />',
                 '       <stop offset="1" stop-color="#00dbdb" />',
-                "   </radialGradient>",
+                "   </radialGradient>"
+            )
+        );
+        style = string(
+            abi.encodePacked(
+                style,
                 "   <radialGradient",
                 '       id="radial-gradient-6"',
                 '       cx="784.61"',
@@ -136,7 +181,12 @@ library Style {
                 '       <stop offset="0.74" stop-color="#1c4841" />',
                 '       <stop offset="0.88" stop-color="#0d3834" />',
                 '       <stop offset="1" stop-color="#083330" />',
-                "   </radialGradient>",
+                "   </radialGradient>"
+            )
+        );
+        style = string(
+            abi.encodePacked(
+                style,
                 "   <radialGradient",
                 '       id="radial-gradient-7"',
                 '       cx="930.24"',
@@ -152,7 +202,12 @@ library Style {
                 '       <stop offset="0.77" stop-color="#ec9d96" />',
                 '       <stop offset="0.92" stop-color="#f5bbab" />',
                 '       <stop offset="1" stop-color="#fbcdb8" />',
-                "   </radialGradient>",
+                "   </radialGradient>"
+            )
+        );
+        style = string(
+            abi.encodePacked(
+                style,
                 "   <radialGradient",
                 '       id="radial-gradient-8"',
                 '       cx="992.47"',

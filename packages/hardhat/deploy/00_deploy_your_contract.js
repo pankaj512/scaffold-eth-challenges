@@ -4,14 +4,6 @@ const { ethers } = require("hardhat");
 
 const localChainId = "31337";
 
-// const sleep = (ms) =>
-//   new Promise((r) =>
-//     setTimeout(() => {
-//       console.log(`waited for ${(ms / 1000).toFixed(3)} seconds`);
-//       r();
-//     }, ms)
-//   );
-
 module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
@@ -65,25 +57,87 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   //   waitConfirmations: 5,
   // });
 
-  await deploy("YourCollectible", {
+  // await deploy("Perch2", {
+  //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+  //   from: deployer,
+  //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+  //   log: true,
+  //   waitConfirmations: 5,
+  // });
+
+  const parrotBody = await deploy("ParrotBody", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
     // args: [ "Hello", ethers.utils.parseEther("1.5") ],
     log: true,
     waitConfirmations: 5,
     libraries: {
-      Eye: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-      Head: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
-      Neck: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
-      Perch: "0x0165878A594ca255338adfa4d48449f69242Eb8F",
-      Style: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-      Body: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+      Style: "0x45aE3ad54831b36Aa33870571c292be096fe44Ed",
+      Body: "0x32e278941751B03c5C795A269AFFD80520D98d6E",
     },
+  });
+
+  const parrotEye = await deploy("ParrotEye", {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    log: true,
+    waitConfirmations: 5,
+    libraries: {
+      Eye: "0xd9265Fb1935Acf9f38Ed8D0E06536A1B466b5455",
+    },
+  });
+
+  const parrotHead = await deploy("ParrotHead", {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    log: true,
+    waitConfirmations: 5,
+    libraries: {
+      Head: "0x6C0E52dEEe893015cBE56Cdc95647d2eC5dD755b",
+    },
+  });
+
+  const parrotNeck = await deploy("ParrotNeck", {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    log: true,
+    waitConfirmations: 5,
+    libraries: {
+      Neck: "0x2419d4AB2f29990038c39579DC7358Df4b407122",
+    },
+  });
+
+  const parrotPerch = await deploy("ParrotPerch", {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    log: true,
+    waitConfirmations: 5,
+    libraries: {
+      Perch: "0x861cb791685D63C7B8271F07f6FeA2d2Fc19DA62",
+      Perch2: "0xdAd468090104Ae2084eA2B19283d1Fb069791595",
+    },
+  });
+
+  await deploy("YourCollectible", {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    args: [parrotBody.address],
+    log: true,
+    waitConfirmations: 5,
   });
 
   // Getting a previously deployed contract
   const YourCollectible = await ethers.getContract("YourCollectible", deployer);
   // await YourCollectible.setPurpose("Hello");
+
+  await YourCollectible.addNft(parrotEye.address);
+  await YourCollectible.addNft(parrotHead.address);
+  await YourCollectible.addNft(parrotNeck.address);
+  await YourCollectible.addNft(parrotPerch.address);
 
   // // To take ownership of YourCollectible using the ownable library uncomment next line and add the
   // // address you want to be the owner.
@@ -92,7 +146,13 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     "0x54179E1770a780F2F541f23CB21252De12977d3c"
   );
 
-  //const YourCollectible = await ethers.getContractAt('YourCollectible', "0xaAC799eC2d00C013f1F11c37E654e59B0429DF6A") //<-- if you want to instantiate a version of a contract at a specific address!
+  /*
+    To take ownership of yourContract using the ownable library uncomment next line and add the 
+    address you want to be the owner. 
+    // yourContract.transferOwnership(YOUR_ADDRESS_HERE);
+
+    //const yourContract = await ethers.getContractAt('YourContract', "0xaAC799eC2d00C013f1F11c37E654e59B0429DF6A") //<-- if you want to instantiate a version of a contract at a specific address!
+  */
 
   /*
   //If you want to send value to an address from the deployer
@@ -105,7 +165,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
 
   /*
   //If you want to send some ETH to a contract on deploy (make your constructor payable!)
-  const YourCollectible = await deploy("YourCollectible", [], {
+  const yourContract = await deploy("YourContract", [], {
   value: ethers.utils.parseEther("0.05")
   });
   */
@@ -113,25 +173,21 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   /*
   //If you want to link a library into your contract:
   // reference: https://github.com/austintgriffith/scaffold-eth/blob/using-libraries-example/packages/hardhat/scripts/deploy.js#L19
-  const YourCollectible = await deploy("YourCollectible", [], {}, {
+  const yourContract = await deploy("YourContract", [], {}, {
    LibraryName: **LibraryAddress**
   });
   */
 
-  // Verify from the command line by running `yarn verify`
-
-  // You can also Verify your contracts with Etherscan here...
+  // Verify your contracts with Etherscan
   // You don't want to verify on localhost
-  // try {
-  //   if (chainId !== localChainId) {
-  //     await run("verify:verify", {
-  //       address: YourCollectible.address,
-  //       contract: "contracts/YourCollectible.sol:YourCollectible",
-  //       constructorArguments: [],
-  //     });
-  //   }
-  // } catch (error) {
-  //   console.error(error);
-  // }
+  /*
+  if (chainId !== localChainId) {
+    await run("verify:verify", {
+      address: YourCollectible.address,
+      contract: "contracts/YourCollectible.sol:YourCollectible",
+      contractArguments: [],
+    });
+  }
+  */
 };
 module.exports.tags = ["YourCollectible"];

@@ -184,7 +184,7 @@ function Preview({
           )}
         </div>
 
-        <div style={{ Width: "100%", display: "flex", flexWrap: "wrap", margin: "10px", justifyContent: "centers" }}>
+        <div style={{ Width: "100%", display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
           {yourAccesories &&
             yourAccesories.map(nft => {
               const id = nft.id.toNumber();

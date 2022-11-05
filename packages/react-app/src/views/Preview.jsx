@@ -102,8 +102,10 @@ function Preview({
   }, [ContractName, accesories, address, collectibleId, readContracts, selectedAccesory]);
 
   return (
-    <div style={{ Width: "100%", display: "flex", flexWrap: "wrap", alignItems: "top" }}>
-      <div style={{ margin: "auto", marginTop: 32, paddingBottom: 32 }}>
+    <div
+      style={{ Width: "100%", display: "flex", flexWrap: "wrap", alignItems: "top", justifyContent: "space-between" }}
+    >
+      <div style={{ flex: 1, margin: "32px auto auto auto" }}>
         {yourCollectible && (
           <div
             style={{
@@ -132,44 +134,11 @@ function Preview({
               </a>
             </div>
             <div style={{ marginBottom: "10px" }}>{yourCollectible.description}</div>
-            <div>
-              owner:{" "}
-              <Address
-                address={yourCollectible.owner}
-                ensProvider={mainnetProvider}
-                blockExplorer={blockExplorer}
-                fontSize={16}
-              />
-              <AddressInput
-                ensProvider={mainnetProvider}
-                placeholder="transfer to address"
-                value={transferToAddresses[yourCollectible.id]}
-                onChange={newValue => {
-                  const update = {};
-                  update[yourCollectible.id] = newValue;
-                  setTransferToAddresses({ ...transferToAddresses, ...update });
-                }}
-              />
-              <Button
-                onClick={() => {
-                  tx(
-                    writeContracts[ContractName] &&
-                      writeContracts[ContractName].transferFrom(
-                        address,
-                        transferToAddresses[yourCollectible.id],
-                        yourCollectible.id,
-                      ),
-                  );
-                }}
-              >
-                Transfer
-              </Button>
-            </div>
           </div>
         )}
       </div>
-      <div style={{ marginLeft: "auto", marginRight: "auto", marginBottom: "auto" }}>
-        <div style={{ Width: "100%", margin: "auto", marginTop: 32, paddingBottom: 32 }}>
+      <div style={{ flex: 3, margin: "32px auto auto auto" }}>
+        <div style={{ Width: "100%", margin: "auto" }}>
           {userSigner ? (
             <div>
               <Select
@@ -215,7 +184,7 @@ function Preview({
           )}
         </div>
 
-        <div style={{ Width: "100%", display: "flex", flexWrap: "wrap", margin: "auto" }}>
+        <div style={{ Width: "100%", display: "flex", flexWrap: "wrap", margin: "10px", justifyContent: "centers" }}>
           {yourAccesories &&
             yourAccesories.map(nft => {
               const id = nft.id.toNumber();
@@ -247,7 +216,7 @@ function Preview({
                     </a>
                   </div>
                   <div style={{ marginBottom: "10px" }}>{nft.description}</div>
-                  <div>
+                  {/* <div>
                     owner:{" "}
                     <Address
                       address={nft.owner}
@@ -275,7 +244,7 @@ function Preview({
                     >
                       Transfer
                     </Button>
-                  </div>
+                  </div> */}
                 </divs>
               );
             })}

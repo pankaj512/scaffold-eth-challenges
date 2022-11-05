@@ -65,7 +65,7 @@ function Home({
 
   return (
     <div>
-      <div style={{ maxWidth: 820, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
+      <div style={{ maxWidth: 1800, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
         {userSigner ? (
           <Button
             type={"primary"}
@@ -82,12 +82,22 @@ function Home({
         )}
       </div>
 
-      <div style={{ display: "flex", flexWrap: "wrap", margin: "auto" }}>
+      <div style={{ maxWidth: 1800, display: "flex", flexWrap: "wrap", margin: "auto" }}>
         {yourCollectibles &&
           yourCollectibles.map(nft => {
             const id = nft.id.toNumber();
             return (
-              <div style={{ flex: 1, margin: "10px", padding: "10px", border: "1px solid" }}>
+              <div
+                style={{
+                  minWidth: "200px",
+                  minHeight: "200px",
+                  width: "18%",
+                  height: "100%",
+                  margin: "1%",
+                  padding: "10px",
+                  border: "1px solid",
+                }}
+              >
                 <div>{nft.name}</div>
                 <div>
                   <a
@@ -100,11 +110,11 @@ function Home({
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <img src={nft.image} alt={nft.description} />
+                    <img width="100%" height="100%" src={nft.image} alt={nft.description} />
                   </a>
                 </div>
                 <div style={{ marginBottom: "10px" }}>{nft.description}</div>
-                <div >
+                <div>
                   owner:{" "}
                   <Address
                     address={nft.owner}

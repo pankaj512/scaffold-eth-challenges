@@ -12,7 +12,7 @@ import "hardhat/console.sol";
 
 // GET LISTED ON OPENSEA: https://testnets.opensea.io/get-listed/step-two
 
-contract ParrotNeck is ERC721Enumerable {
+contract Neck is ERC721Enumerable {
     using Strings for uint256;
     using Strings for uint160;
     using Counters for Counters.Counter;
@@ -71,7 +71,7 @@ contract ParrotNeck is ERC721Enumerable {
             abi.encodePacked(
                 '<g class="cls-1">',
                 '<g id="Neck">',
-                Neck.GetNeck(neck),
+                NeckLibrary.GetNeck(neck),
                 "</g>",
                 "</g>"
             )

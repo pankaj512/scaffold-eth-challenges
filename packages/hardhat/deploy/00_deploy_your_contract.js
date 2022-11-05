@@ -9,7 +9,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   const { deployer } = await getNamedAccounts();
   const chainId = await getChainId();
 
-  // await deploy("Style", {
+  // await deploy("StyleLibrary", {
   //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
   //   from: deployer,
   //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
@@ -17,7 +17,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   //   waitConfirmations: 5,
   // });
 
-  // await deploy("Body", {
+  // await deploy("BodyLibrary", {
   //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
   //   from: deployer,
   //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
@@ -25,7 +25,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   //   waitConfirmations: 5,
   // });
 
-  // await deploy("Eye", {
+  // await deploy("EyeLibrary", {
   //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
   //   from: deployer,
   //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
@@ -33,7 +33,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   //   waitConfirmations: 5,
   // });
 
-  // await deploy("Head", {
+  // await deploy("HeadLibrary", {
   //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
   //   from: deployer,
   //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
@@ -41,7 +41,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   //   waitConfirmations: 5,
   // });
 
-  // await deploy("Neck", {
+  // await deploy("NeckLibrary", {
   //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
   //   from: deployer,
   //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
@@ -49,7 +49,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   //   waitConfirmations: 5,
   // });
 
-  // await deploy("Perch", {
+  // await deploy("PerchLibrary", {
   //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
   //   from: deployer,
   //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
@@ -57,7 +57,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   //   waitConfirmations: 5,
   // });
 
-  // await deploy("Perch2", {
+  // await deploy("Perch2Library", {
   //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
   //   from: deployer,
   //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
@@ -65,79 +65,71 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   //   waitConfirmations: 5,
   // });
 
-  const parrotBody = await deploy("ParrotBody", {
+  const eye = await deploy("Eye", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
     // args: [ "Hello", ethers.utils.parseEther("1.5") ],
     log: true,
     waitConfirmations: 5,
     libraries: {
-      Style: "0x45aE3ad54831b36Aa33870571c292be096fe44Ed",
-      Body: "0x32e278941751B03c5C795A269AFFD80520D98d6E",
+      EyeLibrary: "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
     },
   });
 
-  const parrotEye = await deploy("ParrotEye", {
+  const head = await deploy("Head", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
     // args: [ "Hello", ethers.utils.parseEther("1.5") ],
     log: true,
     waitConfirmations: 5,
     libraries: {
-      Eye: "0xd9265Fb1935Acf9f38Ed8D0E06536A1B466b5455",
+      HeadLibrary: "0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE",
     },
   });
 
-  const parrotHead = await deploy("ParrotHead", {
+  const neck = await deploy("Neck", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
     // args: [ "Hello", ethers.utils.parseEther("1.5") ],
     log: true,
     waitConfirmations: 5,
     libraries: {
-      Head: "0x6C0E52dEEe893015cBE56Cdc95647d2eC5dD755b",
+      NeckLibrary: "0x68B1D87F95878fE05B998F19b66F4baba5De1aed",
     },
   });
 
-  const parrotNeck = await deploy("ParrotNeck", {
+  const perch = await deploy("Perch", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
     // args: [ "Hello", ethers.utils.parseEther("1.5") ],
     log: true,
     waitConfirmations: 5,
     libraries: {
-      Neck: "0x2419d4AB2f29990038c39579DC7358Df4b407122",
-    },
-  });
-
-  const parrotPerch = await deploy("ParrotPerch", {
-    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
-    from: deployer,
-    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
-    log: true,
-    waitConfirmations: 5,
-    libraries: {
-      Perch: "0x861cb791685D63C7B8271F07f6FeA2d2Fc19DA62",
-      Perch2: "0xdAd468090104Ae2084eA2B19283d1Fb069791595",
+      PerchLibrary: "0x3Aa5ebB10DC797CAC828524e59A333d0A371443c",
+      Perch2Library: "0xc6e7DF5E7b4f2A278906862b61205850344D4e7d",
     },
   });
 
   await deploy("YourCollectible", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
-    args: [parrotBody.address],
+    // args: [],
     log: true,
     waitConfirmations: 5,
+    libraries: {
+      StyleLibrary: "0x9A676e781A523b5d0C0e43731313A708CB607508",
+      BodyLibrary: "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
+    },
   });
 
   // Getting a previously deployed contract
   const YourCollectible = await ethers.getContract("YourCollectible", deployer);
   // await YourCollectible.setPurpose("Hello");
 
-  await YourCollectible.addNft(parrotEye.address);
-  await YourCollectible.addNft(parrotHead.address);
-  await YourCollectible.addNft(parrotNeck.address);
-  await YourCollectible.addNft(parrotPerch.address);
+  await YourCollectible.addNft(eye.address);
+  await YourCollectible.addNft(head.address);
+  await YourCollectible.addNft(neck.address);
+  await YourCollectible.addNft(perch.address);
 
   // // To take ownership of YourCollectible using the ownable library uncomment next line and add the
   // // address you want to be the owner.

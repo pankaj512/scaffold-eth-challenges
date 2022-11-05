@@ -6,7 +6,7 @@ import "hardhat/console.sol";
 // GET LISTED ON OPENSEA: https://testnets.opensea.io/get-listed/step-two
 
 // Defining Library
-library Body {
+library BodyLibrary {
     function GetTail(
         string memory color1,
         string memory color2,

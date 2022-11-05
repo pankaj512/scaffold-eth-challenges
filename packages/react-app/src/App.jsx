@@ -29,7 +29,7 @@ import externalContracts from "./contracts/external_contracts";
 // contracts
 import deployedContracts from "./contracts/hardhat_contracts.json";
 import { Transactor, Web3ModalSetup } from "./helpers";
-import { Home } from "./views";
+import { Home, Accesories, Preview } from "./views";
 import { useStaticJsonRPC } from "./hooks";
 
 const { ethers } = require("ethers");
@@ -199,6 +199,9 @@ function App(props) {
 
   const faucetAvailable = localProvider && localProvider.connection && targetNetwork.name.indexOf("local") !== -1;
 
+  const accesories = ["Eye", "Head", "Neck", "Perch"];
+  const [selectedCollectible, setSelectedCollectible] = useState();
+
   return (
     <div className="App">
       {/* ✏️ Edit the header and change the title to your project name */}
@@ -245,8 +248,17 @@ function App(props) {
         <Menu.Item key="/">
           <Link to="/">Your Collectible</Link>
         </Menu.Item>
+        <Menu.Item key="/accesories">
+          <Link to="/accesories">Your Accesories</Link>
+        </Menu.Item>
+        <Menu.Item key="/preview">
+          <Link to="/preview">Preview</Link>
+        </Menu.Item>
         <Menu.Item key="/debug">
           <Link to="/debug">Smart Contracts</Link>
+        </Menu.Item>
+        <Menu.Item key="/debug2">
+          <Link to="/debug2">Smart Accesories</Link>
         </Menu.Item>
       </Menu>
 
@@ -261,6 +273,36 @@ function App(props) {
             loadWeb3Modal={loadWeb3Modal}
             blockExplorer={blockExplorer}
             address={address}
+            setSelectedCollectible={setSelectedCollectible}
+            ContractName={"YourCollectible"}
+          />
+        </Route>
+        <Route exact path="/accesories">
+          {/* pass in any web3 props to this Home component. For example, yourLocalBalance */}
+          <Accesories
+            userSigner={userSigner}
+            readContracts={readContracts}
+            writeContracts={writeContracts}
+            tx={tx}
+            loadWeb3Modal={loadWeb3Modal}
+            blockExplorer={blockExplorer}
+            address={address}
+            accesories={accesories}
+          />
+        </Route>
+        <Route exact path="/preview">
+          {/* pass in any web3 props to this Home component. For example, yourLocalBalance */}
+          <Preview
+            userSigner={userSigner}
+            readContracts={readContracts}
+            writeContracts={writeContracts}
+            tx={tx}
+            loadWeb3Modal={loadWeb3Modal}
+            blockExplorer={blockExplorer}
+            address={address}
+            accesories={accesories}
+            collectibleId={selectedCollectible}
+            ContractName={"YourCollectible"}
           />
         </Route>
         <Route exact path="/debug">
@@ -272,6 +314,23 @@ function App(props) {
 
           <Contract
             name="YourCollectible"
+            price={price}
+            signer={userSigner}
+            provider={localProvider}
+            address={address}
+            blockExplorer={blockExplorer}
+            contractConfig={contractConfig}
+          />
+        </Route>
+        <Route exact path="/debug2">
+          {/*
+                🎛 this scaffolding is full of commonly used components
+                this <Contract/> component will automatically parse your ABI
+                and give you a form to interact with it locally
+            */}
+
+          <Contract
+            name={accesories[0]}
             price={price}
             signer={userSigner}
             provider={localProvider}

@@ -6,7 +6,7 @@ import "hardhat/console.sol";
 // GET LISTED ON OPENSEA: https://testnets.opensea.io/get-listed/step-two
 
 // Defining Library
-library Style {
+library StyleLibrary {
     function GetStyle() public pure returns (string memory) {
         string memory style = string(
             abi.encodePacked(

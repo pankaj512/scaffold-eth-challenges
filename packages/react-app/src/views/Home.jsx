@@ -2,6 +2,8 @@ import { Button, List, Card } from "antd";
 import React, { useState, useEffect } from "react";
 import { Address, AddressInput } from "../components";
 import { useContractReader } from "eth-hooks";
+import { ethers } from "ethers";
+import { useHistory } from "react-router-dom";
 
 /**
  * web3 props can be passed from '../App.jsx' into your local view component for use
@@ -18,12 +20,18 @@ function Home({
   blockExplorer,
   mainnetProvider,
   address,
+  setSelectedCollectible,
+  ContractName,
 }) {
   const [transferToAddresses, setTransferToAddresses] = useState({});
+  const history = useHistory();
 
   // 🧠 This effect will update yourCollectibles by polling when your balance changes
-  const balanceContract = useContractReader(readContracts, "YourCollectible", "balanceOf", [address]);
+  const balanceContract = useContractReader(readContracts, ContractName, "balanceOf", [address]);
   const [balance, setBalance] = useState();
+
+  const priceToMint = useContractReader(readContracts, ContractName, "price");
+  console.log("🤗 priceToMint:", priceToMint);
 
   useEffect(() => {
     if (balanceContract) {
@@ -41,9 +49,10 @@ function Home({
       for (let tokenIndex = 0; tokenIndex < balance; ++tokenIndex) {
         try {
           console.log("Getting token index " + tokenIndex);
-          const tokenId = await readContracts.YourCollectible.tokenOfOwnerByIndex(address, tokenIndex);
+          const tokenId =
+            readContracts[ContractName] && (await readContracts[ContractName].tokenOfOwnerByIndex(address, tokenIndex));
           console.log("tokenId: " + tokenId);
-          const tokenURI = await readContracts.YourCollectible.tokenURI(tokenId);
+          const tokenURI = readContracts[ContractName] && (await readContracts[ContractName].tokenURI(tokenId));
           const jsonManifestString = Buffer.from(tokenURI.substring(29), "base64").toString();
           console.log("jsonManifestString: " + jsonManifestString);
 
@@ -61,7 +70,7 @@ function Home({
       setYourCollectibles(collectibleUpdate.reverse());
     };
     if (address && balance) updateYourCollectibles();
-  }, [address, balance]);
+  }, [address, balance, readContracts.YourCollectible]);
 
   return (
     <div>
@@ -69,11 +78,16 @@ function Home({
         {userSigner ? (
           <Button
             type={"primary"}
-            onClick={() => {
-              tx(writeContracts.YourCollectible.mintItem());
+            onClick={async () => {
+              const priceRightNow = readContracts[ContractName] && (await readContracts[ContractName].price());
+              try {
+                tx(writeContracts[ContractName].mintItem({ value: priceRightNow }), function (transaction) {});
+              } catch (e) {
+                console.log("mint failed", e);
+              }
             }}
           >
-            MINT
+            MINT Parrot for Ξ{priceToMint && (+ethers.utils.formatEther(priceToMint)).toFixed(4)}s
           </Button>
         ) : (
           <Button type={"primary"} onClick={loadWeb3Modal}>
@@ -134,86 +148,29 @@ function Home({
                   />
                   <Button
                     onClick={() => {
-                      tx(writeContracts.YourCollectible.transferFrom(address, transferToAddresses[id], id));
+                      tx(writeContracts[ContractName].transferFrom(address, transferToAddresses[id], id));
                     }}
+                    s
                   >
                     Transfer
+                  </Button>
+                </div>
+                <div>
+                  <Button
+                    style={{ margin: "10px" }}
+                    onClick={() => {
+                      // tx(writeContracts[ContractName].transferFrom(address, transferToAddresses[id], id));
+                      setSelectedCollectible(id);
+                      history.push("/preview");
+                    }}
+                  >
+                    Upgrade/Degrade
                   </Button>
                 </div>
               </div>
             );
           })}
       </div>
-
-      {/* <div style={{ margin: "auto", paddingBottom: 256 }}>
-        <List
-          bordered
-          dataSource={yourCollectibles}
-          renderItem={item => {
-            const id = item.id.toNumber();
-
-            console.log("IMAGE", item.image);
-
-            return (
-              <List.Item key={id + "_" + item.uri + "_" + item.owner}>
-                <div style={{ display: "inline", width: "400px" }}>
-                  <div>
-                    <Card
-                      title={
-                        <div>
-                          <span style={{ fontSize: 18, marginRight: 8 }}>{item.name}</span>
-                        </div>
-                      }
-                    >
-                      <a
-                        href={
-                          "https://opensea.io/assets/" +
-                          (readContracts && readContracts.YourCollectible && readContracts.YourCollectible.address) +
-                          "/" +
-                          item.id
-                        }
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <img src={item.image} alt={item.description} />
-                      </a>
-                      <div style={{ display: "inline" }}>{item.description}</div>
-                    </Card>
-                  </div>
-
-                  <div>
-                    owner:{" "}
-                    <Address
-                      address={item.owner}
-                      ensProvider={mainnetProvider}
-                      blockExplorer={blockExplorer}
-                      fontSize={16}
-                    />
-                    <AddressInput
-                      ensProvider={mainnetProvider}
-                      placeholder="transfer to address"
-                      value={transferToAddresses[id]}
-                      onChange={newValue => {
-                        const update = {};
-                        update[id] = newValue;
-                        setTransferToAddresses({ ...transferToAddresses, ...update });
-                      }}
-                    />
-                    <Button
-                      onClick={() => {
-                        console.log("writeContracts", writeContracts);
-                        tx(writeContracts.YourCollectible.transferFrom(address, transferToAddresses[id], id));
-                      }}
-                    >
-                      Transfer
-                    </Button>
-                  </div>
-                </div>
-              </List.Item>
-            );
-          }}
-        />
-      </div> */}
     </div>
   );
 }

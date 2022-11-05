@@ -6,7 +6,7 @@ import "hardhat/console.sol";
 // GET LISTED ON OPENSEA: https://testnets.opensea.io/get-listed/step-two
 
 // Defining Library
-library Head {
+library HeadLibrary {
     function GetHead(uint256 index) public pure returns (string memory) {
         string memory head;
 

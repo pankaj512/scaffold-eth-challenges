@@ -40,22 +40,16 @@ contract YourCollectible is ERC721Enumerable, Ownable {
     mapping(uint256 => ParrotMeta) public parrots;
 
     //! Properties types
-    string[5] public heads;
-    string[5] public eyes;
-    string[5] public necks;
-    string[5] public perches;
+    string[6] public heads;
+    string[6] public eyes;
+    string[6] public necks;
+    string[6] public perches;
 
     constructor() ERC721("Parrot", "PRT") {
-        heads = ["", "floof", "punk hat", "helmet", "wizard hat"];
-        eyes = ["red", "glasses", "angry", "cross", "monocle"];
-        necks = ["", "bow tie", "spike collar", "amulet", "ska tie"];
-        perches = [
-            "oak branch",
-            "birch branch",
-            "bones",
-            "skateboard",
-            "staff"
-        ];
+        heads = ["", "floof", "punk hat", "helmet", "wizard hat", "pirate hat"];
+        eyes = ["red", "glasses", "angry", "cross", "monocle", "skull"];
+        necks = ["", "bow tie", "spike collar", "ska tie", "amulet", ""];
+        perches = ["oak", "birch", "bones", "skateboard", "staff", "sword"];
 
         //   056b68 9b0e00 222844 f7f8e7 ffb93b   -- set 1
 
@@ -115,11 +109,11 @@ contract YourCollectible is ERC721Enumerable, Ownable {
         );
 
         parrots[id].bgIndex = uint256((uint8(predictableRandom[0])) % 9);
-        parrots[id].colorIndex = uint256((uint8(predictableRandom[1])) % 5);
+        parrots[id].colorIndex = uint256((uint8(predictableRandom[1])) % 6);
         parrots[id].headIndex = uint256((uint8(predictableRandom[2])) % 5);
-        parrots[id].neckIndex = uint256((uint8(predictableRandom[3])) % 5);
-        parrots[id].eyeIndex = uint256((uint8(predictableRandom[4])) % 5);
-        parrots[id].perchIndex = uint256((uint8(predictableRandom[5])) % 5);
+        parrots[id].neckIndex = uint256((uint8(predictableRandom[3])) % 6);
+        parrots[id].eyeIndex = uint256((uint8(predictableRandom[4])) % 6);
+        parrots[id].perchIndex = uint256((uint8(predictableRandom[5])) % 6);
 
         return id;
     }

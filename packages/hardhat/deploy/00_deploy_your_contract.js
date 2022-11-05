@@ -24,8 +24,6 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   //   log: true,
   //   waitConfirmations: 5,
   // });
-  // const StyleLibraryAddress = await ethers.getContract("Style", deployer)
-  //   .address;
 
   // await deploy("Body", {
   //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
@@ -34,7 +32,6 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   //   log: true,
   //   waitConfirmations: 5,
   // });
-  // const BodyLibraryAddress = await ethers.getContract("Body", deployer).address;
 
   // await deploy("Eye", {
   //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
@@ -43,7 +40,6 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   //   log: true,
   //   waitConfirmations: 5,
   // });
-  // const EyeLibraryAddress = await ethers.getContract("Eye", deployer).address;
 
   // await deploy("Head", {
   //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
@@ -52,7 +48,6 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   //   log: true,
   //   waitConfirmations: 5,
   // });
-  // const HeadLibraryAddress = await ethers.getContract("Head", deployer).address;
 
   // await deploy("Neck", {
   //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
@@ -61,7 +56,6 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   //   log: true,
   //   waitConfirmations: 5,
   // });
-  // const NeckLibraryAddress = await ethers.getContract("Neck", deployer).address;
 
   // await deploy("Perch", {
   //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
@@ -70,8 +64,6 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   //   log: true,
   //   waitConfirmations: 5,
   // });
-  // const PerchLibraryAddress = await ethers.getContract("Perch", deployer)
-  //   .address;
 
   await deploy("YourCollectible", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
@@ -80,28 +72,27 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     log: true,
     waitConfirmations: 5,
     libraries: {
-      Eye: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-      Head: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
-      Neck: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
-      Perch: "0x0165878A594ca255338adfa4d48449f69242Eb8F",
-      Style: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-      Body: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+      Eye: "0x2D1E257ca8849B51eAD7fD292D6b2B460860FA9E",
+      Head: "0x9152F22070F8C659040c040FcCb1D64a4672a035",
+      Neck: "0x5C165269B67FE28502e57cD33A147a63693b2450",
+      Perch: "0x1FB50526480C4E7A52cF026069c7Fe3a7F552d6a",
+      Style: "0x8BC9B24963c2b167686cb02d893b1Cf3b7a79cD2",
+      Body: "0xAEb78a1C3F95d6C89a7cAC371c4fBe246618f0eC",
     },
   });
 
   // Getting a previously deployed contract
-  // const YourCollectible = await ethers.getContract("YourCollectible", deployer);
-  /*  await YourCollectible.setPurpose("Hello");
-  
-    // To take ownership of YourCollectible using the ownable library uncomment next line and add the 
-    // address you want to be the owner. 
-    
-    await YourCollectible.transferOwnership(
-      "ADDRESS_HERE"
-    );
+  const YourCollectible = await ethers.getContract("YourCollectible", deployer);
+  // await YourCollectible.setPurpose("Hello");
 
-    //const YourCollectible = await ethers.getContractAt('YourCollectible', "0xaAC799eC2d00C013f1F11c37E654e59B0429DF6A") //<-- if you want to instantiate a version of a contract at a specific address!
-  */
+  // // To take ownership of YourCollectible using the ownable library uncomment next line and add the
+  // // address you want to be the owner.
+
+  await YourCollectible.transferOwnership(
+    "0x54179E1770a780F2F541f23CB21252De12977d3c"
+  );
+
+  //const YourCollectible = await ethers.getContractAt('YourCollectible', "0xaAC799eC2d00C013f1F11c37E654e59B0429DF6A") //<-- if you want to instantiate a version of a contract at a specific address!
 
   /*
   //If you want to send value to an address from the deployer

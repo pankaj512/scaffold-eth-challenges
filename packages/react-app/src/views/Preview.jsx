@@ -47,6 +47,7 @@ function Preview({
   const [yourPreviewSVG, setPreviewSVG] = useState();
   const [yourAccesories, setYourAccesories] = useState();
   const [previewAccesory, setPreviewAccesory] = useState({});
+  const [previewOperation, setPreviewOperation] = useState({});
 
   console.log("🤗 priceToMint:", priceToMint);
 
@@ -83,6 +84,8 @@ function Preview({
     delete newPreviewAccesory[accesoryType];
     setPreviewAccesory(newPreviewAccesory);
   };
+
+  const updatePreviewOperation = (accesoryType, operation) => {};
 
   useEffect(() => {
     const updateYourCollectibleSVG = async () => {
@@ -160,19 +163,7 @@ function Preview({
               dangerouslySetInnerHTML={{ __html: yourPreviewSVG ? yourPreviewSVG : yourCollectibleSVG }}
             ></div>
             <div>
-              <Button
-                onClick={() => {
-                  // tx(
-                  //   writeContracts[ContractName].transferFrom(
-                  //     address,
-                  //     transferToAddresses[yourCollectibleSVG.id],
-                  //     yourCollectibleSVG.id,
-                  //   ),
-                  // );
-                }}
-              >
-                Upgrade
-              </Button>
+              <Button onClick={() => {}}>Upgrade</Button>
             </div>
           </div>
         )}
@@ -180,16 +171,22 @@ function Preview({
           <div style={{ Width: "100%", display: "flex", justifyContent: "center" }}>
             {Object.keys(previewAccesory).map(accesory => {
               return (
-                <Button
+                <Select
                   style={{
-                    margin: 10,
+                    width: 120,
+                    margin: 2,
                   }}
-                  onClick={() => {
-                    RemovePreviewAccesory(accesory);
+                  defaultValue={previewOperation[accesory]}
+                  onChange={value => {
+                    value === String("stop")
+                      ? RemovePreviewAccesory(accesory)
+                      : updatePreviewOperation(accesory, value);
                   }}
                 >
-                  ❌ {accesory}
-                </Button>
+                  <Select.Option value="wear">✔ {accesory}</Select.Option>
+                  <Select.Option value="remove">🔥 {accesory}</Select.Option>
+                  <Select.Option value="stop">❌ Preview</Select.Option>
+                </Select>
               );
             })}
           </div>
@@ -280,7 +277,7 @@ function Preview({
                         AddPreviewAccesory(selectedAccesory, id);
                       }}
                     >
-                      Preview
+                      ➕
                     </Button>
                   </div>
                 </divs>

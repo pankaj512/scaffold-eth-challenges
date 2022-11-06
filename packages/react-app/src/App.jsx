@@ -255,10 +255,10 @@ function App(props) {
           <Link to="/preview">Preview</Link>
         </Menu.Item>
         <Menu.Item key="/debug">
-          <Link to="/debug">Smart Contracts</Link>
+          <Link to="/debug">Debug Contracts</Link>
         </Menu.Item>
         <Menu.Item key="/debug2">
-          <Link to="/debug2">Smart Accesories</Link>
+          <Link to="/debug2">Debug Accesories</Link>
         </Menu.Item>
       </Menu>
 

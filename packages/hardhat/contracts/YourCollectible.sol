@@ -196,7 +196,6 @@ contract YourCollectible is ERC721Enumerable, IERC721Receiver, Ownable {
         string memory svg = string(
             abi.encodePacked(
                 '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300" viewBox="0 0 880 880">',
-                StyleLibrary.GetStyle(),
                 renderTokenById(id),
                 "</svg>"
             )
@@ -216,6 +215,7 @@ contract YourCollectible is ERC721Enumerable, IERC721Receiver, Ownable {
 
         string memory render = string(
             abi.encodePacked(
+                StyleLibrary.GetStyle(),
                 '<g class="cls-1">',
                 '<g id="BGs">',
                 '<rect style="fill: url(#radial-gradient-',

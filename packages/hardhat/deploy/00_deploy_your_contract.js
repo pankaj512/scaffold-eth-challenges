@@ -72,7 +72,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     log: true,
     waitConfirmations: 5,
     libraries: {
-      EyeLibrary: "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
+      EyeLibrary: "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
     },
   });
 
@@ -83,7 +83,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     log: true,
     waitConfirmations: 5,
     libraries: {
-      HeadLibrary: "0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE",
+      HeadLibrary: "0x9A676e781A523b5d0C0e43731313A708CB607508",
     },
   });
 
@@ -94,7 +94,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     log: true,
     waitConfirmations: 5,
     libraries: {
-      NeckLibrary: "0x68B1D87F95878fE05B998F19b66F4baba5De1aed",
+      NeckLibrary: "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
     },
   });
 
@@ -105,8 +105,8 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     log: true,
     waitConfirmations: 5,
     libraries: {
-      PerchLibrary: "0x3Aa5ebB10DC797CAC828524e59A333d0A371443c",
-      Perch2Library: "0xc6e7DF5E7b4f2A278906862b61205850344D4e7d",
+      PerchLibrary: "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
+      Perch2Library: "0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE",
     },
   });
 
@@ -117,8 +117,8 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     log: true,
     waitConfirmations: 5,
     libraries: {
-      StyleLibrary: "0x9A676e781A523b5d0C0e43731313A708CB607508",
-      BodyLibrary: "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
+      StyleLibrary: "0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e",
+      BodyLibrary: "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
     },
   });
 

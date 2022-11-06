@@ -39,35 +39,73 @@ function Preview({
         setPriceToMint(priceToMint);
       }
     };
+
     fetchPrice();
   }, [address, readContracts, selectedAccesory]);
 
-  const [yourCollectible, setYourCollectible] = useState();
+  const [yourCollectibleSVG, setYourCollectibleSVG] = useState();
+  const [yourPreviewSVG, setPreviewSVG] = useState();
   const [yourAccesories, setYourAccesories] = useState();
+  const [previewAccesory, setPreviewAccesory] = useState({});
+
   console.log("🤗 priceToMint:", priceToMint);
 
   useEffect(() => {
-    const updateYourCollectible = async () => {
+    const updatePreview = async () => {
+      if (yourCollectibleSVG) {
+        const tokenId = collectibleId;
+        console.log("tokenId: " + tokenId);
+        const svg = readContracts[ContractName] && (await readContracts[ContractName].renderTokenById(tokenId));
+        let accesorySVG = "";
+        for (const accesory in previewAccesory) {
+          accesorySVG +=
+            readContracts[accesory] && (await readContracts[accesory].renderTokenById(previewAccesory[accesory]));
+        }
+        const newPreviewSVG =
+          '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300" viewBox="0 0 880 880">' +
+          accesorySVG +
+          svg +
+          "</svg>";
+        setPreviewSVG(newPreviewSVG);
+      }
+    };
+    updatePreview();
+  }, [previewAccesory]);
+
+  const AddPreviewAccesory = (accesoryType, accesoryId) => {
+    const newPreviewAccesory = { ...previewAccesory };
+    newPreviewAccesory[accesoryType] = accesoryId;
+    setPreviewAccesory(newPreviewAccesory);
+  };
+
+  const RemovePreviewAccesory = accesoryType => {
+    const newPreviewAccesory = { ...previewAccesory };
+    delete newPreviewAccesory[accesoryType];
+    setPreviewAccesory(newPreviewAccesory);
+  };
+
+  useEffect(() => {
+    const updateYourCollectibleSVG = async () => {
       try {
         console.log("Getting token index " + collectibleId);
         const tokenId = collectibleId;
         console.log("tokenId: " + tokenId);
-        const tokenURI = await readContracts[ContractName].tokenURI(tokenId);
-        const jsonManifestString = Buffer.from(tokenURI.substring(29), "base64").toString();
-        console.log("jsonManifestString: " + jsonManifestString);
-
-        try {
-          const jsonManifest = JSON.parse(jsonManifestString);
-          console.log("jsonManifest: " + jsonManifest);
-          setYourCollectible({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
-        } catch (err) {
-          console.log(err);
-        }
+        const svg = readContracts[ContractName] && (await readContracts[ContractName].renderTokenById(tokenId));
+        const newYourCollectibleSVG =
+          '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300" viewBox="0 0 880 880">' +
+          svg +
+          "</svg>";
+        setYourCollectibleSVG(newYourCollectibleSVG);
       } catch (err) {
         console.log(err);
       }
     };
+    if (address) {
+      updateYourCollectibleSVG();
+    }
+  }, [ContractName, address, collectibleId, readContracts]);
 
+  useEffect(() => {
     const updateYourAccesories = async () => {
       const accesoriesUpdate = [];
       const balance = readContracts[selectedAccesory] && (await readContracts[selectedAccesory].balanceOf(address));
@@ -96,17 +134,16 @@ function Preview({
       setYourAccesories(accesoriesUpdate.reverse());
     };
     if (address) {
-      updateYourCollectible();
       updateYourAccesories();
     }
-  }, [ContractName, accesories, address, collectibleId, readContracts, selectedAccesory]);
+  }, [accesories, address, readContracts, selectedAccesory]);
 
   return (
     <div
       style={{ Width: "100%", display: "flex", flexWrap: "wrap", alignItems: "top", justifyContent: "space-between" }}
     >
       <div style={{ flex: 1, margin: "32px auto auto auto" }}>
-        {yourCollectible && (
+        {yourCollectibleSVG && (
           <div
             style={{
               minWidth: "200px",
@@ -118,22 +155,43 @@ function Preview({
               border: "1px solid",
             }}
           >
-            <div>{yourCollectible.name}</div>
+            <div
+              style={{ marginBottom: "10px", width: "100%", height: "100%" }}
+              dangerouslySetInnerHTML={{ __html: yourPreviewSVG ? yourPreviewSVG : yourCollectibleSVG }}
+            ></div>
             <div>
-              <a
-                href={
-                  "https://opensea.io/assets/" +
-                  (readContracts && readContracts[ContractName] && readContracts[ContractName].address) +
-                  "/" +
-                  yourCollectible.id
-                }
-                target="_blank"
-                rel="noreferrer"
+              <Button
+                onClick={() => {
+                  // tx(
+                  //   writeContracts[ContractName].transferFrom(
+                  //     address,
+                  //     transferToAddresses[yourCollectibleSVG.id],
+                  //     yourCollectibleSVG.id,
+                  //   ),
+                  // );
+                }}
               >
-                <img width="100%" height="100%" src={yourCollectible.image} alt={yourCollectible.description} />
-              </a>
+                Upgrade
+              </Button>
             </div>
-            <div style={{ marginBottom: "10px" }}>{yourCollectible.description}</div>
+          </div>
+        )}
+        {previewAccesory && (
+          <div style={{ Width: "100%", display: "flex", justifyContent: "center" }}>
+            {Object.keys(previewAccesory).map(accesory => {
+              return (
+                <Button
+                  style={{
+                    margin: 10,
+                  }}
+                  onClick={() => {
+                    RemovePreviewAccesory(accesory);
+                  }}
+                >
+                  ❌ {accesory}
+                </Button>
+              );
+            })}
           </div>
         )}
       </div>
@@ -216,35 +274,15 @@ function Preview({
                     </a>
                   </div>
                   <div style={{ marginBottom: "10px" }}>{nft.description}</div>
-                  {/* <div>
-                    owner:{" "}
-                    <Address
-                      address={nft.owner}
-                      ensProvider={mainnetProvider}
-                      blockExplorer={blockExplorer}
-                      fontSize={16}
-                    />
-                    <AddressInput
-                      ensProvider={mainnetProvider}
-                      placeholder="transfer to address"
-                      value={transferToAddresses[id]}
-                      onChange={newValue => {
-                        const update = {};
-                        update[id] = newValue;
-                        setTransferToAddresses({ ...transferToAddresses, ...update });
-                      }}
-                    />
+                  <div>
                     <Button
                       onClick={() => {
-                        tx(
-                          writeContracts[selectedAccesory] &&
-                            writeContracts[selectedAccesory].transferFrom(address, transferToAddresses[id], id),
-                        );
+                        AddPreviewAccesory(selectedAccesory, id);
                       }}
                     >
-                      Transfer
+                      Preview
                     </Button>
-                  </div> */}
+                  </div>
                 </divs>
               );
             })}

@@ -1,7 +1,6 @@
-import { Button, List, Card, Select } from "antd";
+import { Button, Select } from "antd";
 import React, { useState, useEffect } from "react";
 import { Address, AddressInput } from "../components";
-import { useContractReader } from "eth-hooks";
 import { ethers } from "ethers";
 
 /**

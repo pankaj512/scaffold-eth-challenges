@@ -1,4 +1,4 @@
-import { Button, List, Card } from "antd";
+import { Button } from "antd";
 import React, { useState, useEffect } from "react";
 import { Address, AddressInput } from "../components";
 import { useContractReader } from "eth-hooks";
@@ -70,7 +70,7 @@ function Home({
       setYourCollectibles(collectibleUpdate.reverse());
     };
     if (address && balance) updateYourCollectibles();
-  }, [address, balance, readContracts.YourCollectible]);
+  }, [ContractName, address, balance, readContracts]);
 
   return (
     <div>

@@ -1,7 +1,5 @@
-import { Button, List, Card, Select } from "antd";
+import { Button, Select } from "antd";
 import React, { useState, useEffect } from "react";
-import { Address, AddressInput } from "../components";
-import { useContractReader } from "eth-hooks";
 import { ethers } from "ethers";
 
 /**
@@ -20,17 +18,21 @@ function Preview({
   mainnetProvider,
   address,
   accesories,
-  collectibleId,
+  selectedCollectible,
   ContractName,
+  selectedAccesory,
+  setSelectedAccesory,
+  yourAccesories,
+  yourCollectibleSVG,
 }) {
-  console.log("collectibleId: ", collectibleId);
-  console.log("Accesories: ", accesories);
   const [transferToAddresses, setTransferToAddresses] = useState({});
-  const [selectedAccesory, setSelectedAccesory] = useState(accesories[0]);
-  console.log("selected Accesory: ", selectedAccesory);
+  const [yourPreviewSVG, setPreviewSVG] = useState();
+  const [previewAccesory, setPreviewAccesory] = useState({});
 
   // 🧠 This effect will update Accesory by polling when your balance changes
   const [priceToMint, setPriceToMint] = useState();
+
+  const [previewOperation, setPreviewOperation] = useState();
 
   useEffect(() => {
     const fetchPrice = async () => {
@@ -43,18 +45,16 @@ function Preview({
     fetchPrice();
   }, [address, readContracts, selectedAccesory]);
 
-  const [yourCollectibleSVG, setYourCollectibleSVG] = useState();
-  const [yourPreviewSVG, setPreviewSVG] = useState();
-  const [yourAccesories, setYourAccesories] = useState();
-  const [previewAccesory, setPreviewAccesory] = useState({});
-  const [previewOperation, setPreviewOperation] = useState({});
-
+  console.log("selectedCollectible: ", selectedCollectible);
+  console.log("Accesories: ", accesories);
   console.log("🤗 priceToMint:", priceToMint);
+  console.log("selected Accesory: ", selectedAccesory);
+  console.log("previewOperation: ", previewOperation);
 
   useEffect(() => {
     const updatePreview = async () => {
       if (yourCollectibleSVG) {
-        const tokenId = collectibleId;
+        const tokenId = selectedCollectible;
         console.log("tokenId: " + tokenId);
         const svg = readContracts[ContractName] && (await readContracts[ContractName].renderTokenById(tokenId));
         let accesorySVG = "";
@@ -73,73 +73,74 @@ function Preview({
     updatePreview();
   }, [previewAccesory]);
 
-  const AddPreviewAccesory = (accesoryType, accesoryId) => {
-    const newPreviewAccesory = { ...previewAccesory };
-    newPreviewAccesory[accesoryType] = accesoryId;
-    setPreviewAccesory(newPreviewAccesory);
+  const checkForAccesories = async accesory => {
+    const contractAddress = readContracts[accesory] && (await readContracts[accesory].address);
+    try {
+      const hasAccesory =
+        readContracts[ContractName] &&
+        selectedCollectible &&
+        (await readContracts[ContractName].hasNft(contractAddress, selectedCollectible));
+      return hasAccesory;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  };
+
+  const AddPreviewAccesory = async (accesoryType, accesoryId) => {
+    const hasAccesory = await checkForAccesories(accesoryType);
+    console.log("hasAccesory: ", accesoryType, hasAccesory);
+    if (hasAccesory === true) {
+      const newpreviewOperation = { ...previewOperation };
+      newpreviewOperation[accesoryType] = ["remove"];
+      setPreviewOperation(newpreviewOperation);
+    } else if (hasAccesory === false) {
+      const newPreviewAccesory = { ...previewAccesory };
+      newPreviewAccesory[accesoryType] = accesoryId;
+
+      const newpreviewOperation = { ...previewOperation };
+      newpreviewOperation[accesoryType] = ["wear", "stop"];
+
+      setPreviewAccesory(newPreviewAccesory);
+      setPreviewOperation(newpreviewOperation);
+    }
   };
 
   const RemovePreviewAccesory = accesoryType => {
     const newPreviewAccesory = { ...previewAccesory };
     delete newPreviewAccesory[accesoryType];
+
+    const newpreviewOperation = { ...previewOperation };
+    newpreviewOperation[accesoryType] = [];
+
     setPreviewAccesory(newPreviewAccesory);
+    setPreviewOperation(newpreviewOperation);
   };
 
-  const updatePreviewOperation = (accesoryType, operation) => {};
+  const ExecutePreviewOperation = (operationType, accesoryType) => {
+    if (operationType === String("remove")) {
+      tx(
+        writeContracts[ContractName].removeNftFromLoogie(readContracts[accesoryType].address, selectedCollectible),
+        function (transaction) {
+          RemovePreviewAccesory(accesoryType);
+        },
+      );
+    } else if (operationType === String("wear") && previewAccesory[accesoryType]) {
+      const tankIdInBytes = "0x" + parseInt(selectedCollectible).toString(16).padStart(64, "0");
 
-  useEffect(() => {
-    const updateYourCollectibleSVG = async () => {
-      try {
-        console.log("Getting token index " + collectibleId);
-        const tokenId = collectibleId;
-        console.log("tokenId: " + tokenId);
-        const svg = readContracts[ContractName] && (await readContracts[ContractName].renderTokenById(tokenId));
-        const newYourCollectibleSVG =
-          '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300" viewBox="0 0 880 880">' +
-          svg +
-          "</svg>";
-        setYourCollectibleSVG(newYourCollectibleSVG);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    if (address) {
-      updateYourCollectibleSVG();
+      tx(
+        writeContracts[accesoryType]["safeTransferFrom(address,address,uint256,bytes)"](
+          address,
+          readContracts[ContractName].address,
+          previewAccesory[accesoryType],
+          tankIdInBytes,
+        ),
+        function (transaction) {
+          RemovePreviewAccesory(accesoryType);
+        },
+      );
     }
-  }, [ContractName, address, collectibleId, readContracts]);
-
-  useEffect(() => {
-    const updateYourAccesories = async () => {
-      const accesoriesUpdate = [];
-      const balance = readContracts[selectedAccesory] && (await readContracts[selectedAccesory].balanceOf(address));
-      for (let tokenIndex = 0; tokenIndex < balance; ++tokenIndex) {
-        try {
-          console.log("Getting token index " + tokenIndex);
-          const tokenId =
-            readContracts[selectedAccesory] &&
-            (await readContracts[selectedAccesory].tokenOfOwnerByIndex(address, tokenIndex));
-          console.log("tokenId: " + tokenId);
-          const tokenURI = readContracts[selectedAccesory] && (await readContracts[selectedAccesory].tokenURI(tokenId));
-          const jsonManifestString = Buffer.from(tokenURI.substring(29), "base64").toString();
-          console.log("jsonManifestString: " + jsonManifestString);
-
-          try {
-            const jsonManifest = JSON.parse(jsonManifestString);
-            console.log("jsonManifest: " + jsonManifest);
-            accesoriesUpdate.push({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
-          } catch (err) {
-            console.log(err);
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      }
-      setYourAccesories(accesoriesUpdate.reverse());
-    };
-    if (address) {
-      updateYourAccesories();
-    }
-  }, [accesories, address, readContracts, selectedAccesory]);
+  };
 
   return (
     <div
@@ -167,25 +168,35 @@ function Preview({
             </div>
           </div>
         )}
-        {previewAccesory && (
-          <div style={{ Width: "100%", display: "flex", justifyContent: "center" }}>
-            {Object.keys(previewAccesory).map(accesory => {
+        {accesories && (
+          <div style={{ Width: "100%", display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
+            {accesories.map(accesory => {
+              const defaultAction = accesory + " action";
               return (
                 <Select
                   style={{
                     width: 120,
                     margin: 2,
                   }}
-                  defaultValue={previewOperation[accesory]}
+                  defaultValue={defaultAction}
+                  value={defaultAction}
                   onChange={value => {
                     value === String("stop")
                       ? RemovePreviewAccesory(accesory)
-                      : updatePreviewOperation(accesory, value);
+                      : ExecutePreviewOperation(value, accesory);
                   }}
                 >
-                  <Select.Option value="wear">✔ {accesory}</Select.Option>
-                  <Select.Option value="remove">🔥 {accesory}</Select.Option>
-                  <Select.Option value="stop">❌ Preview</Select.Option>
+                  {previewOperation &&
+                    previewOperation[accesory] &&
+                    previewOperation[accesory].map(operation => {
+                      const tooltip = { operation } + { accesory };
+                      const icon = operation === String("wear") ? "✔" : operation === String("remove") ? "🔥" : "❌";
+                      return (
+                        <Select.Option value={operation} tooltip={tooltip}>
+                          {icon} {accesory}
+                        </Select.Option>
+                      );
+                    })}
                 </Select>
               );
             })}
@@ -243,8 +254,13 @@ function Preview({
           {yourAccesories &&
             yourAccesories.map(nft => {
               const id = nft.id.toNumber();
+              const isEnabled =
+                previewOperation &&
+                previewOperation[selectedAccesory] &&
+                previewOperation[selectedAccesory].length === 1 &&
+                previewOperation[selectedAccesory][0] === String("remove");
               return (
-                <divs
+                <div
                   style={{
                     minWidth: "200px",
                     minHeight: "200px",
@@ -273,6 +289,7 @@ function Preview({
                   <div style={{ marginBottom: "10px" }}>{nft.description}</div>
                   <div>
                     <Button
+                      disabled={isEnabled}
                       onClick={() => {
                         AddPreviewAccesory(selectedAccesory, id);
                       }}
@@ -280,7 +297,7 @@ function Preview({
                       ➕
                     </Button>
                   </div>
-                </divs>
+                </div>
               );
             })}
         </div>

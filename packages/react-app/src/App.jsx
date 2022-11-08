@@ -169,6 +169,8 @@ function App(props) {
   console.log("🏷 Resolved austingriffith.eth as:",addressFromENS)
   */
 
+  const ContractName = "YourCollectible";
+
   const loadWeb3Modal = useCallback(async () => {
     const provider = await web3Modal.connect();
     setInjectedProvider(new ethers.providers.Web3Provider(provider));
@@ -201,6 +203,65 @@ function App(props) {
 
   const accesories = ["Eye", "Head", "Neck", "Perch"];
   const [selectedCollectible, setSelectedCollectible] = useState();
+  const [yourCollectibleSVG, setYourCollectibleSVG] = useState();
+
+  const [selectedAccesory, setSelectedAccesory] = useState(accesories[0]);
+  const [yourAccesories, setYourAccesories] = useState();
+
+  useEffect(() => {
+    const updateYourCollectibleSVG = async () => {
+      try {
+        console.log("Getting token index " + selectedCollectible);
+        const tokenId = selectedCollectible;
+        console.log("tokenId: " + tokenId);
+        const svg =
+          readContracts[ContractName] && tokenId && (await readContracts[ContractName].renderTokenById(tokenId));
+        const newYourCollectibleSVG =
+          '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300" viewBox="0 0 880 880">' +
+          svg +
+          "</svg>";
+        setYourCollectibleSVG(newYourCollectibleSVG);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    if (address && selectedCollectible) {
+      updateYourCollectibleSVG();
+    }
+  }, [address, readContracts, selectedCollectible]);
+
+  useEffect(() => {
+    const updateYourAccesories = async () => {
+      const accesoriesUpdate = [];
+      const balance = readContracts[selectedAccesory] && (await readContracts[selectedAccesory].balanceOf(address));
+      for (let tokenIndex = 0; tokenIndex < balance; ++tokenIndex) {
+        try {
+          console.log("Getting token index " + tokenIndex);
+          const tokenId =
+            readContracts[selectedAccesory] &&
+            (await readContracts[selectedAccesory].tokenOfOwnerByIndex(address, tokenIndex));
+          console.log("tokenId: " + tokenId);
+          const tokenURI = readContracts[selectedAccesory] && (await readContracts[selectedAccesory].tokenURI(tokenId));
+          const jsonManifestString = Buffer.from(tokenURI.substring(29), "base64").toString();
+          console.log("jsonManifestString: " + jsonManifestString);
+
+          try {
+            const jsonManifest = JSON.parse(jsonManifestString);
+            console.log("jsonManifest: " + jsonManifest);
+            accesoriesUpdate.push({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
+          } catch (err) {
+            console.log(err);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      setYourAccesories(accesoriesUpdate.reverse());
+    };
+    if (address) {
+      updateYourAccesories();
+    }
+  }, [address, readContracts, selectedAccesory]);
 
   return (
     <div className="App">
@@ -301,8 +362,12 @@ function App(props) {
             blockExplorer={blockExplorer}
             address={address}
             accesories={accesories}
-            collectibleId={selectedCollectible}
+            selectedCollectible={selectedCollectible}
             ContractName={"YourCollectible"}
+            selectedAccesory={selectedAccesory}
+            setSelectedAccesory={setSelectedAccesory}
+            yourAccesories={yourAccesories}
+            yourCollectibleSVG={yourCollectibleSVG}
           />
         </Route>
         <Route exact path="/debug">

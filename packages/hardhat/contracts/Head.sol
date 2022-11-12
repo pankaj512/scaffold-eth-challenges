@@ -97,6 +97,12 @@ contract Head is ERC721Enumerable {
         return svg;
     }
 
+    function getDescription(uint256 id) public view returns (string memory) {
+        require(_exists(id), "!exist");
+        uint256 head = getPropertiesById(id);
+        return heads[head];
+    }
+
     function tokenURI(uint256 id) public view override returns (string memory) {
         require(_exists(id), "!exist");
 

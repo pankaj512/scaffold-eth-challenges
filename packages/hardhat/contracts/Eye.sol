@@ -97,6 +97,12 @@ contract Eye is ERC721Enumerable {
         return svg;
     }
 
+    function getDescription(uint256 id) public view returns (string memory) {
+        require(_exists(id), "!exist");
+        uint256 eye = getPropertiesById(id);
+        return eyes[eye];
+    }
+
     function tokenURI(uint256 id) public view override returns (string memory) {
         require(_exists(id), "!exist");
 

@@ -96,6 +96,12 @@ contract Neck is ERC721Enumerable {
         return svg;
     }
 
+    function getDescription(uint256 id) public view returns (string memory) {
+        require(_exists(id), "!exist");
+        uint256 neck = getPropertiesById(id);
+        return necks[neck];
+    }
+
     function tokenURI(uint256 id) public view override returns (string memory) {
         require(_exists(id), "!exist");
 

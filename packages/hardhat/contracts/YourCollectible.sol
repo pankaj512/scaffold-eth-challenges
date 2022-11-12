@@ -21,6 +21,12 @@ abstract contract NFTContract {
         virtual
         returns (string memory);
 
+    function getDescription(uint256 id)
+        external
+        view
+        virtual
+        returns (string memory);
+
     function transferFrom(
         address from,
         address to,
@@ -158,8 +164,21 @@ contract YourCollectible is ERC721Enumerable, IERC721Receiver, Ownable {
             abi.encodePacked("Parrot #", id.toString())
         );
 
-        string memory description = string(abi.encodePacked(" Parrot with "));
+        string memory description = string(abi.encodePacked(" Parrot "));
         string memory image = Base64.encode(bytes(generateSVGofTokenById(id)));
+
+        for (uint256 i = 0; i < nftContracts.length; i++) {
+            if (nftById[address(nftContracts[i])][id] > 0) {
+                render = string(
+                    abi.encodePacked(
+                        render,
+                        nftContracts[i].renderTokenById(
+                            nftById[address(nftContracts[i])][id]
+                        )
+                    )
+                );
+            }
+        }
 
         return
             string(

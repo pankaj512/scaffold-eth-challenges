@@ -29,13 +29,13 @@ contract Perch is ERC721Enumerable {
     uint256 public constant curve = 1005; // price increase 0,5% with each purchase
     uint256 public price = 0.002 ether;
 
-    mapping(uint256 => uint256) public parrot_perchs;
+    mapping(uint256 => uint256) public parrot_perches;
 
     //! Properties types
-    string[6] public perchs;
+    string[6] public perches;
 
     constructor() ERC721("ParrotPerch", "PRTPerch") {
-        perchs = ["oak", "birch", "bones", "skateboard", "staff", "sword"];
+        perches = ["oak", "birch", "bones", "skateboard", "staff", "sword"];
     }
 
     function mintItem() public payable returns (uint256) {
@@ -56,7 +56,7 @@ contract Perch is ERC721Enumerable {
                 address(this)
             )
         );
-        parrot_perchs[id] = uint256((uint8(predictableRandom[5])) % 6);
+        parrot_perches[id] = uint256((uint8(predictableRandom[5])) % 6);
 
         (bool success, ) = recipient.call{value: msg.value}("");
         require(success, "could not send");
@@ -98,6 +98,12 @@ contract Perch is ERC721Enumerable {
         return svg;
     }
 
+    function getDescription(uint256 id) public view returns (string memory) {
+        require(_exists(id), "!exist");
+        uint256 perch = getPropertiesById(id);
+        return perches[perch];
+    }
+
     function tokenURI(uint256 id) public view override returns (string memory) {
         require(_exists(id), "!exist");
 
@@ -108,7 +114,7 @@ contract Perch is ERC721Enumerable {
         );
 
         string memory description = string(
-            abi.encodePacked(perchs[perch], " Perchs ")
+            abi.encodePacked(perches[perch], " Perchs ")
         );
         string memory image = Base64.encode(bytes(generateSVGofTokenById(id)));
 
@@ -126,7 +132,7 @@ contract Perch is ERC721Enumerable {
                                 '","external_url":"https://yourCollectible.com/token/',
                                 id.toString(),
                                 '","attributes":[{"trait_type":"Perch","value":"',
-                                perchs[perch],
+                                perches[perch],
                                 '"}], "owner":"',
                                 (uint160(ownerOf(id))).toHexString(20),
                                 '","image": "',
@@ -142,6 +148,6 @@ contract Perch is ERC721Enumerable {
 
     // properties of the token of id
     function getPropertiesById(uint256 id) public view returns (uint256 perch) {
-        perch = parrot_perchs[id];
+        perch = parrot_perches[id];
     }
 }

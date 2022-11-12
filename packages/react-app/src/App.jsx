@@ -1,4 +1,4 @@
-import { Button, Col, Menu, Row } from "antd";
+import { Button, Col, Menu, Row, Modal } from "antd";
 import "antd/dist/antd.css";
 import {
   useBalance,
@@ -206,7 +206,17 @@ function App(props) {
   const [yourCollectibleSVG, setYourCollectibleSVG] = useState();
 
   const [selectedAccesory, setSelectedAccesory] = useState(accesories[0]);
+  const [selectedAccesoryBalance, setSelectedAccesoryBalance] = useState(accesories[0]);
   const [yourAccesories, setYourAccesories] = useState();
+
+  // 🧠 This effect will update yourCollectibles by polling when your balance changes
+  const AccesoryBalanceContract = useContractReader(readContracts, selectedAccesory, "balanceOf", [address]);
+
+  useEffect(() => {
+    if (AccesoryBalanceContract) {
+      setSelectedAccesoryBalance(AccesoryBalanceContract);
+    }
+  }, [AccesoryBalanceContract]);
 
   useEffect(() => {
     const updateYourCollectibleSVG = async () => {
@@ -261,7 +271,20 @@ function App(props) {
     if (address) {
       updateYourAccesories();
     }
-  }, [address, readContracts, selectedAccesory]);
+  }, [address, readContracts, selectedAccesory, selectedAccesoryBalance]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="App">
@@ -305,15 +328,17 @@ function App(props) {
         logoutOfWeb3Modal={logoutOfWeb3Modal}
         USE_NETWORK_SELECTOR={USE_NETWORK_SELECTOR}
       />
-      <Menu style={{ textAlign: "center", marginTop: 20 }} selectedKeys={[location.pathname]} mode="horizontal">
+
+      <Menu
+        style={{ textAlign: "center", marginTop: 20, justifyContent: "center" }}
+        selectedKeys={[location.pathname]}
+        mode="horizontal"
+      >
         <Menu.Item key="/">
           <Link to="/">Your Collectible</Link>
         </Menu.Item>
         <Menu.Item key="/accesories">
           <Link to="/accesories">Your Accesories</Link>
-        </Menu.Item>
-        <Menu.Item key="/preview">
-          <Link to="/preview">Preview</Link>
         </Menu.Item>
         <Menu.Item key="/debug">
           <Link to="/debug">Debug Contracts</Link>
@@ -336,7 +361,33 @@ function App(props) {
             address={address}
             setSelectedCollectible={setSelectedCollectible}
             ContractName={"YourCollectible"}
+            showModal={showModal}
           />
+          <Modal
+            width="70%"
+            title={"Add or remove accessories"}
+            open={isModalOpen}
+            onOk={handleOk}
+            onCancel={handleCancel}
+          >
+            <Preview
+              userSigner={userSigner}
+              readContracts={readContracts}
+              writeContracts={writeContracts}
+              tx={tx}
+              loadWeb3Modal={loadWeb3Modal}
+              blockExplorer={blockExplorer}
+              address={address}
+              ContractName={"YourCollectible"}
+              accesories={accesories}
+              selectedCollectible={selectedCollectible}
+              selectedAccesory={selectedAccesory}
+              setSelectedAccesory={setSelectedAccesory}
+              yourAccesories={yourAccesories}
+              yourCollectibleSVG={yourCollectibleSVG}
+              selectedAccesoryBalance={selectedAccesoryBalance}
+            />
+          </Modal>
         </Route>
         <Route exact path="/accesories">
           {/* pass in any web3 props to this Home component. For example, yourLocalBalance */}
@@ -349,25 +400,6 @@ function App(props) {
             blockExplorer={blockExplorer}
             address={address}
             accesories={accesories}
-          />
-        </Route>
-        <Route exact path="/preview">
-          {/* pass in any web3 props to this Home component. For example, yourLocalBalance */}
-          <Preview
-            userSigner={userSigner}
-            readContracts={readContracts}
-            writeContracts={writeContracts}
-            tx={tx}
-            loadWeb3Modal={loadWeb3Modal}
-            blockExplorer={blockExplorer}
-            address={address}
-            accesories={accesories}
-            selectedCollectible={selectedCollectible}
-            ContractName={"YourCollectible"}
-            selectedAccesory={selectedAccesory}
-            setSelectedAccesory={setSelectedAccesory}
-            yourAccesories={yourAccesories}
-            yourCollectibleSVG={yourCollectibleSVG}
           />
         </Route>
         <Route exact path="/debug">

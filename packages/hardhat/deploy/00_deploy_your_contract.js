@@ -57,13 +57,13 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   //   waitConfirmations: 5,
   // });
 
-  // await deploy("Perch2Library", {
-  //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
-  //   from: deployer,
-  //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
-  //   log: true,
-  //   waitConfirmations: 5,
-  // });
+  await deploy("Perch2Library", {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    log: true,
+    waitConfirmations: 5,
+  });
 
   const eye = await deploy("Eye", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy

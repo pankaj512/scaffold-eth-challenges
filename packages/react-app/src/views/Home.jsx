@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { Address, AddressInput } from "../components";
 import { useContractReader } from "eth-hooks";
 import { ethers } from "ethers";
-import { useHistory } from "react-router-dom";
 
 /**
  * web3 props can be passed from '../App.jsx' into your local view component for use
@@ -22,9 +21,9 @@ function Home({
   address,
   setSelectedCollectible,
   ContractName,
+  showModal,
 }) {
   const [transferToAddresses, setTransferToAddresses] = useState({});
-  const history = useHistory();
 
   // 🧠 This effect will update yourCollectibles by polling when your balance changes
   const balanceContract = useContractReader(readContracts, ContractName, "balanceOf", [address]);
@@ -111,6 +110,7 @@ function Home({
                   padding: "10px",
                   border: "1px solid",
                 }}
+                key={id}
               >
                 <div>{nft.name}</div>
                 <div>
@@ -159,9 +159,9 @@ function Home({
                   <Button
                     style={{ margin: "10px" }}
                     onClick={() => {
-                      // tx(writeContracts[ContractName].transferFrom(address, transferToAddresses[id], id));
                       setSelectedCollectible(id);
-                      history.push("/preview");
+                      // history.push("/preview");
+                      showModal();
                     }}
                   >
                     Upgrade/Degrade

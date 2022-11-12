@@ -24,6 +24,7 @@ function Preview({
   setSelectedAccesory,
   yourAccesories,
   yourCollectibleSVG,
+  selectedAccesoryBalance,
 }) {
   const [transferToAddresses, setTransferToAddresses] = useState({});
   const [yourPreviewSVG, setPreviewSVG] = useState();
@@ -86,6 +87,32 @@ function Preview({
       return false;
     }
   };
+
+  useEffect(() => {
+    const fetchAccesoryStatue = async () => {
+      for (let accesory = 0; accesory < accesories.length; accesory++) {
+        const accesoryType = accesories[accesory];
+        const contractAddress = readContracts[accesoryType] && (await readContracts[accesoryType].address);
+        try {
+          const hasAccesory =
+            readContracts[ContractName] &&
+            selectedCollectible &&
+            (await readContracts[ContractName].hasNft(contractAddress, selectedCollectible));
+          if (hasAccesory === true) {
+            const newpreviewOperation = { ...previewOperation };
+            newpreviewOperation[accesoryType] = ["remove"];
+            setPreviewOperation(newpreviewOperation);
+          }
+        } catch (e) {
+          console.log(e);
+          return false;
+        }
+      }
+    };
+    if (selectedAccesoryBalance) {
+      fetchAccesoryStatue();
+    }
+  }, [address, readContracts, accesories, selectedAccesoryBalance, ContractName, selectedCollectible]);
 
   const AddPreviewAccesory = async (accesoryType, accesoryId) => {
     const hasAccesory = await checkForAccesories(accesoryType);
@@ -163,9 +190,6 @@ function Preview({
               style={{ marginBottom: "10px", width: "100%", height: "100%" }}
               dangerouslySetInnerHTML={{ __html: yourPreviewSVG ? yourPreviewSVG : yourCollectibleSVG }}
             ></div>
-            <div>
-              <Button onClick={() => {}}>Upgrade</Button>
-            </div>
           </div>
         )}
         {accesories && (
@@ -204,51 +228,52 @@ function Preview({
         )}
       </div>
       <div style={{ flex: 3, margin: "32px auto auto auto" }}>
-        <div style={{ Width: "100%", margin: "auto" }}>
-          {userSigner ? (
-            <div>
-              <Select
-                style={{
-                  width: 120,
-                  margin: 10,
-                }}
-                defaultValue={selectedAccesory}
-                onChange={value => {
-                  console.log("🤗 setSelectedAccesory:", value);
-                  setSelectedAccesory(value);
-                }}
-              >
-                {accesories.map(accesory => (
-                  <Select.Option value={accesory}>{accesory}</Select.Option>
-                ))}
-              </Select>
+        {userSigner ? (
+          <div style={{ display: "flex", Width: "100%", margin: "auto", justifyContent: "center" }}>
+            <Select
+              style={{
+                width: 120,
+                margin: 10,
+              }}
+              defaultValue={selectedAccesory}
+              onChange={value => {
+                console.log("🤗 setSelectedAccesory:", value);
+                setSelectedAccesory(value);
+              }}
+            >
+              {accesories.map(accesory => (
+                <Select.Option value={accesory}>{accesory}</Select.Option>
+              ))}
+            </Select>
 
-              <Button
-                type={"primary"}
-                onClick={async () => {
-                  const priceRightNow =
-                    readContracts[selectedAccesory] && (await readContracts[selectedAccesory].price());
-                  console.log("🤗 priceRightNow:", priceRightNow);
-                  try {
-                    tx(
-                      writeContracts[selectedAccesory] &&
-                        writeContracts[selectedAccesory].mintItem({ value: priceRightNow }),
-                      function (transaction) {},
-                    );
-                  } catch (e) {
-                    console.log("mint failed", e);
-                  }
-                }}
-              >
-                MINT {selectedAccesory} for Ξ{priceToMint && (+ethers.utils.formatEther(priceToMint)).toFixed(4)}s
-              </Button>
-            </div>
-          ) : (
-            <Button type={"primary"} onClick={loadWeb3Modal}>
-              CONNECT WALLET
+            <Button
+              type={"primary"}
+              style={{
+                margin: 10,
+              }}
+              onClick={async () => {
+                const priceRightNow =
+                  readContracts[selectedAccesory] && (await readContracts[selectedAccesory].price());
+                console.log("🤗 priceRightNow:", priceRightNow);
+                try {
+                  tx(
+                    writeContracts[selectedAccesory] &&
+                      writeContracts[selectedAccesory].mintItem({ value: priceRightNow }),
+                    function (transaction) {},
+                  );
+                } catch (e) {
+                  console.log("mint failed", e);
+                }
+              }}
+            >
+              MINT {selectedAccesory} for Ξ{priceToMint && (+ethers.utils.formatEther(priceToMint)).toFixed(4)}s
             </Button>
-          )}
-        </div>
+          </div>
+        ) : (
+          <Button type={"primary"} onClick={loadWeb3Modal}>
+            CONNECT WALLET
+          </Button>
+        )}
 
         <div style={{ Width: "100%", display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
           {yourAccesories &&
@@ -264,12 +289,13 @@ function Preview({
                   style={{
                     minWidth: "200px",
                     minHeight: "200px",
-                    width: "100px",
+                    width: "20%",
                     height: "100%",
-                    margin: "1%",
-                    padding: "10px",
+                    margin: "10px",
+                    padding: "2px",
                     border: "1px solid",
                   }}
+                  key={id}
                 >
                   <div>{nft.name}</div>
                   <div>
@@ -287,16 +313,14 @@ function Preview({
                     </a>
                   </div>
                   <div style={{ marginBottom: "10px" }}>{nft.description}</div>
-                  <div>
-                    <Button
-                      disabled={isEnabled}
-                      onClick={() => {
-                        AddPreviewAccesory(selectedAccesory, id);
-                      }}
-                    >
-                      ➕
-                    </Button>
-                  </div>
+                  <Button
+                    disabled={isEnabled}
+                    onClick={() => {
+                      AddPreviewAccesory(selectedAccesory, id);
+                    }}
+                  >
+                    ➕
+                  </Button>
                 </div>
               );
             })}

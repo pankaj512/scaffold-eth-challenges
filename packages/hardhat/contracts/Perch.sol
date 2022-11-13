@@ -32,10 +32,19 @@ contract Perch is ERC721Enumerable {
     mapping(uint256 => uint256) public parrot_perches;
 
     //! Properties types
-    string[6] public perches;
+    string[8] public perches;
 
     constructor() ERC721("ParrotPerch", "PRTPerch") {
-        perches = ["oak", "birch", "bones", "skateboard", "staff", "sword"];
+        perches = [
+            "oak",
+            "birch",
+            "bones",
+            "skateboard",
+            "staff",
+            "sword",
+            "scepter",
+            "coffin"
+        ];
     }
 
     function mintItem() public payable returns (uint256) {
@@ -56,7 +65,10 @@ contract Perch is ERC721Enumerable {
                 address(this)
             )
         );
-        parrot_perches[id] = uint256((uint8(predictableRandom[5])) % 6);
+        parrot_perches[id] = uint256(
+            ((uint8(predictableRandom[9]) << 8) |
+                uint8(predictableRandom[10])) % 8
+        );
 
         (bool success, ) = recipient.call{value: msg.value}("");
         require(success, "could not send");
@@ -113,9 +125,7 @@ contract Perch is ERC721Enumerable {
             abi.encodePacked("Parrot Perch #", id.toString())
         );
 
-        string memory description = string(
-            abi.encodePacked(perches[perch], " Perchs ")
-        );
+        string memory description = string(abi.encodePacked(perches[perch]));
         string memory image = Base64.encode(bytes(generateSVGofTokenById(id)));
 
         return

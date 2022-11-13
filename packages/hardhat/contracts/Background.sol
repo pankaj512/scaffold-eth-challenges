@@ -7,12 +7,13 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "base64-sol/base64.sol";
 
-import "./HeadLibrary.sol";
+import "./BackgroundLibrary.sol";
+import "./BackgroundLibrary2.sol";
 import "hardhat/console.sol";
 
 // GET LISTED ON OPENSEA: https://testnets.opensea.io/get-listed/step-two
 
-contract Head is ERC721Enumerable {
+contract Background is ERC721Enumerable {
     using Strings for uint256;
     using Strings for uint160;
     using Counters for Counters.Counter;
@@ -28,22 +29,13 @@ contract Head is ERC721Enumerable {
     uint256 public constant curve = 1005; // price increase 0,5% with each purchase
     uint256 public price = 0.002 ether;
 
-    mapping(uint256 => uint256) public parrot_heads;
+    mapping(uint256 => uint256) public parrot_backgrounds;
 
     //! Properties types
-    string[8] public heads;
+    string[5] public backgrounds;
 
-    constructor() ERC721("ParrotHead", "PRTHead") {
-        heads = [
-            "",
-            "floof",
-            "punk hat",
-            "helmet",
-            "wizard hat",
-            "pirate hat",
-            "crown",
-            "vampire hair"
-        ];
+    constructor() ERC721("ParrotBackground", "PRTBG") {
+        backgrounds = ["gradient", "cave", "forest", "jungle", "skate rail"];
     }
 
     function mintItem() public payable returns (uint256) {
@@ -65,9 +57,9 @@ contract Head is ERC721Enumerable {
                 address(this)
             )
         );
-        parrot_heads[id] = uint256(
-            ((uint8(predictableRandom[5]) << 8) | uint8(predictableRandom[6])) %
-                8
+        parrot_backgrounds[id] = uint256(
+            ((uint8(predictableRandom[11]) << 8) |
+                uint8(predictableRandom[12])) % 21
         );
 
         (bool success, ) = recipient.call{value: msg.value}("");
@@ -78,15 +70,12 @@ contract Head is ERC721Enumerable {
 
     // Visibility is `public` to enable it being called by other contracts for composition.
     function renderTokenById(uint256 id) public view returns (string memory) {
-        uint256 head = getPropertiesById(id);
+        uint256 bgIndex = getPropertiesById(id);
 
         string memory render = string(
             abi.encodePacked(
-                '<g class="cls-1">',
-                '<g id="Head">',
-                HeadLibrary.GetHead(head),
-                "</g>",
-                "</g>"
+                BackgroundLibrary.GetBackground(bgIndex),
+                Background2Library.GetBackground(bgIndex)
             )
         );
 
@@ -111,20 +100,26 @@ contract Head is ERC721Enumerable {
 
     function getDescription(uint256 id) public view returns (string memory) {
         require(_exists(id), "!exist");
-        uint256 head = getPropertiesById(id);
-        return heads[head];
+        uint256 bgIndex = getPropertiesById(id);
+        if (bgIndex < 9) return backgrounds[0];
+        uint256 newIndex = ((bgIndex - 9) / 3) + 1;
+        return backgrounds[newIndex];
     }
 
     function tokenURI(uint256 id) public view override returns (string memory) {
         require(_exists(id), "!exist");
 
-        uint256 head = getPropertiesById(id);
+        uint256 bgIndex = getPropertiesById(id);
+        if (bgIndex < 9) bgIndex = 0;
+        else bgIndex = ((bgIndex - 9) / 3) + 1;
 
         string memory name = string(
-            abi.encodePacked("Parrot Head #", id.toString())
+            abi.encodePacked("Parrot Background #", id.toString())
         );
 
-        string memory description = string(abi.encodePacked(heads[head]));
+        string memory description = string(
+            abi.encodePacked(backgrounds[bgIndex], " background ")
+        );
         string memory image = Base64.encode(bytes(generateSVGofTokenById(id)));
 
         return
@@ -140,8 +135,8 @@ contract Head is ERC721Enumerable {
                                 description,
                                 '","external_url":"https://yourCollectible.com/token/',
                                 id.toString(),
-                                '","attributes":[{"trait_type":"Head","value":"',
-                                heads[head],
+                                '","attributes":[{"trait_type":"background","value":"',
+                                backgrounds[bgIndex],
                                 '"}], "owner":"',
                                 (uint160(ownerOf(id))).toHexString(20),
                                 '","image": "',
@@ -156,7 +151,11 @@ contract Head is ERC721Enumerable {
     }
 
     // properties of the token of id
-    function getPropertiesById(uint256 id) public view returns (uint256 head) {
-        head = parrot_heads[id];
+    function getPropertiesById(uint256 id)
+        public
+        view
+        returns (uint256 bgIndex)
+    {
+        bgIndex = parrot_backgrounds[id];
     }
 }

@@ -63,7 +63,6 @@ contract YourCollectible is ERC721Enumerable, IERC721Receiver, Ownable {
     mapping(uint256 => mapping(uint256 => string)) public colorPallet;
 
     struct ParrotMeta {
-        uint256 bgIndex;
         uint256 colorIndex;
     }
 
@@ -148,8 +147,10 @@ contract YourCollectible is ERC721Enumerable, IERC721Receiver, Ownable {
             )
         );
 
-        parrots[id].bgIndex = uint256((uint8(predictableRandom[0])) % 9);
-        parrots[id].colorIndex = uint256((uint8(predictableRandom[1])) % 5);
+        parrots[id].colorIndex = uint256(
+            ((uint8(predictableRandom[3]) << 8) | uint8(predictableRandom[4])) %
+                5
+        );
 
         (bool success, ) = recipient.call{value: msg.value}("");
         require(success, "could not send");
@@ -173,10 +174,12 @@ contract YourCollectible is ERC721Enumerable, IERC721Receiver, Ownable {
         bool neckFound = false;
         bool eyeFound = false;
         bool perchFound = false;
+        bool backgroundFound = false;
         string memory headType = "";
         string memory neckType = "";
         string memory eyeType = "";
         string memory perchType = "";
+        string memory backgroundType = "";
 
         for (uint256 i = 0; i < nftContracts.length; i++) {
             if (nftById[address(nftContracts[i])][id] > 0) {
@@ -208,13 +211,24 @@ contract YourCollectible is ERC721Enumerable, IERC721Receiver, Ownable {
                 ) {
                     perchFound = true;
                     perchType = desc;
+                } else if (
+                    keccak256(abi.encodePacked("ParrotBackground")) ==
+                    keccak256(abi.encodePacked(nftType))
+                ) {
+                    backgroundFound = true;
+                    backgroundType = desc;
                 }
             }
         }
 
+        string memory inBg = "";
+        if (backgroundFound)
+            inBg = string.concat(inBg, " in  ", backgroundType, " background");
+        else inBg = string.concat(inBg, " in ugly background");
+
         string memory wearing = "";
         if (neckFound || headFound)
-            wearing = string.concat(wearing, "wearing ");
+            wearing = string.concat(wearing, " wearing ");
 
         if (neckFound) wearing = string.concat(wearing, neckType);
 
@@ -230,7 +244,7 @@ contract YourCollectible is ERC721Enumerable, IERC721Receiver, Ownable {
             perch = string.concat(perch, " sitting on ", perchType, " perch");
 
         string memory description = string(
-            abi.encodePacked(base, eyes, perch, wearing)
+            abi.encodePacked(base, inBg, eyes, perch, wearing)
         );
 
         return
@@ -277,7 +291,7 @@ contract YourCollectible is ERC721Enumerable, IERC721Receiver, Ownable {
 
     // Visibility is `public` to enable it being called by other contracts for composition.
     function renderTokenById(uint256 id) public view returns (string memory) {
-        (uint256 pallet, uint256 background) = getPropertiesById(id);
+        uint256 pallet = getPropertiesById(id);
 
         string memory color0 = colorPallet[pallet][0];
         string memory color1 = colorPallet[pallet][1];
@@ -289,11 +303,6 @@ contract YourCollectible is ERC721Enumerable, IERC721Receiver, Ownable {
             abi.encodePacked(
                 StyleLibrary.GetStyle(),
                 '<g class="cls-1">',
-                '<g id="BGs">',
-                '<rect style="fill: url(#radial-gradient-',
-                background.toString(),
-                ')" x="-6.2" y="-0.06" width="883.11" height="888.96" />',
-                "</g>",
                 '<g id="Tail">',
                 BodyLibrary.GetTail(color0, color1, color3),
                 "</g>",
@@ -320,6 +329,7 @@ contract YourCollectible is ERC721Enumerable, IERC721Receiver, Ownable {
         render = string(
             abi.encodePacked(
                 render,
+                '<use xlink:href="#BGs" />',
                 '<use xlink:href="#Tail" />',
                 '<use xlink:href="#Perch" />',
                 '<use xlink:href="#Body" />',
@@ -428,9 +438,8 @@ contract YourCollectible is ERC721Enumerable, IERC721Receiver, Ownable {
     function getPropertiesById(uint256 id)
         public
         view
-        returns (uint256 pallet, uint256 background)
+        returns (uint256 pallet)
     {
         pallet = parrots[id].colorIndex;
-        background = parrots[id].bgIndex;
     }
 }

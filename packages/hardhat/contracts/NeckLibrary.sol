@@ -440,6 +440,461 @@ library NeckLibrary {
                     "/>"
                 )
             );
+        } else if (index == 6) {
+            neck = string(
+                abi.encodePacked(
+                    "<defs>",
+                    "  <style>",
+                    "    .cls-neck-26,",
+                    "    .cls-neck-28,",
+                    "    .cls-neck-29 {",
+                    "      stroke: #000;",
+                    "      stroke-miterlimit: 10;",
+                    "    }"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "    .cls-neck-29 {",
+                    "      stroke-width: 4.33px;",
+                    "    }",
+                    "    .cls-neck-26,",
+                    "    .cls-neck-28 {",
+                    "      fill: #ffbf40;",
+                    "    }"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "    .cls-neck-14 {",
+                    "      fill: #bde6ff;",
+                    "    }",
+                    "    .cls-neck-28 {",
+                    "      stroke-width: 4px;",
+                    "    }"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "    .cls-neck-24 {",
+                    "      fill: #fff;",
+                    "      opacity: 0.42;",
+                    "    }",
+                    "    .cls-neck-20 {",
+                    "      fill: #fb8525;",
+                    "    }"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "    .cls-neck-25 {",
+                    "      opacity: 0.15;",
+                    "    }",
+                    "    .cls-neck-26 {",
+                    "      stroke-width: 3.59px;",
+                    "    }"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "    .cls-neck-27 {",
+                    "      fill: #ffdb9c;",
+                    "    }",
+                    "    .cls-neck-29 {",
+                    "      fill: #0071af;",
+                    "    }"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "    .cls-neck-30 {",
+                    "      fill: #76c4ff;",
+                    "    }",
+                    "  </style>",
+                    "</defs>"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "<path",
+                    '  class="cls-neck-24"',
+                    '  d="M219.47,321.34a81.77,81.77,0,0,1-9.81-12.48l-5.27,5.27a83.09,83.09,0,0,0,9.23,13.07Z"',
+                    "/>",
+                    "<path",
+                    '  class="cls-neck-25"',
+                    '  d="M330.42,311.38c-1.92-4.13-13.2-6.7-15.45-4.89-6.64-8.68.71-26.1,4.46-35-27.13,3-10.48,42.37-17,55-2.89,34.17,32.61,31.43,30.6-2.39,20.17-6.64,39-37.37,101.95-45.62C383.63,260.47,332.84,317.36,330.42,311.38Z"',
+                    "/>"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "<path",
+                    '  class="cls-neck-26"',
+                    '  d="M433.58,273.84c-80.37,8.81-91.81,53.57-119.87,46.75-18.29-4.45-24.61-27.29-6.36-51.92,2.18.44,5.09,1.76,5.82.36-4.64,11-14.35,32.51,3,38.14,19.06,6.19,23.7-28.88,115.79-40.59C434.4,267.94,435,271.48,433.58,273.84Z"',
+                    "/>",
+                    "<path",
+                    '  class="cls-neck-27"',
+                    '  d="M366.31,285.47c.69,3.63-.64,3.62.11,7.29a148,148,0,0,1,25.75-12c-1.53-2.51-1.6-1.11-3.27-3.55A180.2,180.2,0,0,0,366.31,285.47Z"',
+                    "/>"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    '<ellipse class="cls-neck-14" cx="309.62" cy="315.35" rx="2.84" ry="5.72" />',
+                    "<path",
+                    '  class="cls-neck-20"',
+                    '  d="M325.52,308.81a59.42,59.42,0,0,0,7.26-3.82c2.18,6.72,2.36,9.27,2.36,9.27l-7.81,3.81Z"',
+                    "/>"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "<ellipse",
+                    '  class="cls-neck-28"',
+                    '  cx="313.17"',
+                    '  cy="324.06"',
+                    '  rx="24.25"',
+                    '  ry="13.62"',
+                    '  transform="translate(-47.07 594.83) rotate(-82.91)"',
+                    "/>"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "<path",
+                    '  class="cls-neck-20"',
+                    '  d="M299.93,333.64c1.31,7,4.83,12.12,9.51,12.71,6.93.86,13.8-8.44,15.33-20.78.1-.78.17-1.56.22-2.32C317.56,328.6,309,332.64,299.93,333.64Z"',
+                    "/>"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "<ellipse",
+                    '  class="cls-neck-29"',
+                    '  cx="307.44"',
+                    '  cy="323.79"',
+                    '  rx="19.8"',
+                    '  ry="11.12"',
+                    '  transform="translate(-51.82 588.92) rotate(-82.91)"',
+                    "/>"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "<ellipse",
+                    '  class="cls-neck-30"',
+                    '  cx="309.35"',
+                    '  cy="318.37"',
+                    '  rx="3.99"',
+                    '  ry="8.51"',
+                    '  transform="translate(-26.59 28.19) rotate(-5)"',
+                    "/>"
+                )
+            );
+        } else if (index == 7) {
+            neck = string(
+                abi.encodePacked(
+                    "<defs>",
+                    "  <style>",
+                    "    .cls-neck-26,",
+                    "    .cls-neck-27,",
+                    "    .cls-neck-28,"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "    .cls-neck-29,",
+                    "    .cls-neck-30,",
+                    "    .cls-neck-31,",
+                    "    .cls-neck-32 {",
+                    "      stroke: #000;",
+                    "      stroke-miterlimit: 10;"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "    }",
+                    "    .cls-neck-26,",
+                    "    .cls-neck-27,",
+                    "    .cls-neck-28,",
+                    "    .cls-neck-29,",
+                    "    .cls-neck-30 {",
+                    "      stroke-width: 3px;"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "    }",
+                    "    .cls-neck-31 {",
+                    "      fill: #ffdc83;",
+                    "    }",
+                    "    .cls-neck-33 {",
+                    "      fill: #fff;"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "    }",
+                    "    .cls-neck-26 {",
+                    "      fill: url(#linear-gradient-2);",
+                    "    }",
+                    "    .cls-neck-27 {",
+                    "      fill: url(#linear-gradient-3);",
+                    "    }"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "    .cls-neck-28 {",
+                    "      fill: url(#linear-gradient-4);",
+                    "    }",
+                    "    .cls-neck-29 {",
+                    "      fill: url(#linear-gradient-5);",
+                    "    }"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "    .cls-neck-30 {",
+                    "      fill: url(#linear-gradient-6);",
+                    "    }",
+                    "    .cls-neck-31,",
+                    "    .cls-neck-32 {",
+                    "      stroke-width: 1.52px;",
+                    "    }"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "    .cls-neck-32 {",
+                    "      fill: url(#radial-gradient);",
+                    "    }",
+                    "    .cls-neck-33 {",
+                    "      opacity: 0.49;",
+                    "    }",
+                    "  </style>"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "  <linearGradient",
+                    '    id="linear-gradient-2"',
+                    '    x1="454.37"',
+                    '    y1="240.33"',
+                    '    x2="452.56"',
+                    '    y2="226.16"',
+                    '    gradientUnits="userSpaceOnUse"',
+                    "  >"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    '    <stop offset="0" stop-color="#4f0e00" />',
+                    '    <stop offset="0.79" stop-color="#9b0e00" />',
+                    "  </linearGradient>",
+                    "  <linearGradient"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    '    id="linear-gradient-3"',
+                    '    x1="308.8"',
+                    '    y1="270.02"',
+                    '    x2="470.54"',
+                    '    y2="270.02"',
+                    '    xlink:href="#linear-gradient-2"',
+                    "  />"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "  <linearGradient",
+                    '    id="linear-gradient-4"',
+                    '    x1="299.34"',
+                    '    y1="265.01"',
+                    '    x2="298.97"',
+                    '    y2="294.44"',
+                    '    xlink:href="#linear-gradient-2"',
+                    "  />"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "  <linearGradient",
+                    '    id="linear-gradient-5"',
+                    '    x1="324.59"',
+                    '    y1="315.35"',
+                    '    x2="324.14"',
+                    '    y2="352.28"',
+                    '    gradientTransform="matrix(0.99, -0.13, 0.13, 0.99, -40.7, 34.55)"',
+                    '    xlink:href="#linear-gradient-2"',
+                    "  />"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "  <linearGradient",
+                    '    id="linear-gradient-6"',
+                    '    x1="298.58"',
+                    '    y1="315.41"',
+                    '    x2="298.18"',
+                    '    y2="347.03"',
+                    '    gradientTransform="translate(-21.71 20.21) rotate(-3.76)"',
+                    '    xlink:href="#linear-gradient-2"',
+                    "  />"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "  <radialGradient",
+                    '    id="radial-gradient"',
+                    '    cx="308.46"',
+                    '    cy="307.22"',
+                    '    r="6.3"',
+                    '    gradientTransform="translate(15.25 -14.12) rotate(2.61)"'
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    '    gradientUnits="userSpaceOnUse"',
+                    "  >",
+                    '    <stop offset="0.48" stop-color="#9b0e00" />',
+                    '    <stop offset="1" stop-color="#4f0e00" />',
+                    "  </radialGradient>",
+                    "</defs>"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "<path",
+                    '  class="cls-neck-26"',
+                    '  d="M470.47,236.33c.55-.58-13.37-9.2-30.87-9.66a40.65,40.65,0,0,1-1.84,13.81S462.66,244.61,470.47,236.33Z"',
+                    "/>"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "<path",
+                    '  class="cls-neck-27"',
+                    '  d="M444.66,273.75c-7.52,20.48-25.18-13.79-135.85,43-.28.14,7.93-18.33,8.17-18.53,6.76-5.77,31.13-17.4,42.23-25.88,26-19.89,18.52-46,17.72-48.64,39-3.67,42.67,25.39,93.52,13.77C471.91,237.06,455.2,245.06,444.66,273.75Z"',
+                    "/>",
+                    "<path",
+                    '  class="cls-neck-28"',
+                    '  d="M299.27,266.67c-.19,4.66-1.15,7.43-2.45,6.54-2.91-2-9.72-13.81-9.72-13.81-2.54,9.9-6.9,20.53,3.18,38.24,4.23,7.42,8.1,14.57,10.22,22.85l7.22-3.24c.9-6.72-10.6-29.93,6.81-47.4C314.31,269.78,304.18,269.58,299.27,266.67Z"',
+                    "/>"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "<path",
+                    '  class="cls-neck-29"',
+                    '  d="M307.6,301.32a.3.3,0,0,0-.19.44c.93,1.88-3.73,5.4,7.48,40.26,3.62,11.26,3.56,35.75,4.55,34.89s8.68-12.56,8.8-12.49l13.62,8a.29.29,0,0,0,.43-.32c-1.1-4.35-10.21-28.23-12.85-35.91-2.73-8-10-32.07-10.83-34.91C318.56,301.11,307.6,301.32,307.6,301.32Z"',
+                    "/>",
+                    "<path",
+                    '  class="cls-neck-30"',
+                    '  d="M304.59,309.1a.18.18,0,0,0-.12,0c-.63.64-7.12,7.54-10.66,27.5-3.14,17.76-8.29,28.87-9.8,31.88a.21.21,0,0,0,.31.25s12-8.45,12.05-8.32l3.49,14.29a.2.2,0,0,0,.36.06c1.49-2.43,7-16.53,7.44-25.46a219.1,219.1,0,0,1,4.62-33.61C314.09,308.4,305.51,309,304.59,309.1Z"',
+                    "/>"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "<path",
+                    '  d="M300.93,298.51c-3.54-2.72-1-4.29-6.56-4.08l-1,23.11c5.45.79,3.08-1.06,6.84-3.37C300.48,314.73,301,298.42,300.93,298.51Z"',
+                    "/>",
+                    "<path",
+                    '  d="M331.42,294.62c-8-1.27-.72,3.16-5.67,4.75-2.69-4.2-7.33-6.92-.8-10,2.13-2-2.46-1.79-3.45-1.85l-4.31.37c2.42,10.22-6.91,35.44,2.73,39.37,3.19.55,5-.74,3.38-1.49-8.94-3.33,5.6-15.33,3.7-4.69.8-.2,4,.87,4-.7C330.39,319.45,333.34,294.89,331.42,294.62Z"',
+                    "/>"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "<path",
+                    '  class="cls-neck-31"',
+                    '  d="M323.81,307.58c-.4,8.73-7.45,15-15.24,14.05-7.28-.87-12.54-7.79-12.19-15.49s6.22-14,13.54-14.14C317.75,291.88,324.21,298.85,323.81,307.58Z"',
+                    "/>",
+                    "<path",
+                    '  class="cls-neck-31"',
+                    '  d="M321.58,288.29l-21.32.64a.14.14,0,0,0-.06.25c3,1.53,5.07,6.32,4.81,12,0,.44,9.84.73,9.86.27.27-6,3.06-11.09,6.76-12.93A.14.14,0,0,0,321.58,288.29Z"',
+                    "/>"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "<path",
+                    '  class="cls-neck-31"',
+                    '  d="M298.68,323.67l21.16,2.87a.14.14,0,0,0,.07-.26c-3.52-2.22-5.82-7.6-5.55-13.58,0-.46-9.82-1.2-9.84-.76-.26,5.72-2.75,10.27-5.87,11.48A.13.13,0,0,0,298.68,323.67Z"',
+                    "/>",
+                    "<path",
+                    '  class="cls-neck-31"',
+                    '  d="M327.21,320.21l1.14-24.85a.15.15,0,0,0-.28-.06c-2,3.86-7.25,6.51-13.06,6.35-.44,0-.94,10.88-.5,10.91,5.8.44,10.81,3.64,12.42,7.68A.14.14,0,0,0,327.21,320.21Z"',
+                    "/>"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "<path",
+                    '  class="cls-neck-31"',
+                    '  d="M294.45,295.35l-1,21.32c0,.14.15.2.2.08,1.5-3.23,5.69-5.35,10.71-5,.41,0,.88-10.41.48-10.42-5-.14-9-2.69-10.21-6.06C294.62,295.18,294.46,295.22,294.45,295.35Z"',
+                    "/>",
+                    "<path",
+                    '  class="cls-neck-31"',
+                    '  d="M318.89,307.32c-.27,5.78-4.89,10-10.11,9.52-5-.49-8.65-5.18-8.41-10.49s4.33-9.59,9.33-9.56C314.93,296.83,319.15,301.54,318.89,307.32Z"',
+                    "/>"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "<path",
+                    '  class="cls-neck-32"',
+                    '  d="M315.44,307.14a6.23,6.23,0,0,1-6.5,6.21,6.39,6.39,0,0,1-5.57-6.84,6.06,6.06,0,1,1,12.07.63Z"',
+                    "/>"
+                )
+            );
+            neck = string(
+                abi.encodePacked(
+                    neck,
+                    "<path",
+                    '  class="cls-neck-33"',
+                    '  d="M312.61,305.45c-.38.85-1.72,1-3,.36s-2-1.82-1.61-2.65,1.67-1,2.94-.39S313,304.61,312.61,305.45Z"',
+                    "/>"
+                )
+            );
         } else {
             neck = string(abi.encodePacked());
         }

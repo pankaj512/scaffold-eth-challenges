@@ -31,10 +31,19 @@ contract Neck is ERC721Enumerable {
     mapping(uint256 => uint256) public parrot_necks;
 
     //! Properties types
-    string[6] public necks;
+    string[8] public necks;
 
     constructor() ERC721("ParrotNeck", "PRTNeck") {
-        necks = ["", "bow tie", "spike collar", "ska tie", "amulet", ""];
+        necks = [
+            "",
+            "bow tie",
+            "spike collar",
+            "ska tie",
+            "amulet",
+            "",
+            "necklace",
+            "vampire cowl"
+        ];
     }
 
     function mintItem() public payable returns (uint256) {
@@ -55,7 +64,10 @@ contract Neck is ERC721Enumerable {
                 address(this)
             )
         );
-        parrot_necks[id] = uint256((uint8(predictableRandom[3])) % 6);
+        parrot_necks[id] = uint256(
+            ((uint8(predictableRandom[7]) << 8) | uint8(predictableRandom[8])) %
+                8
+        );
 
         (bool success, ) = recipient.call{value: msg.value}("");
         require(success, "could not send");
@@ -111,9 +123,7 @@ contract Neck is ERC721Enumerable {
             abi.encodePacked("Parrot Neck #", id.toString())
         );
 
-        string memory description = string(
-            abi.encodePacked(necks[neck], " Necks ")
-        );
+        string memory description = string(abi.encodePacked(necks[neck]));
         string memory image = Base64.encode(bytes(generateSVGofTokenById(id)));
 
         return

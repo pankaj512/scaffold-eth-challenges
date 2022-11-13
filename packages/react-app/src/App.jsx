@@ -52,7 +52,7 @@ const { ethers } = require("ethers");
 */
 
 /// 📡 What chain are your contracts deployed to?
-const initialNetwork = NETWORKS.kovan; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+const initialNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -201,7 +201,7 @@ function App(props) {
 
   const faucetAvailable = localProvider && localProvider.connection && targetNetwork.name.indexOf("local") !== -1;
 
-  const accesories = ["Eye", "Head", "Neck", "Perch"];
+  const accesories = ["Eye", "Head", "Neck", "Perch", "Background"];
   const [selectedCollectible, setSelectedCollectible] = useState();
   const [yourCollectibleSVG, setYourCollectibleSVG] = useState();
 

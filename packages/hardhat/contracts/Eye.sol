@@ -31,10 +31,19 @@ contract Eye is ERC721Enumerable {
     mapping(uint256 => uint256) public parrot_eyes;
 
     //! Properties types
-    string[6] public eyes;
+    string[8] public eyes;
 
     constructor() ERC721("ParrotEye", "PRTEYE") {
-        eyes = ["red", "glasses", "angry", "cross", "monocle", "skull"];
+        eyes = [
+            "red",
+            "glasses",
+            "angry",
+            "cross",
+            "monocle",
+            "skull",
+            "royal glasses",
+            "red"
+        ];
     }
 
     function mintItem() public payable returns (uint256) {
@@ -56,7 +65,10 @@ contract Eye is ERC721Enumerable {
                 address(this)
             )
         );
-        parrot_eyes[id] = uint256((uint8(predictableRandom[4])) % 6);
+        parrot_eyes[id] = uint256(
+            ((uint8(predictableRandom[3]) << 8) | uint8(predictableRandom[4])) %
+                8
+        );
 
         (bool success, ) = recipient.call{value: msg.value}("");
         require(success, "could not send");
@@ -112,9 +124,7 @@ contract Eye is ERC721Enumerable {
             abi.encodePacked("Parrot Eye #", id.toString())
         );
 
-        string memory description = string(
-            abi.encodePacked(eyes[eye], " eyes ")
-        );
+        string memory description = string(abi.encodePacked(eyes[eye]));
         string memory image = Base64.encode(bytes(generateSVGofTokenById(id)));
 
         return

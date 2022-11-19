@@ -65,13 +65,13 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   //   waitConfirmations: 5,
   // });
 
-  await deploy("BackgroundLibrary", {
-    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
-    from: deployer,
-    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
-    log: true,
-    waitConfirmations: 5,
-  });
+  // await deploy("BackgroundLibrary", {
+  //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+  //   from: deployer,
+  //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+  //   log: true,
+  //   waitConfirmations: 5,
+  // });
 
   // await deploy("Background2Library", {
   //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
@@ -88,7 +88,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     log: true,
     waitConfirmations: 5,
     libraries: {
-      EyeLibrary: "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
+      EyeLibrary: "0x1B08f7844C9f2baF806dC761F5C9a0DB1fE086e5",
     },
   });
 
@@ -99,7 +99,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     log: true,
     waitConfirmations: 5,
     libraries: {
-      HeadLibrary: "0x9A676e781A523b5d0C0e43731313A708CB607508",
+      HeadLibrary: "0x9cDad0fAB5cbDf14C76172a3A8BbC9D98c056ef6",
     },
   });
 
@@ -110,7 +110,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     log: true,
     waitConfirmations: 5,
     libraries: {
-      NeckLibrary: "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
+      NeckLibrary: "0x13D30F3A6C6AD7162233ff76F5b48C8EE35a9CD0",
     },
   });
 
@@ -121,8 +121,8 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     log: true,
     waitConfirmations: 5,
     libraries: {
-      PerchLibrary: "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
-      Perch2Library: "0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE",
+      PerchLibrary: "0x5F6589b1Dcb70a4C72eEC866742d846fFf62943C",
+      Perch2Library: "0x8776dFB2F89592A0c6801c9884F53E83e82d2171",
     },
   });
 
@@ -133,8 +133,8 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     log: true,
     waitConfirmations: 5,
     libraries: {
-      BackgroundLibrary: "0x68B1D87F95878fE05B998F19b66F4baba5De1aed",
-      Background2Library: "0x1429859428C0aBc9C2C47C8Ee9FBaf82cFA0F20f",
+      BackgroundLibrary: "0x786B792C2C3027bee6497E1DE8276E006Ec74557",
+      Background2Library: "0x324151e8AF681Dccf581d362f76f583a6A63BD8d",
     },
   });
 
@@ -145,8 +145,8 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     log: true,
     waitConfirmations: 5,
     libraries: {
-      StyleLibrary: "0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e",
-      BodyLibrary: "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
+      StyleLibrary: "0x3A3378231675B4830fE90FC6623fB1ccb8A130D3",
+      BodyLibrary: "0xEC4Ea5FBe4d6fBe432d524e49ce9AD50cc1a786D",
     },
   });
 

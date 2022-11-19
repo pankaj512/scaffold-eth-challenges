@@ -759,7 +759,7 @@ library Background2Library {
                     "    .cls-jn-3 {",
                     "      fill: #059ca0;",
                     "    }",
-                    "    .cls-jn-4",
+                    "    .cls-jn-4,",
                     "    .cls-jn-5 {",
                     "      fill: #056b68;",
                     "    }"

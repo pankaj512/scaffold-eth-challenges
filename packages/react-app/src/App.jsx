@@ -1,4 +1,4 @@
-import { Button, Col, Menu, Row, Modal } from "antd";
+import { Button, Col, Menu, Row, Modal, Select } from "antd";
 import "antd/dist/antd.css";
 import {
   useBalance,
@@ -52,13 +52,18 @@ const { ethers } = require("ethers");
 */
 
 /// 📡 What chain are your contracts deployed to?
-const initialNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+let initialNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 // 😬 Sorry for all the console logging
-const DEBUG = true;
+let DEBUG = true;
 const NETWORKCHECK = true;
 const USE_BURNER_WALLET = true; // toggle burner wallet feature
 const USE_NETWORK_SELECTOR = false;
+
+if (process.env.NODE_ENV === "production") {
+  DEBUG = false;
+  initialNetwork = NETWORKS.goerli;
+}
 
 const web3Modal = Web3ModalSetup();
 
@@ -286,6 +291,8 @@ function App(props) {
     setIsModalOpen(false);
   };
 
+  const [debugAccessorySelected, setDebugAccessorySelected] = useState(accesories[0]);
+
   return (
     <div className="App">
       {/* ✏️ Edit the header and change the title to your project name */}
@@ -362,6 +369,7 @@ function App(props) {
             setSelectedCollectible={setSelectedCollectible}
             ContractName={"YourCollectible"}
             showModal={showModal}
+            DEBUG={DEBUG}
           />
           <Modal
             width="70%"
@@ -386,6 +394,7 @@ function App(props) {
               yourAccesories={yourAccesories}
               yourCollectibleSVG={yourCollectibleSVG}
               selectedAccesoryBalance={selectedAccesoryBalance}
+              DEBUG={DEBUG}
             />
           </Modal>
         </Route>
@@ -400,6 +409,7 @@ function App(props) {
             blockExplorer={blockExplorer}
             address={address}
             accesories={accesories}
+            DEBUG={DEBUG}
           />
         </Route>
         <Route exact path="/debug">
@@ -426,8 +436,25 @@ function App(props) {
                 and give you a form to interact with it locally
             */}
 
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Select
+              style={{
+                width: 120,
+                margin: 10,
+              }}
+              defaultValue={debugAccessorySelected}
+              onChange={value => {
+                setDebugAccessorySelected(value);
+              }}
+            >
+              {accesories.map(accesory => (
+                <Select.Option value={accesory}>{accesory}</Select.Option>
+              ))}
+            </Select>
+          </div>
+
           <Contract
-            name={accesories[0]}
+            name={debugAccessorySelected}
             price={price}
             signer={userSigner}
             provider={localProvider}

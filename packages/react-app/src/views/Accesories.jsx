@@ -1,4 +1,4 @@
-import { Button, Select } from "antd";
+import { Button, Select, Switch } from "antd";
 import React, { useState, useEffect } from "react";
 import { Address, AddressInput } from "../components";
 import { ethers } from "ethers";
@@ -19,14 +19,17 @@ function Accesories({
   mainnetProvider,
   address,
   accesories,
+  DEBUG,
 }) {
-  console.log("Accesories: ", accesories);
+  DEBUG && console.log("Accesories: ", accesories);
   const [transferToAddresses, setTransferToAddresses] = useState({});
   const [selectedAccesory, setSelectedAccesory] = useState(accesories[0]);
-  console.log("selected Accesory: ", selectedAccesory);
+  DEBUG && console.log("selected Accesory: ", selectedAccesory);
 
   // 🧠 This effect will update Accesory by polling when your balance changes
   const [priceToMint, setPriceToMint] = useState();
+
+  const [showMineTokenOnly, setShowMineTokenOnly] = useState(false);
 
   useEffect(() => {
     const fetchPrice = async () => {
@@ -39,48 +42,70 @@ function Accesories({
   }, [address, readContracts, selectedAccesory]);
 
   const [yourCollectibles, setYourCollectibles] = useState();
-  console.log("🤗 priceToMint:", priceToMint);
+  DEBUG && console.log("🤗 priceToMint:", priceToMint);
 
   useEffect(() => {
     const updateYourCollectibles = async () => {
       const collectibleUpdate = [];
       for (let accesory = 0; accesory < accesories.length; accesory++) {
-        const balance =
-          readContracts[accesories[accesory]] && (await readContracts[accesories[accesory]].balanceOf(address));
+        let balance = 0;
+        if (showMineTokenOnly) {
+          balance =
+            readContracts[accesories[accesory]] && (await readContracts[accesories[accesory]].balanceOf(address));
+        } else {
+          balance = readContracts[accesories[accesory]] && (await readContracts[accesories[accesory]].totalSupply());
+        }
+        DEBUG && console.log("Accessories ", accesories[accesory], " Balance: ", balance);
 
         for (let tokenIndex = 0; tokenIndex < balance; ++tokenIndex) {
           try {
-            console.log("Getting token index " + tokenIndex);
-            const tokenId =
-              readContracts[accesories[accesory]] &&
-              (await readContracts[accesories[accesory]].tokenOfOwnerByIndex(address, tokenIndex));
-            console.log("tokenId: " + tokenId);
+            DEBUG && console.log("Getting token index " + tokenIndex);
+            let tokenId = 0;
+            if (showMineTokenOnly) {
+              tokenId =
+                readContracts[accesories[accesory]] &&
+                (await readContracts[accesories[accesory]].tokenOfOwnerByIndex(address, tokenIndex));
+            } else {
+              tokenId =
+                readContracts[accesories[accesory]] &&
+                (await readContracts[accesories[accesory]].tokenByIndex(tokenIndex));
+            }
+            DEBUG && console.log("tokenId: " + tokenId);
             const tokenURI =
               readContracts[accesories[accesory]] && (await readContracts[accesories[accesory]].tokenURI(tokenId));
-            console.log("tokenURI: " + tokenURI);
+            DEBUG && console.log("tokenURI: " + tokenURI);
             const jsonManifestString = Buffer.from(tokenURI.substring(29), "base64").toString();
-            console.log("jsonManifestString: " + jsonManifestString);
+            DEBUG && console.log("jsonManifestString: " + jsonManifestString);
 
             try {
               const jsonManifest = JSON.parse(jsonManifestString);
-              console.log("jsonManifest: " + jsonManifest);
+              DEBUG && console.log("jsonManifest: " + jsonManifest);
               collectibleUpdate.push({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
             } catch (err) {
-              console.log(err);
+              DEBUG && console.log(err);
             }
           } catch (err) {
-            console.log(err);
+            DEBUG && console.log(err);
           }
         }
       }
       setYourCollectibles(collectibleUpdate.reverse());
     };
     if (address) updateYourCollectibles();
-  }, [accesories, address, readContracts]);
+  }, [accesories, DEBUG, address, readContracts, showMineTokenOnly]);
 
   return (
     <div>
-      <div style={{ maxWidth: 1800, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
+      <div
+        style={{
+          display: "flex",
+          maxWidth: 1800,
+          margin: "auto",
+          marginTop: 32,
+          paddingBottom: 32,
+          justifyContent: "center",
+        }}
+      >
         {userSigner ? (
           <div>
             <Select
@@ -90,7 +115,7 @@ function Accesories({
               }}
               defaultValue={selectedAccesory}
               onChange={value => {
-                console.log("🤗 setSelectedAccesory:", value);
+                DEBUG && console.log("🤗 setSelectedAccesory:", value);
                 setSelectedAccesory(value);
               }}
             >
@@ -104,7 +129,7 @@ function Accesories({
               onClick={async () => {
                 const priceRightNow =
                   readContracts[selectedAccesory] && (await readContracts[selectedAccesory].price());
-                console.log("🤗 priceRightNow:", priceRightNow);
+                DEBUG && console.log("🤗 priceRightNow:", priceRightNow);
                 try {
                   tx(
                     writeContracts[selectedAccesory] &&
@@ -112,7 +137,7 @@ function Accesories({
                     function (transaction) {},
                   );
                 } catch (e) {
-                  console.log("mint failed", e);
+                  DEBUG && console.log("mint failed", e);
                 }
               }}
             >
@@ -124,6 +149,15 @@ function Accesories({
             CONNECT WALLET
           </Button>
         )}
+        <div style={{ margin: 10 }}>
+          {showMineTokenOnly ? "Mine " : "All "}
+          <Switch
+            checked={showMineTokenOnly}
+            onChange={() => {
+              setShowMineTokenOnly(!showMineTokenOnly);
+            }}
+          />
+        </div>
       </div>
 
       <div style={{ maxWidth: 1800, display: "flex", flexWrap: "wrap", margin: "auto" }}>
@@ -199,7 +233,7 @@ function Accesories({
           renderItem={item => {
             const id = item.id.toNumber();
 
-            console.log("IMAGE", item.image);
+            DEBUG && console.log("IMAGE", item.image);
 
             return (
               <List.Item key={id + "_" + item.uri + "_" + item.owner}>
@@ -248,7 +282,7 @@ function Accesories({
                     />
                     <Button
                       onClick={() => {
-                        console.log("writeContracts", writeContracts);
+                        DEBUG && console.log("writeContracts", writeContracts);
                         tx(writeContracts.YourCollectible.transferFrom(address, transferToAddresses[id], id));
                       }}
                     >

@@ -25,6 +25,7 @@ function Preview({
   yourAccesories,
   yourCollectibleSVG,
   selectedAccesoryBalance,
+  DEBUG,
 }) {
   const [transferToAddresses, setTransferToAddresses] = useState({});
   const [yourPreviewSVG, setPreviewSVG] = useState();
@@ -46,17 +47,17 @@ function Preview({
     fetchPrice();
   }, [address, readContracts, selectedAccesory]);
 
-  console.log("selectedCollectible: ", selectedCollectible);
-  console.log("Accesories: ", accesories);
-  console.log("🤗 priceToMint:", priceToMint);
-  console.log("selected Accesory: ", selectedAccesory);
-  console.log("previewOperation: ", previewOperation);
+  DEBUG && console.log("selectedCollectible: ", selectedCollectible);
+  DEBUG && console.log("Accesories: ", accesories);
+  DEBUG && console.log("🤗 priceToMint:", priceToMint);
+  DEBUG && console.log("selected Accesory: ", selectedAccesory);
+  DEBUG && console.log("previewOperation: ", previewOperation);
 
   useEffect(() => {
     const updatePreview = async () => {
       if (yourCollectibleSVG) {
         const tokenId = selectedCollectible;
-        console.log("tokenId: " + tokenId);
+        DEBUG && console.log("tokenId: " + tokenId);
         const svg = readContracts[ContractName] && (await readContracts[ContractName].renderTokenById(tokenId));
         let accesorySVG = "";
         for (const accesory in previewAccesory) {
@@ -72,7 +73,7 @@ function Preview({
       }
     };
     updatePreview();
-  }, [previewAccesory]);
+  }, [previewAccesory, DEBUG]);
 
   const checkForAccesories = async accesory => {
     const contractAddress = readContracts[accesory] && (await readContracts[accesory].address);
@@ -83,7 +84,7 @@ function Preview({
         (await readContracts[ContractName].hasNft(contractAddress, selectedCollectible));
       return hasAccesory;
     } catch (e) {
-      console.log(e);
+      DEBUG && console.log(e);
       return false;
     }
   };
@@ -104,7 +105,7 @@ function Preview({
             setPreviewOperation(newpreviewOperation);
           }
         } catch (e) {
-          console.log(e);
+          DEBUG && console.log(e);
           return false;
         }
       }
@@ -112,11 +113,11 @@ function Preview({
     if (selectedAccesoryBalance) {
       fetchAccesoryStatue();
     }
-  }, [address, readContracts, accesories, selectedAccesoryBalance, ContractName, selectedCollectible]);
+  }, [address, DEBUG, readContracts, accesories, selectedAccesoryBalance, ContractName, selectedCollectible]);
 
   const AddPreviewAccesory = async (accesoryType, accesoryId) => {
     const hasAccesory = await checkForAccesories(accesoryType);
-    console.log("hasAccesory: ", accesoryType, hasAccesory);
+    DEBUG && console.log("hasAccesory: ", accesoryType, hasAccesory);
     if (hasAccesory === true) {
       const newpreviewOperation = { ...previewOperation };
       newpreviewOperation[accesoryType] = ["remove"];
@@ -237,7 +238,7 @@ function Preview({
               }}
               defaultValue={selectedAccesory}
               onChange={value => {
-                console.log("🤗 setSelectedAccesory:", value);
+                DEBUG && console.log("🤗 setSelectedAccesory:", value);
                 setSelectedAccesory(value);
               }}
             >
@@ -254,7 +255,7 @@ function Preview({
               onClick={async () => {
                 const priceRightNow =
                   readContracts[selectedAccesory] && (await readContracts[selectedAccesory].price());
-                console.log("🤗 priceRightNow:", priceRightNow);
+                DEBUG && console.log("🤗 priceRightNow:", priceRightNow);
                 try {
                   tx(
                     writeContracts[selectedAccesory] &&
@@ -262,7 +263,7 @@ function Preview({
                     function (transaction) {},
                   );
                 } catch (e) {
-                  console.log("mint failed", e);
+                  DEBUG && console.log("mint failed", e);
                 }
               }}
             >

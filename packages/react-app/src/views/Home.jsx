@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, Switch } from "antd";
 import React, { useState, useEffect } from "react";
 import { Address, AddressInput } from "../components";
 import { useContractReader } from "eth-hooks";
@@ -22,58 +22,80 @@ function Home({
   setSelectedCollectible,
   ContractName,
   showModal,
+  DEBUG,
 }) {
   const [transferToAddresses, setTransferToAddresses] = useState({});
 
+  const [showMineTokenOnly, setShowMineTokenOnly] = useState(false);
+
   // 🧠 This effect will update yourCollectibles by polling when your balance changes
   const balanceContract = useContractReader(readContracts, ContractName, "balanceOf", [address]);
+  const allbalanceContract = useContractReader(readContracts, ContractName, "totalSupply");
   const [balance, setBalance] = useState();
 
   const priceToMint = useContractReader(readContracts, ContractName, "price");
-  console.log("🤗 priceToMint:", priceToMint);
+  DEBUG && console.log("🤗 priceToMint:", priceToMint);
 
   useEffect(() => {
-    if (balanceContract) {
+    if (showMineTokenOnly && balanceContract) {
       setBalance(balanceContract);
     }
-  }, [balanceContract]);
+    if (!showMineTokenOnly && allbalanceContract) {
+      setBalance(allbalanceContract);
+    }
+  }, [showMineTokenOnly, allbalanceContract, balanceContract]);
 
   const [yourCollectibles, setYourCollectibles] = useState();
 
-  console.log("Home: " + address + ", Balance: " + balance);
+  DEBUG && console.log("Home: " + address + ", Balance: " + balance);
 
   useEffect(() => {
     const updateYourCollectibles = async () => {
       const collectibleUpdate = [];
       for (let tokenIndex = 0; tokenIndex < balance; ++tokenIndex) {
         try {
-          console.log("Getting token index " + tokenIndex);
-          const tokenId =
-            readContracts[ContractName] && (await readContracts[ContractName].tokenOfOwnerByIndex(address, tokenIndex));
-          console.log("tokenId: " + tokenId);
+          DEBUG && console.log("Getting token index " + tokenIndex);
+          let tokenId = 0;
+          if (showMineTokenOnly) {
+            tokenId =
+              readContracts[ContractName] &&
+              (await readContracts[ContractName].tokenOfOwnerByIndex(address, tokenIndex));
+          } else {
+            tokenId = readContracts[ContractName] && (await readContracts[ContractName].tokenByIndex(tokenIndex));
+          }
+          DEBUG && console.log("tokenId: " + tokenId);
           const tokenURI = readContracts[ContractName] && (await readContracts[ContractName].tokenURI(tokenId));
           const jsonManifestString = Buffer.from(tokenURI.substring(29), "base64").toString();
-          console.log("jsonManifestString: " + jsonManifestString);
+          DEBUG && console.log("jsonManifestString: " + jsonManifestString);
 
           try {
             const jsonManifest = JSON.parse(jsonManifestString);
-            console.log("jsonManifest: " + jsonManifest);
+            DEBUG && console.log("jsonManifest: " + jsonManifest);
             collectibleUpdate.push({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
           } catch (err) {
-            console.log(err);
+            DEBUG && console.log(err);
           }
         } catch (err) {
-          console.log(err);
+          DEBUG && console.log(err);
         }
       }
       setYourCollectibles(collectibleUpdate.reverse());
     };
     if (address && balance) updateYourCollectibles();
-  }, [ContractName, address, balance, readContracts]);
+  }, [ContractName, DEBUG, address, balance, readContracts]);
 
   return (
     <div>
-      <div style={{ maxWidth: 1800, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
+      <div
+        style={{
+          display: "flex",
+          maxWidth: 1800,
+          margin: "auto",
+          marginTop: 32,
+          paddingBottom: 32,
+          justifyContent: "center",
+        }}
+      >
         {userSigner ? (
           <Button
             type={"primary"}
@@ -82,7 +104,7 @@ function Home({
               try {
                 tx(writeContracts[ContractName].mintItem({ value: priceRightNow }), function (transaction) {});
               } catch (e) {
-                console.log("mint failed", e);
+                DEBUG && console.log("mint failed", e);
               }
             }}
           >
@@ -93,6 +115,15 @@ function Home({
             CONNECT WALLET
           </Button>
         )}
+        <div style={{ marginLeft: 32 }}>
+          {showMineTokenOnly ? "Mine " : "All "}
+          <Switch
+            checked={showMineTokenOnly}
+            onChange={() => {
+              setShowMineTokenOnly(!showMineTokenOnly);
+            }}
+          />
+        </div>
       </div>
 
       <div style={{ maxWidth: 1800, display: "flex", flexWrap: "wrap", margin: "auto" }}>

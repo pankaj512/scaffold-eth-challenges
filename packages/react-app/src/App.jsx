@@ -213,6 +213,7 @@ function App(props) {
   const [selectedAccesory, setSelectedAccesory] = useState(accesories[0]);
   const [selectedAccesoryBalance, setSelectedAccesoryBalance] = useState(accesories[0]);
   const [yourAccesories, setYourAccesories] = useState();
+  const perPage = 10;
 
   // 🧠 This effect will update yourCollectibles by polling when your balance changes
   const AccesoryBalanceContract = useContractReader(readContracts, selectedAccesory, "balanceOf", [address]);
@@ -370,6 +371,7 @@ function App(props) {
             ContractName={"YourCollectible"}
             showModal={showModal}
             DEBUG={DEBUG}
+            perPage={perPage}
           />
           <Modal
             width="70%"
@@ -410,6 +412,7 @@ function App(props) {
             address={address}
             accesories={accesories}
             DEBUG={DEBUG}
+            perPage={perPage}
           />
         </Route>
         <Route exact path="/debug">

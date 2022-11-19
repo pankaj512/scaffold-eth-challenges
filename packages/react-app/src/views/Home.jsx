@@ -1,4 +1,4 @@
-import { Button, Switch } from "antd";
+import { Button, Switch, List } from "antd";
 import React, { useState, useEffect } from "react";
 import { Address, AddressInput } from "../components";
 import { useContractReader } from "eth-hooks";
@@ -23,6 +23,7 @@ function Home({
   ContractName,
   showModal,
   DEBUG,
+  perPage,
 }) {
   const [transferToAddresses, setTransferToAddresses] = useState({});
 
@@ -35,6 +36,9 @@ function Home({
 
   const priceToMint = useContractReader(readContracts, ContractName, "price");
   DEBUG && console.log("🤗 priceToMint:", priceToMint);
+
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (showMineTokenOnly && balanceContract) {
@@ -52,7 +56,10 @@ function Home({
   useEffect(() => {
     const updateYourCollectibles = async () => {
       const collectibleUpdate = [];
-      for (let tokenIndex = 0; tokenIndex < balance; ++tokenIndex) {
+      const startIndex = (page - 1) * perPage;
+      const endIndex = Math.min(page * perPage, balance);
+      setLoading(true);
+      for (let tokenIndex = startIndex; tokenIndex < endIndex; ++tokenIndex) {
         try {
           DEBUG && console.log("Getting token index " + tokenIndex);
           let tokenId = 0;
@@ -79,10 +86,11 @@ function Home({
           DEBUG && console.log(err);
         }
       }
-      setYourCollectibles(collectibleUpdate.reverse());
+      setYourCollectibles(collectibleUpdate);
+      setLoading(false);
     };
     if (address && balance) updateYourCollectibles();
-  }, [ContractName, DEBUG, address, balance, readContracts]);
+  }, [ContractName, DEBUG, address, balance, readContracts, page, perPage, showMineTokenOnly]);
 
   return (
     <div>
@@ -126,81 +134,89 @@ function Home({
         </div>
       </div>
 
-      <div style={{ maxWidth: 1800, display: "flex", flexWrap: "wrap", margin: "auto" }}>
-        {yourCollectibles &&
-          yourCollectibles.map(nft => {
-            const id = nft.id.toNumber();
-            return (
-              <div
-                style={{
-                  minWidth: "200px",
-                  minHeight: "200px",
-                  width: "18%",
-                  height: "100%",
-                  margin: "1%",
-                  padding: "10px",
-                  border: "1px solid",
-                }}
-                key={id}
-              >
-                <div>{nft.name}</div>
-                <div>
-                  <a
-                    href={
-                      "https://opensea.io/assets/" +
-                      (readContracts && readContracts.YourCollectible && readContracts.YourCollectible.address) +
-                      "/" +
-                      nft.id
-                    }
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <img width="100%" height="100%" src={nft.image} alt={nft.description} />
-                  </a>
-                </div>
-                <div style={{ marginBottom: "10px" }}>{nft.description}</div>
-                <div>
-                  owner:{" "}
-                  <Address
-                    address={nft.owner}
-                    ensProvider={mainnetProvider}
-                    blockExplorer={blockExplorer}
-                    fontSize={16}
-                  />
-                  <AddressInput
-                    ensProvider={mainnetProvider}
-                    placeholder="transfer to address"
-                    value={transferToAddresses[id]}
-                    onChange={newValue => {
-                      const update = {};
-                      update[id] = newValue;
-                      setTransferToAddresses({ ...transferToAddresses, ...update });
-                    }}
-                  />
-                  <Button
-                    onClick={() => {
-                      tx(writeContracts[ContractName].transferFrom(address, transferToAddresses[id], id));
-                    }}
-                    s
-                  >
-                    Transfer
-                  </Button>
-                </div>
-                <div>
-                  <Button
-                    style={{ margin: "10px" }}
-                    onClick={() => {
-                      setSelectedCollectible(id);
-                      // history.push("/preview");
-                      showModal();
-                    }}
-                  >
-                    Upgrade/Degrade
-                  </Button>
-                </div>
-              </div>
-            );
-          })}
+      <div style={{ maxWidth: 1800, display: "flex", flexWrap: "wrap", margin: "auto", justifyContent: "center" }}>
+        {yourCollectibles && (
+          <List
+            grid={{
+              gutter: 16,
+            }}
+            pagination={{
+              total: balance,
+              defaultPageSize: perPage,
+              defaultCurrent: page,
+              onChange: currentPage => {
+                setPage(currentPage);
+              },
+              showTotal: (total, range) => `${range[0]}-${range[1]} of ${balance} items`,
+            }}
+            loading={loading}
+            dataSource={yourCollectibles}
+            renderItem={nft => {
+              const id = nft.id.toNumber();
+              return (
+                <List.Item key={id + "_" + nft.uri + "_" + nft.owner}>
+                  <div style={{ border: "1px solid" }}>
+                    <div>{nft.name}</div>
+                    <div>
+                      <a
+                        href={
+                          "https://opensea.io/assets/" +
+                          (readContracts && readContracts.YourCollectible && readContracts.YourCollectible.address) +
+                          "/" +
+                          nft.id
+                        }
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <img width="100%" height="100%" src={nft.image} alt={nft.description} />
+                      </a>
+                    </div>
+                    <div style={{ marginBottom: "10px" }}>{nft.description}</div>
+                    <div>
+                      owner:{" "}
+                      <Address
+                        address={nft.owner}
+                        ensProvider={mainnetProvider}
+                        blockExplorer={blockExplorer}
+                        fontSize={16}
+                      />
+                      <AddressInput
+                        ensProvider={mainnetProvider}
+                        placeholder="transfer to address"
+                        value={transferToAddresses[id]}
+                        onChange={newValue => {
+                          const update = {};
+                          update[id] = newValue;
+                          setTransferToAddresses({ ...transferToAddresses, ...update });
+                        }}
+                      />
+                      <Button
+                        onClick={() => {
+                          tx(writeContracts[ContractName].transferFrom(address, transferToAddresses[id], id));
+                        }}
+                        s
+                      >
+                        Transfer
+                      </Button>
+                    </div>
+                    <div>
+                      <Button
+                        style={{ margin: "10px" }}
+                        onClick={() => {
+                          setSelectedCollectible(id);
+                          // history.push("/preview");
+                          showModal();
+                        }}
+                      >
+                        Upgrade/Degrade
+                      </Button>
+                    </div>
+                  </div>
+                </List.Item>
+              );
+            }}
+          />
+        )}
       </div>
     </div>
   );

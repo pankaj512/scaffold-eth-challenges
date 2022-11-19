@@ -1,6 +1,7 @@
-import { Button, Select, Switch } from "antd";
+import { Button, Select, Switch, List } from "antd";
 import React, { useState, useEffect } from "react";
 import { Address, AddressInput } from "../components";
+import { useContractReader } from "eth-hooks";
 import { ethers } from "ethers";
 
 /**
@@ -20,6 +21,7 @@ function Accesories({
   address,
   accesories,
   DEBUG,
+  perPage,
 }) {
   DEBUG && console.log("Accesories: ", accesories);
   const [transferToAddresses, setTransferToAddresses] = useState({});
@@ -30,6 +32,8 @@ function Accesories({
   const [priceToMint, setPriceToMint] = useState();
 
   const [showMineTokenOnly, setShowMineTokenOnly] = useState(false);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPrice = async () => {
@@ -44,55 +48,62 @@ function Accesories({
   const [yourCollectibles, setYourCollectibles] = useState();
   DEBUG && console.log("🤗 priceToMint:", priceToMint);
 
+  const balanceContract = useContractReader(readContracts, selectedAccesory, "balanceOf", [address]);
+  const allbalanceContract = useContractReader(readContracts, selectedAccesory, "totalSupply");
+  const [balance, setBalance] = useState();
+
+  useEffect(() => {
+    if (showMineTokenOnly && balanceContract) {
+      setBalance(balanceContract);
+    }
+    if (!showMineTokenOnly && allbalanceContract) {
+      setBalance(allbalanceContract);
+    }
+  }, [showMineTokenOnly, allbalanceContract, balanceContract]);
+
+  DEBUG && console.log("Accessories ", selectedAccesory, " Balance: ", balance);
+
   useEffect(() => {
     const updateYourCollectibles = async () => {
       const collectibleUpdate = [];
-      for (let accesory = 0; accesory < accesories.length; accesory++) {
-        let balance = 0;
-        if (showMineTokenOnly) {
-          balance =
-            readContracts[accesories[accesory]] && (await readContracts[accesories[accesory]].balanceOf(address));
-        } else {
-          balance = readContracts[accesories[accesory]] && (await readContracts[accesories[accesory]].totalSupply());
-        }
-        DEBUG && console.log("Accessories ", accesories[accesory], " Balance: ", balance);
+      setLoading(true);
+      const startIndex = (page - 1) * perPage;
+      const endIndex = Math.min(page * perPage, balance);
 
-        for (let tokenIndex = 0; tokenIndex < balance; ++tokenIndex) {
+      for (let tokenIndex = startIndex; tokenIndex < endIndex; ++tokenIndex) {
+        try {
+          DEBUG && console.log("Getting token index " + tokenIndex);
+          let tokenId = 0;
+          if (showMineTokenOnly) {
+            tokenId =
+              readContracts[selectedAccesory] &&
+              (await readContracts[selectedAccesory].tokenOfOwnerByIndex(address, tokenIndex));
+          } else {
+            tokenId =
+              readContracts[selectedAccesory] && (await readContracts[selectedAccesory].tokenByIndex(tokenIndex));
+          }
+          DEBUG && console.log("tokenId: " + tokenId);
+          const tokenURI = readContracts[selectedAccesory] && (await readContracts[selectedAccesory].tokenURI(tokenId));
+          DEBUG && console.log("tokenURI: " + tokenURI);
+          const jsonManifestString = Buffer.from(tokenURI.substring(29), "base64").toString();
+          DEBUG && console.log("jsonManifestString: " + jsonManifestString);
+
           try {
-            DEBUG && console.log("Getting token index " + tokenIndex);
-            let tokenId = 0;
-            if (showMineTokenOnly) {
-              tokenId =
-                readContracts[accesories[accesory]] &&
-                (await readContracts[accesories[accesory]].tokenOfOwnerByIndex(address, tokenIndex));
-            } else {
-              tokenId =
-                readContracts[accesories[accesory]] &&
-                (await readContracts[accesories[accesory]].tokenByIndex(tokenIndex));
-            }
-            DEBUG && console.log("tokenId: " + tokenId);
-            const tokenURI =
-              readContracts[accesories[accesory]] && (await readContracts[accesories[accesory]].tokenURI(tokenId));
-            DEBUG && console.log("tokenURI: " + tokenURI);
-            const jsonManifestString = Buffer.from(tokenURI.substring(29), "base64").toString();
-            DEBUG && console.log("jsonManifestString: " + jsonManifestString);
-
-            try {
-              const jsonManifest = JSON.parse(jsonManifestString);
-              DEBUG && console.log("jsonManifest: " + jsonManifest);
-              collectibleUpdate.push({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
-            } catch (err) {
-              DEBUG && console.log(err);
-            }
+            const jsonManifest = JSON.parse(jsonManifestString);
+            DEBUG && console.log("jsonManifest: " + jsonManifest);
+            collectibleUpdate.push({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
           } catch (err) {
             DEBUG && console.log(err);
           }
+        } catch (err) {
+          DEBUG && console.log(err);
         }
       }
-      setYourCollectibles(collectibleUpdate.reverse());
+      setYourCollectibles(collectibleUpdate);
+      setLoading(false);
     };
     if (address) updateYourCollectibles();
-  }, [accesories, DEBUG, address, readContracts, showMineTokenOnly]);
+  }, [accesories, DEBUG, address, readContracts, showMineTokenOnly, page, perPage, selectedAccesory, balance]);
 
   return (
     <div>
@@ -161,140 +172,81 @@ function Accesories({
       </div>
 
       <div style={{ maxWidth: 1800, display: "flex", flexWrap: "wrap", margin: "auto" }}>
-        {yourCollectibles &&
-          yourCollectibles.map(nft => {
-            const id = nft.id.toNumber();
-            return (
-              <div
-                style={{
-                  minWidth: "200px",
-                  minHeight: "200px",
-                  width: "100px",
-                  height: "100%",
-                  margin: "1%",
-                  padding: "10px",
-                  border: "1px solid",
-                }}
-              >
-                <div>{nft.name}</div>
-                <div>
-                  <a
-                    href={
-                      "https://opensea.io/assets/" +
-                      (readContracts && readContracts[selectedAccesory] && readContracts[selectedAccesory].address) +
-                      "/" +
-                      nft.id
-                    }
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <img width="100%" height="100%" src={nft.image} alt={nft.description} />
-                  </a>
-                </div>
-                <div style={{ marginBottom: "10px" }}>{nft.description}</div>
-                <div>
-                  owner:{" "}
-                  <Address
-                    address={nft.owner}
-                    ensProvider={mainnetProvider}
-                    blockExplorer={blockExplorer}
-                    fontSize={16}
-                  />
-                  <AddressInput
-                    ensProvider={mainnetProvider}
-                    placeholder="transfer to address"
-                    value={transferToAddresses[id]}
-                    onChange={newValue => {
-                      const update = {};
-                      update[id] = newValue;
-                      setTransferToAddresses({ ...transferToAddresses, ...update });
-                    }}
-                  />
-                  <Button
-                    onClick={() => {
-                      tx(
-                        writeContracts[selectedAccesory] &&
-                          writeContracts[selectedAccesory].transferFrom(address, transferToAddresses[id], id),
-                      );
-                    }}
-                  >
-                    Transfer
-                  </Button>
-                </div>
-              </div>
-            );
-          })}
-      </div>
-
-      {/* <div style={{ margin: "auto", paddingBottom: 256 }}>
-        <List
-          bordered
-          dataSource={yourCollectibles}
-          renderItem={item => {
-            const id = item.id.toNumber();
-
-            DEBUG && console.log("IMAGE", item.image);
-
-            return (
-              <List.Item key={id + "_" + item.uri + "_" + item.owner}>
-                <div style={{ display: "inline", width: "400px" }}>
-                  <div>
-                    <Card
-                      title={
-                        <div>
-                          <span style={{ fontSize: 18, marginRight: 8 }}>{item.name}</span>
-                        </div>
-                      }
-                    >
+        {yourCollectibles && (
+          <List
+            grid={{
+              gutter: 16,
+            }}
+            pagination={{
+              total: balance,
+              defaultPageSize: perPage,
+              defaultCurrent: page,
+              onChange: currentPage => {
+                setPage(currentPage);
+              },
+              showTotal: (total, range) => `${range[0]}-${range[1]} of ${balance} items`,
+            }}
+            loading={loading}
+            dataSource={yourCollectibles}
+            renderItem={nft => {
+              const id = nft.id.toNumber();
+              return (
+                <List.Item key={id + "_" + nft.uri + "_" + nft.owner}>
+                  <div style={{ border: "1px solid" }}>
+                    <div>{nft.name}</div>
+                    <div>
                       <a
                         href={
                           "https://opensea.io/assets/" +
-                          (readContracts && readContracts.YourCollectible && readContracts.YourCollectible.address) +
+                          (readContracts &&
+                            readContracts[selectedAccesory] &&
+                            readContracts[selectedAccesory].address) +
                           "/" +
-                          item.id
+                          nft.id
                         }
                         target="_blank"
                         rel="noreferrer"
                       >
-                        <img src={item.image} alt={item.description} />
+                        <img width="100%" height="100%" src={nft.image} alt={nft.description} />
                       </a>
-                      <div style={{ display: "inline" }}>{item.description}</div>
-                    </Card>
+                    </div>
+                    <div style={{ marginBottom: "10px" }}>{nft.description}</div>
+                    <div>
+                      owner:{" "}
+                      <Address
+                        address={nft.owner}
+                        ensProvider={mainnetProvider}
+                        blockExplorer={blockExplorer}
+                        fontSize={16}
+                      />
+                      <AddressInput
+                        ensProvider={mainnetProvider}
+                        placeholder="transfer to address"
+                        value={transferToAddresses[id]}
+                        onChange={newValue => {
+                          const update = {};
+                          update[id] = newValue;
+                          setTransferToAddresses({ ...transferToAddresses, ...update });
+                        }}
+                      />
+                      <Button
+                        onClick={() => {
+                          tx(
+                            writeContracts[selectedAccesory] &&
+                              writeContracts[selectedAccesory].transferFrom(address, transferToAddresses[id], id),
+                          );
+                        }}
+                      >
+                        Transfer
+                      </Button>
+                    </div>
                   </div>
-
-                  <div>
-                    owner:{" "}
-                    <Address
-                      address={item.owner}
-                      ensProvider={mainnetProvider}
-                      blockExplorer={blockExplorer}
-                      fontSize={16}
-                    />
-                    <AddressInput
-                      ensProvider={mainnetProvider}
-                      placeholder="transfer to address"
-                      value={transferToAddresses[id]}
-                      onChange={newValue => {
-                        const update = {};
-                        update[id] = newValue;
-                        setTransferToAddresses({ ...transferToAddresses, ...update });
-                      }}
-                    />
-                    <Button
-                      onClick={() => {
-                        DEBUG && console.log("writeContracts", writeContracts);
-                        tx(writeContracts.YourCollectible.transferFrom(address, transferToAddresses[id], id));
-                      }}
-                    >
-                      Transfer
-                    </Button>
-                  </div>
-                </div>
-              </List.Item>
-            );
-          }}
-        />
-      </div> */}
+                </List.Item>
+              );
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 }

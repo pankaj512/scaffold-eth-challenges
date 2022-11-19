@@ -96,6 +96,7 @@ library Perch2Library {
                     "            fill: #1b2b30;",
                     "            stroke-width: 4px;",
                     "        }",
+                    "    </style>",
                     "</defs>"
                 )
             );
@@ -324,7 +325,7 @@ library Perch2Library {
                     "    .cls-perch-20 {",
                     "      fill: #fb8525;",
                     "    }",
-                    "  </style>",
+                    "  </>",
                     "</defs>"
                 )
             );

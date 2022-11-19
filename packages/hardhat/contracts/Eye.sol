@@ -101,7 +101,7 @@ contract Eye is ERC721Enumerable {
     {
         string memory svg = string(
             abi.encodePacked(
-                '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 880 880">',
+                '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300" viewBox="0 0 880 880">',
                 renderTokenById(id),
                 "</svg>"
             )

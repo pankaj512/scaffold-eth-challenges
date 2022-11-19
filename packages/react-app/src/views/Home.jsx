@@ -58,7 +58,6 @@ function Home({
       const collectibleUpdate = [];
       const startIndex = (page - 1) * perPage;
       const endIndex = Math.min(page * perPage, balance);
-      setLoading(true);
       for (let tokenIndex = startIndex; tokenIndex < endIndex; ++tokenIndex) {
         try {
           DEBUG && console.log("Getting token index " + tokenIndex);
@@ -87,7 +86,6 @@ function Home({
         }
       }
       setYourCollectibles(collectibleUpdate);
-      setLoading(false);
     };
     if (address && balance) updateYourCollectibles();
   }, [ContractName, DEBUG, address, balance, readContracts, page, perPage, showMineTokenOnly]);
@@ -149,13 +147,12 @@ function Home({
               },
               showTotal: (total, range) => `${range[0]}-${range[1]} of ${balance} items`,
             }}
-            loading={loading}
             dataSource={yourCollectibles}
             renderItem={nft => {
               const id = nft.id.toNumber();
               return (
                 <List.Item key={id + "_" + nft.uri + "_" + nft.owner}>
-                  <div style={{ border: "1px solid" }}>
+                  <div style={{ width: "80%", height: "50%", border: "1px solid" }}>
                     <div>{nft.name}</div>
                     <div>
                       <a

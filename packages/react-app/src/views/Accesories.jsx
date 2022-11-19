@@ -1,7 +1,6 @@
 import { Button, Select, Switch, List } from "antd";
 import React, { useState, useEffect } from "react";
 import { Address, AddressInput } from "../components";
-import { useContractReader } from "eth-hooks";
 import { ethers } from "ethers";
 
 /**
@@ -48,25 +47,30 @@ function Accesories({
   const [yourCollectibles, setYourCollectibles] = useState();
   DEBUG && console.log("🤗 priceToMint:", priceToMint);
 
-  const balanceContract = useContractReader(readContracts, selectedAccesory, "balanceOf", [address]);
-  const allbalanceContract = useContractReader(readContracts, selectedAccesory, "totalSupply");
-  const [balance, setBalance] = useState();
+  const [balance, setBalance] = useState(0);
 
   useEffect(() => {
-    if (showMineTokenOnly && balanceContract) {
-      setBalance(balanceContract);
-    }
-    if (!showMineTokenOnly && allbalanceContract) {
-      setBalance(allbalanceContract);
-    }
-  }, [showMineTokenOnly, allbalanceContract, balanceContract]);
+    const updateBalance = async () => {
+      const balanceContract =
+        readContracts[selectedAccesory] && (await readContracts[selectedAccesory].balanceOf(address));
+      const allbalanceContract =
+        readContracts[selectedAccesory] && (await readContracts[selectedAccesory].totalSupply());
+      if (showMineTokenOnly && balanceContract) {
+        setBalance(balanceContract);
+      }
+      if (!showMineTokenOnly && allbalanceContract) {
+        setBalance(allbalanceContract);
+      }
+    };
+    updateBalance();
+  }, [showMineTokenOnly, readContracts, selectedAccesory, address]);
 
   DEBUG && console.log("Accessories ", selectedAccesory, " Balance: ", balance);
 
   useEffect(() => {
     const updateYourCollectibles = async () => {
       const collectibleUpdate = [];
-      setLoading(true);
+
       const startIndex = (page - 1) * perPage;
       const endIndex = Math.min(page * perPage, balance);
 
@@ -100,9 +104,12 @@ function Accesories({
         }
       }
       setYourCollectibles(collectibleUpdate);
-      setLoading(false);
     };
-    if (address) updateYourCollectibles();
+    if (address) {
+      setLoading(true);
+      updateYourCollectibles();
+      setLoading(false);
+    }
   }, [accesories, DEBUG, address, readContracts, showMineTokenOnly, page, perPage, selectedAccesory, balance]);
 
   return (
@@ -127,6 +134,7 @@ function Accesories({
               defaultValue={selectedAccesory}
               onChange={value => {
                 DEBUG && console.log("🤗 setSelectedAccesory:", value);
+                setBalance(0);
                 setSelectedAccesory(value);
               }}
             >
@@ -172,7 +180,7 @@ function Accesories({
       </div>
 
       <div style={{ maxWidth: 1800, display: "flex", flexWrap: "wrap", margin: "auto" }}>
-        {yourCollectibles && (
+        {
           <List
             grid={{
               gutter: 16,
@@ -192,7 +200,7 @@ function Accesories({
               const id = nft.id.toNumber();
               return (
                 <List.Item key={id + "_" + nft.uri + "_" + nft.owner}>
-                  <div style={{ border: "1px solid" }}>
+                  <div style={{ width: "70%", height: "40%", border: "1px solid" }}>
                     <div>{nft.name}</div>
                     <div>
                       <a
@@ -245,7 +253,7 @@ function Accesories({
               );
             }}
           />
-        )}
+        }
       </div>
     </div>
   );

@@ -24,6 +24,7 @@ function Home({
   showModal,
   DEBUG,
   perPage,
+  gasPrice,
 }) {
   const [transferToAddresses, setTransferToAddresses] = useState({});
 
@@ -108,7 +109,11 @@ function Home({
             onClick={async () => {
               const priceRightNow = readContracts[ContractName] && (await readContracts[ContractName].price());
               try {
-                tx(writeContracts[ContractName].mintItem({ value: priceRightNow }), function (transaction) {});
+                const mintTx = tx(
+                  writeContracts[ContractName].mintItem({ value: priceRightNow }),
+                  function (transaction) {},
+                );
+                console.log(mintTx);
               } catch (e) {
                 DEBUG && console.log("mint failed", e);
               }
@@ -200,7 +205,7 @@ function Home({
                       <Button
                         style={{ margin: "10px" }}
                         onClick={() => {
-                          setSelectedCollectible(id);
+                          setSelectedCollectible(nft.id);
                           // history.push("/preview");
                           showModal();
                         }}

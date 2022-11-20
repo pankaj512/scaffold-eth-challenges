@@ -21,6 +21,7 @@ function Accesories({
   accesories,
   DEBUG,
   perPage,
+  gasPrice,
 }) {
   DEBUG && console.log("Accesories: ", accesories);
   const [transferToAddresses, setTransferToAddresses] = useState({});

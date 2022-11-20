@@ -9,132 +9,148 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   const { deployer } = await getNamedAccounts();
   const chainId = await getChainId();
 
-  // await deploy("StyleLibrary", {
-  //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
-  //   from: deployer,
-  //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
-  //   log: true,
-  //   waitConfirmations: 5,
-  // });
+  await deploy("EyeLibrary", {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    log: true,
+    waitConfirmations: 5,
+  });
 
-  // await deploy("BodyLibrary", {
-  //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
-  //   from: deployer,
-  //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
-  //   log: true,
-  //   waitConfirmations: 5,
-  // });
+  await deploy("HeadLibrary", {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    log: true,
+    waitConfirmations: 5,
+  });
 
-  // await deploy("EyeLibrary", {
-  //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
-  //   from: deployer,
-  //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
-  //   log: true,
-  //   waitConfirmations: 5,
-  // });
+  await deploy("NeckLibrary", {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    log: true,
+    waitConfirmations: 5,
+  });
 
-  // await deploy("HeadLibrary", {
-  //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
-  //   from: deployer,
-  //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
-  //   log: true,
-  //   waitConfirmations: 5,
-  // });
+  await deploy("PerchLibrary", {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    log: true,
+    waitConfirmations: 5,
+  });
 
-  // await deploy("NeckLibrary", {
-  //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
-  //   from: deployer,
-  //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
-  //   log: true,
-  //   waitConfirmations: 5,
-  // });
+  await deploy("Perch2Library", {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    log: true,
+    waitConfirmations: 5,
+  });
 
-  // await deploy("PerchLibrary", {
-  //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
-  //   from: deployer,
-  //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
-  //   log: true,
-  //   waitConfirmations: 5,
-  // });
+  await deploy("BackgroundLibrary", {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    log: true,
+    waitConfirmations: 5,
+  });
 
-  // await deploy("Perch2Library", {
-  //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
-  //   from: deployer,
-  //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
-  //   log: true,
-  //   waitConfirmations: 5,
-  // });
+  await deploy("Background2Library", {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    log: true,
+    waitConfirmations: 5,
+  });
 
-  // await deploy("BackgroundLibrary", {
-  //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
-  //   from: deployer,
-  //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
-  //   log: true,
-  //   waitConfirmations: 5,
-  // });
+  await deploy("StyleLibrary", {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    log: true,
+    waitConfirmations: 5,
+  });
 
-  // await deploy("Background2Library", {
-  //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
-  //   from: deployer,
-  //   // args: [ "Hello", ethers.utils.parseEther("1.5") ],
-  //   log: true,
-  //   waitConfirmations: 5,
-  // });
+  await deploy("BodyLibrary", {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    log: true,
+    waitConfirmations: 5,
+  });
 
-  const eye = await deploy("Eye", {
+  const EyeLibrary = await ethers.getContract("EyeLibrary", deployer);
+  const HeadLibrary = await ethers.getContract("HeadLibrary", deployer);
+  const NeckLibrary = await ethers.getContract("NeckLibrary", deployer);
+  const PerchLibrary = await ethers.getContract("PerchLibrary", deployer);
+  const Perch2Library = await ethers.getContract("Perch2Library", deployer);
+  const BackgroundLibrary = await ethers.getContract(
+    "BackgroundLibrary",
+    deployer
+  );
+  const Background2Library = await ethers.getContract(
+    "Background2Library",
+    deployer
+  );
+  const StyleLibrary = await ethers.getContract("StyleLibrary", deployer);
+  const BodyLibrary = await ethers.getContract("BodyLibrary", deployer);
+
+  const Eye = await deploy("Eye", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
     // args: [ "Hello", ethers.utils.parseEther("1.5") ],
     log: true,
     waitConfirmations: 5,
     libraries: {
-      EyeLibrary: "0x1B08f7844C9f2baF806dC761F5C9a0DB1fE086e5",
+      EyeLibrary: EyeLibrary.address,
     },
   });
 
-  const head = await deploy("Head", {
+  const Head = await deploy("Head", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
     // args: [ "Hello", ethers.utils.parseEther("1.5") ],
     log: true,
     waitConfirmations: 5,
     libraries: {
-      HeadLibrary: "0x9cDad0fAB5cbDf14C76172a3A8BbC9D98c056ef6",
+      HeadLibrary: HeadLibrary.address,
     },
   });
 
-  const neck = await deploy("Neck", {
+  const Neck = await deploy("Neck", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
     // args: [ "Hello", ethers.utils.parseEther("1.5") ],
     log: true,
     waitConfirmations: 5,
     libraries: {
-      NeckLibrary: "0x13D30F3A6C6AD7162233ff76F5b48C8EE35a9CD0",
+      NeckLibrary: NeckLibrary.address,
     },
   });
 
-  const perch = await deploy("Perch", {
+  const Perch = await deploy("Perch", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
     // args: [ "Hello", ethers.utils.parseEther("1.5") ],
     log: true,
     waitConfirmations: 5,
     libraries: {
-      PerchLibrary: "0x5F6589b1Dcb70a4C72eEC866742d846fFf62943C",
-      Perch2Library: "0x8776dFB2F89592A0c6801c9884F53E83e82d2171",
+      PerchLibrary: PerchLibrary.address,
+      Perch2Library: Perch2Library.address,
     },
   });
 
-  const background = await deploy("Background", {
+  const Background = await deploy("Background", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
     // args: [ "Hello", ethers.utils.parseEther("1.5") ],
     log: true,
     waitConfirmations: 5,
     libraries: {
-      BackgroundLibrary: "0x786B792C2C3027bee6497E1DE8276E006Ec74557",
-      Background2Library: "0x324151e8AF681Dccf581d362f76f583a6A63BD8d",
+      BackgroundLibrary: BackgroundLibrary.address,
+      Background2Library: Background2Library.address,
     },
   });
 
@@ -145,8 +161,8 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     log: true,
     waitConfirmations: 5,
     libraries: {
-      StyleLibrary: "0x3A3378231675B4830fE90FC6623fB1ccb8A130D3",
-      BodyLibrary: "0xEC4Ea5FBe4d6fBe432d524e49ce9AD50cc1a786D",
+      StyleLibrary: StyleLibrary.address,
+      BodyLibrary: BodyLibrary.address,
     },
   });
 
@@ -154,11 +170,11 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   const YourCollectible = await ethers.getContract("YourCollectible", deployer);
   // await YourCollectible.setPurpose("Hello");
 
-  await YourCollectible.addNft(eye.address);
-  await YourCollectible.addNft(head.address);
-  await YourCollectible.addNft(neck.address);
-  await YourCollectible.addNft(perch.address);
-  await YourCollectible.addNft(background.address);
+  await YourCollectible.addNft(Eye.address);
+  await YourCollectible.addNft(Head.address);
+  await YourCollectible.addNft(Neck.address);
+  await YourCollectible.addNft(Perch.address);
+  await YourCollectible.addNft(Background.address);
 
   // // To take ownership of YourCollectible using the ownable library uncomment next line and add the
   // // address you want to be the owner.
@@ -201,14 +217,27 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
 
   // Verify your contracts with Etherscan
   // You don't want to verify on localhost
-  /*
-  if (chainId !== localChainId) {
-    await run("verify:verify", {
-      address: YourCollectible.address,
-      contract: "contracts/YourCollectible.sol:YourCollectible",
-      contractArguments: [],
-    });
-  }
-  */
+
+  // if (chainId !== localChainId) {
+  //   await run("verify:verify", {
+  //     address: YourCollectible.address,
+  //     contract: "contracts/YourCollectible.sol:YourCollectible",
+  //     contractArguments: [],
+  //   });
+  // }
 };
-module.exports.tags = ["YourCollectible"];
+module.exports.tags = [
+  "EyeLibrary",
+  "HeadLibrary",
+  "NeckLibrary",
+  "PerchLibrary",
+  "Perch2Library",
+  "BackgroundLibrary",
+  "Background2Library",
+  "Eye",
+  "Head",
+  "Neck",
+  "Perch",
+  "Background",
+  "YourCollectible",
+];

@@ -26,6 +26,7 @@ function Preview({
   yourCollectibleSVG,
   selectedAccesoryBalance,
   DEBUG,
+  gasPrice,
 }) {
   const [transferToAddresses, setTransferToAddresses] = useState({});
   const [yourPreviewSVG, setPreviewSVG] = useState();
@@ -34,6 +35,7 @@ function Preview({
   // 🧠 This effect will update Accesory by polling when your balance changes
   const [priceToMint, setPriceToMint] = useState();
 
+  const initialPreview = {};
   const [previewOperation, setPreviewOperation] = useState();
 
   useEffect(() => {
@@ -55,25 +57,23 @@ function Preview({
 
   useEffect(() => {
     const updatePreview = async () => {
-      if (yourCollectibleSVG) {
-        const tokenId = selectedCollectible;
-        DEBUG && console.log("tokenId: " + tokenId);
-        const svg = readContracts[ContractName] && (await readContracts[ContractName].renderTokenById(tokenId));
-        let accesorySVG = "";
-        for (const accesory in previewAccesory) {
-          accesorySVG +=
-            readContracts[accesory] && (await readContracts[accesory].renderTokenById(previewAccesory[accesory]));
-        }
-        const newPreviewSVG =
-          '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300" viewBox="0 0 880 880">' +
-          accesorySVG +
-          svg +
-          "</svg>";
-        setPreviewSVG(newPreviewSVG);
+      const tokenId = selectedCollectible;
+      DEBUG && console.log("tokenId: " + tokenId);
+      const svg = readContracts[ContractName] && (await readContracts[ContractName].renderTokenById(tokenId));
+      let accesorySVG = "";
+      for (const accesory in previewAccesory) {
+        accesorySVG +=
+          readContracts[accesory] && (await readContracts[accesory].renderTokenById(previewAccesory[accesory]));
       }
+      const newPreviewSVG =
+        '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300" viewBox="0 0 880 880">' +
+        accesorySVG +
+        svg +
+        "</svg>";
+      setPreviewSVG(newPreviewSVG);
     };
     updatePreview();
-  }, [previewAccesory, DEBUG]);
+  }, [selectedCollectible, previewAccesory, DEBUG]);
 
   const checkForAccesories = async accesory => {
     const contractAddress = readContracts[accesory] && (await readContracts[accesory].address);
@@ -91,6 +91,7 @@ function Preview({
 
   useEffect(() => {
     const fetchAccesoryStatue = async () => {
+      const newpreviewOperation = {};
       for (let accesory = 0; accesory < accesories.length; accesory++) {
         const accesoryType = accesories[accesory];
         const contractAddress = readContracts[accesoryType] && (await readContracts[accesoryType].address);
@@ -100,19 +101,16 @@ function Preview({
             selectedCollectible &&
             (await readContracts[ContractName].hasNft(contractAddress, selectedCollectible));
           if (hasAccesory === true) {
-            const newpreviewOperation = { ...previewOperation };
             newpreviewOperation[accesoryType] = ["remove"];
-            setPreviewOperation(newpreviewOperation);
           }
         } catch (e) {
           DEBUG && console.log(e);
           return false;
         }
       }
+      setPreviewOperation(newpreviewOperation);
     };
-    if (selectedAccesoryBalance) {
-      fetchAccesoryStatue();
-    }
+    fetchAccesoryStatue();
   }, [address, DEBUG, readContracts, accesories, selectedAccesoryBalance, ContractName, selectedCollectible]);
 
   const AddPreviewAccesory = async (accesoryType, accesoryId) => {

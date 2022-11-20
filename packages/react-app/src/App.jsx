@@ -287,9 +287,11 @@ function App(props) {
   };
   const handleOk = () => {
     setIsModalOpen(false);
+    setYourCollectibleSVG();
   };
   const handleCancel = () => {
     setIsModalOpen(false);
+    setYourCollectibleSVG();
   };
 
   const [debugAccessorySelected, setDebugAccessorySelected] = useState(accesories[0]);
@@ -372,6 +374,7 @@ function App(props) {
             showModal={showModal}
             DEBUG={DEBUG}
             perPage={perPage}
+            gasPrice={gasPrice}
           />
           <Modal
             width="70%"
@@ -397,6 +400,7 @@ function App(props) {
               yourCollectibleSVG={yourCollectibleSVG}
               selectedAccesoryBalance={selectedAccesoryBalance}
               DEBUG={DEBUG}
+              gasPrice={gasPrice}
             />
           </Modal>
         </Route>
@@ -413,6 +417,7 @@ function App(props) {
             accesories={accesories}
             DEBUG={DEBUG}
             perPage={perPage}
+            gasPrice={gasPrice}
           />
         </Route>
         <Route exact path="/debug">

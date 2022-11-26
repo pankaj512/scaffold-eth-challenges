@@ -257,7 +257,7 @@ function Preview({
                 try {
                   tx(
                     writeContracts[selectedAccesory] &&
-                      writeContracts[selectedAccesory].mintItem({ value: priceRightNow }),
+                      writeContracts[selectedAccesory].mintItem({ value: priceRightNow, gasLimit: 500000 }),
                     function (transaction) {},
                   );
                 } catch (e) {

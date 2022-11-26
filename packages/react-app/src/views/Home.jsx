@@ -110,7 +110,7 @@ function Home({
               const priceRightNow = readContracts[ContractName] && (await readContracts[ContractName].price());
               try {
                 const mintTx = tx(
-                  writeContracts[ContractName].mintItem({ value: priceRightNow }),
+                  writeContracts[ContractName].mintItem({ value: priceRightNow, gasLimit: 500000 }),
                   function (transaction) {},
                 );
                 console.log(mintTx);

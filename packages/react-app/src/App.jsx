@@ -213,6 +213,7 @@ function App(props) {
   const [selectedAccesory, setSelectedAccesory] = useState(accesories[0]);
   const [selectedAccesoryBalance, setSelectedAccesoryBalance] = useState(accesories[0]);
   const [yourAccesories, setYourAccesories] = useState();
+  const [previewAccesory, setPreviewAccesory] = useState({});
   const perPage = 10;
 
   // 🧠 This effect will update yourCollectibles by polling when your balance changes
@@ -287,11 +288,11 @@ function App(props) {
   };
   const handleOk = () => {
     setIsModalOpen(false);
-    setYourCollectibleSVG();
+    setPreviewAccesory({});
   };
   const handleCancel = () => {
     setIsModalOpen(false);
-    setYourCollectibleSVG();
+    setPreviewAccesory({});
   };
 
   const [debugAccessorySelected, setDebugAccessorySelected] = useState(accesories[0]);
@@ -399,6 +400,8 @@ function App(props) {
               yourAccesories={yourAccesories}
               yourCollectibleSVG={yourCollectibleSVG}
               selectedAccesoryBalance={selectedAccesoryBalance}
+              previewAccesory={previewAccesory}
+              setPreviewAccesory={setPreviewAccesory}
               DEBUG={DEBUG}
               gasPrice={gasPrice}
             />

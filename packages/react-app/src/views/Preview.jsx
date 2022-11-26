@@ -25,12 +25,13 @@ function Preview({
   yourAccesories,
   yourCollectibleSVG,
   selectedAccesoryBalance,
+  previewAccesory,
+  setPreviewAccesory,
   DEBUG,
   gasPrice,
 }) {
   const [transferToAddresses, setTransferToAddresses] = useState({});
   const [yourPreviewSVG, setPreviewSVG] = useState();
-  const [previewAccesory, setPreviewAccesory] = useState({});
 
   // 🧠 This effect will update Accesory by polling when your balance changes
   const [priceToMint, setPriceToMint] = useState();
@@ -54,6 +55,7 @@ function Preview({
   DEBUG && console.log("🤗 priceToMint:", priceToMint);
   DEBUG && console.log("selected Accesory: ", selectedAccesory);
   DEBUG && console.log("previewOperation: ", previewOperation);
+  DEBUG && console.log("previewAccesory: ", previewAccesory);
 
   useEffect(() => {
     const updatePreview = async () => {
@@ -111,7 +113,7 @@ function Preview({
       setPreviewOperation(newpreviewOperation);
     };
     fetchAccesoryStatue();
-  }, [address, DEBUG, readContracts, accesories, selectedAccesoryBalance, ContractName, selectedCollectible]);
+  }, [selectedAccesoryBalance, selectedCollectible]);
 
   const AddPreviewAccesory = async (accesoryType, accesoryId) => {
     const hasAccesory = await checkForAccesories(accesoryType);

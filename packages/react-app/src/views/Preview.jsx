@@ -110,6 +110,9 @@ function Preview({
           return false;
         }
       }
+      for (const accesory in previewAccesory) {
+        newpreviewOperation[accesory] = ["wear", "stop"];
+      }
       setPreviewOperation(newpreviewOperation);
     };
     fetchAccesoryStatue();
@@ -129,8 +132,8 @@ function Preview({
       const newpreviewOperation = { ...previewOperation };
       newpreviewOperation[accesoryType] = ["wear", "stop"];
 
-      setPreviewAccesory(newPreviewAccesory);
       setPreviewOperation(newpreviewOperation);
+      setPreviewAccesory(newPreviewAccesory);
     }
   };
 
@@ -141,8 +144,8 @@ function Preview({
     const newpreviewOperation = { ...previewOperation };
     newpreviewOperation[accesoryType] = [];
 
-    setPreviewAccesory(newPreviewAccesory);
     setPreviewOperation(newpreviewOperation);
+    setPreviewAccesory(newPreviewAccesory);
   };
 
   const ExecutePreviewOperation = (operationType, accesoryType) => {

@@ -622,7 +622,7 @@ library Perch2Library {
                     "      fill: url(#New_Gradient_Swatch_1-2);",
                     "    }",
                     "    .cls-perch-13 {",
-                    "      fill: url(#linear-gradient);",
+                    "      fill: url(#linear-perch-gradient);",
                     "    }"
                 )
             );
@@ -687,7 +687,7 @@ library Perch2Library {
             perch = string(
                 abi.encodePacked(
                     perch,
-                    '    id="linear-gradient"',
+                    '    id="linear-perch-gradient"',
                     '    x1="249.4"',
                     '    y1="723.29"',
                     '    x2="609.55"',

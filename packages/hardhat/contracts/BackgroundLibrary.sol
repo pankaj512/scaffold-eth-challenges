@@ -19,7 +19,7 @@ library BackgroundLibrary {
                 abi.encodePacked(
                     "<defs>"
                     "   <radialGradient",
-                    '       id="radial-gradient-0"',
+                    '       id="radial-bg-gradient-0"',
                     '       cx="868.1"',
                     '       cy="-2326.18"',
                     '       r="559.49"',
@@ -31,7 +31,7 @@ library BackgroundLibrary {
                     "   </radialGradient>",
                     "</defs>",
                     '<g id="BGs">',
-                    '   <rect style="fill: url(#radial-gradient-0)" x="-6.2" y="-0.06" width="883.11" height="888.96" />',
+                    '   <rect style="fill: url(#radial-bg-gradient-0)" x="-6.2" y="-0.06" width="883.11" height="888.96" />',
                     "</g>"
                 )
             );
@@ -40,7 +40,7 @@ library BackgroundLibrary {
                 abi.encodePacked(
                     "<defs>"
                     "   <radialGradient",
-                    '       id="radial-gradient-1"',
+                    '       id="radial-bg-gradient-1"',
                     '       cx="441.55"',
                     '       cy="-1967.44"',
                     '       r="443.02"',
@@ -52,7 +52,7 @@ library BackgroundLibrary {
                     "   </radialGradient>",
                     "</defs>",
                     '<g id="BGs">',
-                    '   <rect style="fill: url(#radial-gradient-1)" x="-6.2" y="-0.06" width="883.11" height="888.96" />',
+                    '   <rect style="fill: url(#radial-bg-gradient-1)" x="-6.2" y="-0.06" width="883.11" height="888.96" />',
                     "</g>"
                 )
             );
@@ -61,7 +61,7 @@ library BackgroundLibrary {
                 abi.encodePacked(
                     "<defs>"
                     "   <radialGradient",
-                    '       id="radial-gradient-2"',
+                    '       id="radial-bg-gradient-2"',
                     '       cx="441.55"',
                     '       cy="-1967.44"',
                     '       r="443.02"',
@@ -73,7 +73,7 @@ library BackgroundLibrary {
                     "   </radialGradient>",
                     "</defs>",
                     '<g id="BGs">',
-                    '   <rect style="fill: url(#radial-gradient-2)" x="-6.2" y="-0.06" width="883.11" height="888.96" />',
+                    '   <rect style="fill: url(#radial-bg-gradient-2)" x="-6.2" y="-0.06" width="883.11" height="888.96" />',
                     "</g>"
                 )
             );
@@ -82,7 +82,7 @@ library BackgroundLibrary {
                 abi.encodePacked(
                     "<defs>"
                     "   <radialGradient",
-                    '       id="radial-gradient-3"',
+                    '       id="radial-bg-gradient-3"',
                     '       cx="784.61"',
                     '       cy="-4296.57"',
                     '       r="559.49"',
@@ -94,7 +94,7 @@ library BackgroundLibrary {
                     "   </radialGradient>",
                     "</defs>",
                     '<g id="BGs">',
-                    '   <rect style="fill: url(#radial-gradient-3)" x="-6.2" y="-0.06" width="883.11" height="888.96" />',
+                    '   <rect style="fill: url(#radial-bg-gradient-3)" x="-6.2" y="-0.06" width="883.11" height="888.96" />',
                     "</g>"
                 )
             );
@@ -103,7 +103,7 @@ library BackgroundLibrary {
                 abi.encodePacked(
                     "<defs>"
                     "   <radialGradient",
-                    '       id="radial-gradient-4"',
+                    '       id="radial-bg-gradient-4"',
                     '       cx="930.24"',
                     '       cy="-4324.8"',
                     '       r="559.49"',
@@ -118,7 +118,7 @@ library BackgroundLibrary {
                     "   </radialGradient>",
                     "</defs>",
                     '<g id="BGs">',
-                    '   <rect style="fill: url(#radial-gradient-4)" x="-6.2" y="-0.06" width="883.11" height="888.96" />',
+                    '   <rect style="fill: url(#radial-bg-gradient-4)" x="-6.2" y="-0.06" width="883.11" height="888.96" />',
                     "</g>"
                 )
             );
@@ -127,7 +127,7 @@ library BackgroundLibrary {
                 abi.encodePacked(
                     "<defs>"
                     "   <radialGradient",
-                    '       id="radial-gradient-5"',
+                    '       id="radial-bg-gradient-5"',
                     '       cx="992.47"',
                     '       cy="-4324.8"',
                     '       r="559.49"',
@@ -142,7 +142,7 @@ library BackgroundLibrary {
                     "   </radialGradient>",
                     "</defs>",
                     '<g id="BGs">',
-                    '   <rect style="fill: url(#radial-gradient-5)" x="-6.2" y="-0.06" width="883.11" height="888.96" />',
+                    '   <rect style="fill: url(#radial-bg-gradient-5)" x="-6.2" y="-0.06" width="883.11" height="888.96" />',
                     "</g>"
                 )
             );
@@ -151,7 +151,7 @@ library BackgroundLibrary {
                 abi.encodePacked(
                     "<defs>"
                     "   <radialGradient",
-                    '       id="radial-gradient-6"',
+                    '       id="radial-bg-gradient-6"',
                     '       cx="784.61"',
                     '       cy="-6334.12"',
                     '       r="559.49"',
@@ -169,7 +169,7 @@ library BackgroundLibrary {
                     "   </radialGradient>",
                     "</defs>",
                     '<g id="BGs">',
-                    '   <rect style="fill: url(#radial-gradient-6)" x="-6.2" y="-0.06" width="883.11" height="888.96" />',
+                    '   <rect style="fill: url(#radial-bg-gradient-6)" x="-6.2" y="-0.06" width="883.11" height="888.96" />',
                     "</g>"
                 )
             );
@@ -178,7 +178,7 @@ library BackgroundLibrary {
                 abi.encodePacked(
                     "<defs>"
                     "   <radialGradient",
-                    '       id="radial-gradient-7"',
+                    '       id="radial-bg-gradient-7"',
                     '       cx="930.24"',
                     '       cy="-6353.57"',
                     '       r="559.49"',
@@ -195,7 +195,7 @@ library BackgroundLibrary {
                     "   </radialGradient>",
                     "</defs>",
                     '<g id="BGs">',
-                    '   <rect style="fill: url(#radial-gradient-7)" x="-6.2" y="-0.06" width="883.11" height="888.96" />',
+                    '   <rect style="fill: url(#radial-bg-gradient-7)" x="-6.2" y="-0.06" width="883.11" height="888.96" />',
                     "</g>"
                 )
             );
@@ -204,7 +204,7 @@ library BackgroundLibrary {
                 abi.encodePacked(
                     "<defs>"
                     "   <radialGradient",
-                    '       id="radial-gradient-8"',
+                    '       id="radial-bg-gradient-8"',
                     '       cx="992.47"',
                     '       cy="-6353.57"',
                     '       r="559.49"',
@@ -219,7 +219,7 @@ library BackgroundLibrary {
                     "   </radialGradient>",
                     "</defs>",
                     '<g id="BGs">',
-                    '   <rect style="fill: url(#radial-gradient-8)" x="-6.2" y="-0.06" width="883.11" height="888.96" />',
+                    '   <rect style="fill: url(#radial-bg-gradient-8)" x="-6.2" y="-0.06" width="883.11" height="888.96" />',
                     "</g>"
                 )
             );

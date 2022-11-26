@@ -779,7 +779,7 @@ library Background2Library {
                     "<defs>",
                     "  <style>",
                     "    .cls-sk-1 {",
-                    "      fill: url(#linear-gradient);",
+                    "      fill: url(#linear-bg-gradient);",
                     "    }"
                 )
             );
@@ -790,7 +790,7 @@ library Background2Library {
                     "      fill: #00d8a4;",
                     "    }",
                     "    .cls-sk-3 {",
-                    "      fill: url(#linear-gradient-2);",
+                    "      fill: url(#linear-bg-gradient-2);",
                     "    }"
                 )
             );
@@ -798,10 +798,10 @@ library Background2Library {
                 abi.encodePacked(
                     background,
                     "    .cls-sk-4 {",
-                    "      fill: url(#linear-gradient-3);",
+                    "      fill: url(#linear-bg-gradient-3);",
                     "    }",
                     "    .cls-sk-5 {",
-                    "      fill: url(#linear-gradient-4);",
+                    "      fill: url(#linear-bg-gradient-4);",
                     "    }"
                 )
             );
@@ -809,7 +809,7 @@ library Background2Library {
                 abi.encodePacked(
                     background,
                     "    .cls-sk-6 {",
-                    "      fill: url(#linear-gradient-5);",
+                    "      fill: url(#linear-bg-gradient-5);",
                     "    }",
                     "    .cls-sk-7 {",
                     "      fill: none;",
@@ -821,7 +821,7 @@ library Background2Library {
                 abi.encodePacked(
                     background,
                     "  <linearGradient",
-                    '    id="linear-gradient"',
+                    '    id="linear-bg-gradient"',
                     '    x1="448.17"',
                     '    y1="292.63"',
                     '    x2="430.41"',
@@ -852,7 +852,7 @@ library Background2Library {
                 abi.encodePacked(
                     background,
                     "  <linearGradient",
-                    '    id="linear-gradient-2"',
+                    '    id="linear-bg-gradient-2"',
                     '    x1="-8.31"',
                     '    y1="416.69"',
                     '    x2="888.55"',
@@ -874,12 +874,12 @@ library Background2Library {
                 abi.encodePacked(
                     background,
                     "  <linearGradient",
-                    '    id="linear-gradient-3"',
+                    '    id="linear-bg-gradient-3"',
                     '    x1="-8.31"',
                     '    y1="596.5"',
                     '    x2="888.55"',
                     '    y2="596.5"',
-                    '    xlink:href="#linear-gradient-2"'
+                    '    xlink:href="#linear-bg-gradient-2"'
                 )
             );
             background = string(
@@ -887,7 +887,7 @@ library Background2Library {
                     background,
                     "  />",
                     "  <linearGradient",
-                    '    id="linear-gradient-4"',
+                    '    id="linear-bg-gradient-4"',
                     '    x1="-8.31"',
                     '    y1="776.31"',
                     '    x2="888.55"',
@@ -897,10 +897,10 @@ library Background2Library {
             background = string(
                 abi.encodePacked(
                     background,
-                    '    xlink:href="#linear-gradient-2"',
+                    '    xlink:href="#linear-bg-gradient-2"',
                     "  />",
                     "  <linearGradient",
-                    '    id="linear-gradient-5"',
+                    '    id="linear-bg-gradient-5"',
                     '    x1="-4.77"'
                 )
             );
@@ -931,7 +931,7 @@ library Background2Library {
                     "<defs>",
                     "  <style>",
                     "    .cls-sk-1 {",
-                    "      fill: url(#linear-gradient);",
+                    "      fill: url(#linear-bg-gradient);",
                     "    }"
                 )
             );
@@ -942,7 +942,7 @@ library Background2Library {
                     "      fill: #fad279;",
                     "    }",
                     "    .cls-sk-3 {",
-                    "      fill: url(#linear-gradient-2);",
+                    "      fill: url(#linear-bg-gradient-2);",
                     "    }"
                 )
             );
@@ -950,10 +950,10 @@ library Background2Library {
                 abi.encodePacked(
                     background,
                     "    .cls-sk-4 {",
-                    "      fill: url(#linear-gradient-3);",
+                    "      fill: url(#linear-bg-gradient-3);",
                     "    }",
                     "    .cls-sk-5 {",
-                    "      fill: url(#linear-gradient-4);",
+                    "      fill: url(#linear-bg-gradient-4);",
                     "    }"
                 )
             );
@@ -961,7 +961,7 @@ library Background2Library {
                 abi.encodePacked(
                     background,
                     "    .cls-sk-6 {",
-                    "      fill: url(#linear-gradient-5);",
+                    "      fill: url(#linear-bg-gradient-5);",
                     "    }",
                     "    .cls-sk-7 {",
                     "      fill: none;",
@@ -973,7 +973,7 @@ library Background2Library {
                     background,
                     "  </style>",
                     "  <linearGradient",
-                    '    id="linear-gradient"',
+                    '    id="linear-bg-gradient"',
                     '    x1="448.17"',
                     '    y1="292.63"',
                     '    x2="430.41"'
@@ -995,7 +995,7 @@ library Background2Library {
                     '    <stop offset="1" stop-color="#35eded" />',
                     "  </linearGradient>",
                     "  <linearGradient",
-                    '    id="linear-gradient-2"',
+                    '    id="linear-bg-gradient-2"',
                     '    x1="-8.31"',
                     '    y1="416.69"'
                 )
@@ -1017,7 +1017,7 @@ library Background2Library {
                     '    <stop offset="1" stop-color="#ffbf40" />',
                     "  </linearGradient>",
                     "  <linearGradient",
-                    '    id="linear-gradient-3"'
+                    '    id="linear-bg-gradient-3"'
                 )
             );
             background = string(
@@ -1027,10 +1027,10 @@ library Background2Library {
                     '    y1="596.5"',
                     '    x2="888.55"',
                     '    y2="596.5"',
-                    '    xlink:href="#linear-gradient-2"',
+                    '    xlink:href="#linear-bg-gradient-2"',
                     "  />",
                     "  <linearGradient",
-                    '    id="linear-gradient-4"'
+                    '    id="linear-bg-gradient-4"'
                 )
             );
             background = string(
@@ -1040,7 +1040,7 @@ library Background2Library {
                     '    y1="776.31"',
                     '    x2="888.55"',
                     '    y2="776.31"',
-                    '    xlink:href="#linear-gradient-2"',
+                    '    xlink:href="#linear-bg-gradient-2"',
                     "  />",
                     "  <linearGradient"
                 )
@@ -1048,7 +1048,7 @@ library Background2Library {
             background = string(
                 abi.encodePacked(
                     background,
-                    '    id="linear-gradient-5"',
+                    '    id="linear-bg-gradient-5"',
                     '    x1="-4.77"',
                     '    y1="442.58"',
                     '    x2="621.57"',
@@ -1079,7 +1079,7 @@ library Background2Library {
                     "<defs>",
                     "  <style>",
                     "    .cls-sk-1 {",
-                    "      fill: url(#linear-gradient);",
+                    "      fill: url(#linear-bg-gradient);",
                     "    }"
                 )
             );
@@ -1090,7 +1090,7 @@ library Background2Library {
                     "      fill: #f0f;",
                     "    }",
                     "    .cls-sk-3 {",
-                    "      fill: url(#linear-gradient-2);",
+                    "      fill: url(#linear-bg-gradient-2);",
                     "    }"
                 )
             );
@@ -1098,13 +1098,13 @@ library Background2Library {
                 abi.encodePacked(
                     background,
                     "    .cls-sk-4 {",
-                    "      fill: url(#linear-gradient-3);",
+                    "      fill: url(#linear-bg-gradient-3);",
                     "    }",
                     "    .cls-sk-5 {",
-                    "      fill: url(#linear-gradient-4);",
+                    "      fill: url(#linear-bg-gradient-4);",
                     "    }",
                     "    .cls-sk-6 {",
-                    "      fill: url(#linear-gradient-5);",
+                    "      fill: url(#linear-bg-gradient-5);",
                     "    }"
                 )
             );
@@ -1121,7 +1121,7 @@ library Background2Library {
             background = string(
                 abi.encodePacked(
                     background,
-                    '    id="linear-gradient"',
+                    '    id="linear-bg-gradient"',
                     '    x1="448.17"',
                     '    y1="292.63"',
                     '    x2="430.41"',
@@ -1143,7 +1143,7 @@ library Background2Library {
                 abi.encodePacked(
                     background,
                     "  <linearGradient",
-                    '    id="linear-gradient-2"',
+                    '    id="linear-bg-gradient-2"',
                     '    x1="-8.31"',
                     '    y1="416.69"',
                     '    x2="888.55"',
@@ -1165,7 +1165,7 @@ library Background2Library {
                 abi.encodePacked(
                     background,
                     "  <linearGradient",
-                    '    id="linear-gradient-3"',
+                    '    id="linear-bg-gradient-3"',
                     '    x1="-8.31"',
                     '    y1="596.5"',
                     '    x2="888.55"',
@@ -1175,10 +1175,10 @@ library Background2Library {
             background = string(
                 abi.encodePacked(
                     background,
-                    '    xlink:href="#linear-gradient-2"',
+                    '    xlink:href="#linear-bg-gradient-2"',
                     "  />",
                     "  <linearGradient",
-                    '    id="linear-gradient-4"',
+                    '    id="linear-bg-gradient-4"',
                     '    x1="-8.31"',
                     '    y1="776.31"',
                     '    x2="888.55"'
@@ -1188,10 +1188,10 @@ library Background2Library {
                 abi.encodePacked(
                     background,
                     '    y2="776.31"',
-                    '    xlink:href="#linear-gradient-2"',
+                    '    xlink:href="#linear-bg-gradient-2"',
                     "  />",
                     "  <linearGradient",
-                    '    id="linear-gradient-5"',
+                    '    id="linear-bg-gradient-5"',
                     '    x1="-4.77"',
                     '    y1="442.58"'
                 )

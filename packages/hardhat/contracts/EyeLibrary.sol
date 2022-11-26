@@ -564,7 +564,7 @@ library EyeLibrary {
                     "      fill: #fff;",
                     "    }",
                     "    .cls-eye-37 {",
-                    "      fill: url(#radial-gradient-2);",
+                    "      fill: url(#radial-eye-gradient-2);",
                     "    }"
                 )
             );
@@ -573,7 +573,7 @@ library EyeLibrary {
                     eye,
                     "  </style>",
                     "  <radialGradient",
-                    '    id="radial-gradient-2"',
+                    '    id="radial-eye-gradient-2"',
                     '    cx="354.71"',
                     '    cy="206.62"',
                     '    r="16.71"',

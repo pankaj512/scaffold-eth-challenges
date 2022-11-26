@@ -308,7 +308,7 @@ library NeckLibrary {
                 abi.encodePacked(
                     neck,
                     "        .cls-neck-neck-12 {",
-                    "            fill: url(#radial-gradient-neck);",
+                    "            fill: url(#radial-neck-gradient-neck);",
                     "        }",
                     "        .cls-neck-neck-13,",
                     "        .cls-neck-neck-15 {",
@@ -324,7 +324,7 @@ library NeckLibrary {
                     neck,
                     "    </style>",
                     "    <radialGradient",
-                    '    id="radial-gradient-neck"',
+                    '    id="radial-neck-gradient-neck"',
                     '    cx="274.86"',
                     '    cy="345.03"',
                     '    r="27.38"',
@@ -653,10 +653,10 @@ library NeckLibrary {
                     neck,
                     "    }",
                     "    .cls-neck-26 {",
-                    "      fill: url(#linear-gradient-2);",
+                    "      fill: url(#linear-neck-gradient-2);",
                     "    }",
                     "    .cls-neck-27 {",
-                    "      fill: url(#linear-gradient-3);",
+                    "      fill: url(#linear-neck-gradient-3);",
                     "    }"
                 )
             );
@@ -664,10 +664,10 @@ library NeckLibrary {
                 abi.encodePacked(
                     neck,
                     "    .cls-neck-28 {",
-                    "      fill: url(#linear-gradient-4);",
+                    "      fill: url(#linear-neck-gradient-4);",
                     "    }",
                     "    .cls-neck-29 {",
-                    "      fill: url(#linear-gradient-5);",
+                    "      fill: url(#linear-neck-gradient-5);",
                     "    }"
                 )
             );
@@ -675,7 +675,7 @@ library NeckLibrary {
                 abi.encodePacked(
                     neck,
                     "    .cls-neck-30 {",
-                    "      fill: url(#linear-gradient-6);",
+                    "      fill: url(#linear-neck-gradient-6);",
                     "    }",
                     "    .cls-neck-31,",
                     "    .cls-neck-32 {",
@@ -687,7 +687,7 @@ library NeckLibrary {
                 abi.encodePacked(
                     neck,
                     "    .cls-neck-32 {",
-                    "      fill: url(#radial-gradient);",
+                    "      fill: url(#radial-neck-gradient);",
                     "    }",
                     "    .cls-neck-33 {",
                     "      opacity: 0.49;",
@@ -699,7 +699,7 @@ library NeckLibrary {
                 abi.encodePacked(
                     neck,
                     "  <linearGradient",
-                    '    id="linear-gradient-2"',
+                    '    id="linear-neck-gradient-2"',
                     '    x1="454.37"',
                     '    y1="240.33"',
                     '    x2="452.56"',
@@ -720,12 +720,12 @@ library NeckLibrary {
             neck = string(
                 abi.encodePacked(
                     neck,
-                    '    id="linear-gradient-3"',
+                    '    id="linear-neck-gradient-3"',
                     '    x1="308.8"',
                     '    y1="270.02"',
                     '    x2="470.54"',
                     '    y2="270.02"',
-                    '    xlink:href="#linear-gradient-2"',
+                    '    xlink:href="#linear-neck-gradient-2"',
                     "  />"
                 )
             );
@@ -733,12 +733,12 @@ library NeckLibrary {
                 abi.encodePacked(
                     neck,
                     "  <linearGradient",
-                    '    id="linear-gradient-4"',
+                    '    id="linear-neck-gradient-4"',
                     '    x1="299.34"',
                     '    y1="265.01"',
                     '    x2="298.97"',
                     '    y2="294.44"',
-                    '    xlink:href="#linear-gradient-2"',
+                    '    xlink:href="#linear-neck-gradient-2"',
                     "  />"
                 )
             );
@@ -746,13 +746,13 @@ library NeckLibrary {
                 abi.encodePacked(
                     neck,
                     "  <linearGradient",
-                    '    id="linear-gradient-5"',
+                    '    id="linear-neck-gradient-5"',
                     '    x1="324.59"',
                     '    y1="315.35"',
                     '    x2="324.14"',
                     '    y2="352.28"',
                     '    gradientTransform="matrix(0.99, -0.13, 0.13, 0.99, -40.7, 34.55)"',
-                    '    xlink:href="#linear-gradient-2"',
+                    '    xlink:href="#linear-neck-gradient-2"',
                     "  />"
                 )
             );
@@ -760,13 +760,13 @@ library NeckLibrary {
                 abi.encodePacked(
                     neck,
                     "  <linearGradient",
-                    '    id="linear-gradient-6"',
+                    '    id="linear-neck-gradient-6"',
                     '    x1="298.58"',
                     '    y1="315.41"',
                     '    x2="298.18"',
                     '    y2="347.03"',
                     '    gradientTransform="translate(-21.71 20.21) rotate(-3.76)"',
-                    '    xlink:href="#linear-gradient-2"',
+                    '    xlink:href="#linear-neck-gradient-2"',
                     "  />"
                 )
             );
@@ -774,7 +774,7 @@ library NeckLibrary {
                 abi.encodePacked(
                     neck,
                     "  <radialGradient",
-                    '    id="radial-gradient"',
+                    '    id="radial-neck-gradient"',
                     '    cx="308.46"',
                     '    cy="307.22"',
                     '    r="6.3"',

@@ -2,6 +2,7 @@ import { Button, Select, Switch, List } from "antd";
 import React, { useState, useEffect } from "react";
 import { Address, AddressInput } from "../components";
 import { ethers } from "ethers";
+import { useContractReader } from "eth-hooks";
 
 /**
  * web3 props can be passed from '../App.jsx' into your local view component for use
@@ -48,14 +49,13 @@ function Accesories({
   const [yourCollectibles, setYourCollectibles] = useState();
   DEBUG && console.log("🤗 priceToMint:", priceToMint);
 
+  const balanceContract = useContractReader(readContracts, selectedAccesory, "balanceOf", [address]);
+  const allbalanceContract = useContractReader(readContracts, selectedAccesory, "totalSupply");
+
   const [balance, setBalance] = useState(0);
 
   useEffect(() => {
     const updateBalance = async () => {
-      const balanceContract =
-        readContracts[selectedAccesory] && (await readContracts[selectedAccesory].balanceOf(address));
-      const allbalanceContract =
-        readContracts[selectedAccesory] && (await readContracts[selectedAccesory].totalSupply());
       if (showMineTokenOnly && balanceContract) {
         setBalance(balanceContract);
       }
@@ -64,7 +64,7 @@ function Accesories({
       }
     };
     updateBalance();
-  }, [showMineTokenOnly, readContracts, selectedAccesory, address]);
+  }, [showMineTokenOnly, allbalanceContract, balanceContract]);
 
   DEBUG && console.log("Accessories ", selectedAccesory, " Balance: ", balance);
 

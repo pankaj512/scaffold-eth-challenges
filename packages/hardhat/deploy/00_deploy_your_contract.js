@@ -217,14 +217,208 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
 
   // Verify your contracts with Etherscan
   // You don't want to verify on localhost
+  try {
+    if (chainId !== localChainId) {
+      await run("verify:verify", {
+        address: EyeLibrary.address,
+        contractArguments: [],
+      });
+    }
+  } catch (err) {
+    if (err.message.includes("Reason: Already Verified")) {
+      console.log("Contract is already verified!");
+    }
+  }
 
-  // if (chainId !== localChainId) {
-  //   await run("verify:verify", {
-  //     address: YourCollectible.address,
-  //     contract: "contracts/YourCollectible.sol:YourCollectible",
-  //     contractArguments: [],
-  //   });
-  // }
+  try {
+    if (chainId !== localChainId) {
+      await run("verify:verify", {
+        address: HeadLibrary.address,
+        contractArguments: [],
+      });
+    }
+  } catch (err) {
+    if (err.message.includes("Reason: Already Verified")) {
+      console.log("Contract is already verified!");
+    }
+  }
+
+  try {
+    if (chainId !== localChainId) {
+      await run("verify:verify", {
+        address: NeckLibrary.address,
+        contractArguments: [],
+      });
+    }
+  } catch (err) {
+    if (err.message.includes("Reason: Already Verified")) {
+      console.log("Contract is already verified!");
+    }
+  }
+
+  try {
+    if (chainId !== localChainId) {
+      await run("verify:verify", {
+        address: PerchLibrary.address,
+        contractArguments: [],
+      });
+    }
+  } catch (err) {
+    if (err.message.includes("Reason: Already Verified")) {
+      console.log("Contract is already verified!");
+    }
+  }
+
+  try {
+    if (chainId !== localChainId) {
+      await run("verify:verify", {
+        address: Perch2Library.address,
+        contractArguments: [],
+      });
+    }
+  } catch (err) {
+    if (err.message.includes("Reason: Already Verified")) {
+      console.log("Contract is already verified!");
+    }
+  }
+
+  try {
+    if (chainId !== localChainId) {
+      await run("verify:verify", {
+        address: BackgroundLibrary.address,
+        contractArguments: [],
+      });
+    }
+  } catch (err) {
+    if (err.message.includes("Reason: Already Verified")) {
+      console.log("Contract is already verified!");
+    }
+  }
+
+  try {
+    if (chainId !== localChainId) {
+      await run("verify:verify", {
+        address: Background2Library.address,
+        contractArguments: [],
+      });
+    }
+  } catch (err) {
+    if (err.message.includes("Reason: Already Verified")) {
+      console.log("Contract is already verified!");
+    }
+  }
+
+  try {
+    if (chainId !== localChainId) {
+      await run("verify:verify", {
+        address: BodyLibrary.address,
+        contractArguments: [],
+      });
+    }
+  } catch (err) {
+    if (err.message.includes("Reason: Already Verified")) {
+      console.log("Contract is already verified!");
+    }
+  }
+
+  try {
+    if (chainId !== localChainId) {
+      await run("verify:verify", {
+        address: Background.address,
+        contractArguments: [],
+        libraries: {
+          BackgroundLibrary: BackgroundLibrary.address,
+          Background2Library: Background2Library.address,
+        },
+      });
+    }
+  } catch (err) {
+    if (err.message.includes("Reason: Already Verified")) {
+      console.log("Contract is already verified!");
+    }
+  }
+
+  try {
+    if (chainId !== localChainId) {
+      await run("verify:verify", {
+        address: Eye.address,
+        contractArguments: [],
+        libraries: {
+          EyeLibrary: EyeLibrary.address,
+        },
+      });
+    }
+  } catch (err) {
+    if (err.message.includes("Reason: Already Verified")) {
+      console.log("Contract is already verified!");
+    }
+  }
+
+  try {
+    if (chainId !== localChainId) {
+      await run("verify:verify", {
+        address: Head.address,
+        contractArguments: [],
+        libraries: {
+          Head: Head.address,
+        },
+      });
+    }
+  } catch (err) {
+    if (err.message.includes("Reason: Already Verified")) {
+      console.log("Contract is already verified!");
+    }
+  }
+
+  try {
+    if (chainId !== localChainId) {
+      await run("verify:verify", {
+        address: Neck.address,
+        contractArguments: [],
+        libraries: {
+          Neck: Neck.address,
+        },
+      });
+    }
+  } catch (err) {
+    if (err.message.includes("Reason: Already Verified")) {
+      console.log("Contract is already verified!");
+    }
+  }
+
+  try {
+    if (chainId !== localChainId) {
+      await run("verify:verify", {
+        address: Perch.address,
+        contractArguments: [],
+        libraries: {
+          PerchLibrary: PerchLibrary.address,
+          Perch2Library: Perch2Library.address,
+        },
+      });
+    }
+  } catch (err) {
+    if (err.message.includes("Reason: Already Verified")) {
+      console.log("Contract is already verified!");
+    }
+  }
+
+  try {
+    if (chainId !== localChainId) {
+      await run("verify:verify", {
+        address: YourCollectible.address,
+        contractArguments: [],
+        libraries: {
+          StyleLibrary: StyleLibrary.address,
+          BodyLibrary: BodyLibrary.address,
+        },
+      });
+    }
+  } catch (err) {
+    if (err.message.includes("Reason: Already Verified")) {
+      console.log("Contract is already verified!");
+    }
+  }
 };
 module.exports.tags = [
   "EyeLibrary",

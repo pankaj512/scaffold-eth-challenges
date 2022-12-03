@@ -108,6 +108,60 @@ contract YourCollectible is ERC721Enumerable, IERC721Receiver, Ownable {
         colorPallet[4][2] = "006837";
         colorPallet[4][3] = "eef6e2";
         colorPallet[4][4] = "00dbdb";
+
+        colorPallet[5][0] = "f9ba08";
+        colorPallet[5][1] = "b3ff02";
+        colorPallet[5][2] = "ff5e5c";
+        colorPallet[5][3] = "aefffb";
+        colorPallet[5][4] = "ff9d9c";
+
+        colorPallet[6][0] = "0ecc83";
+        colorPallet[6][1] = "5fa9e0";
+        colorPallet[6][2] = "dd0aac";
+        colorPallet[6][3] = "b3ff02";
+        colorPallet[6][4] = "fbcdb8";
+
+        colorPallet[7][0] = "ff4803";
+        colorPallet[7][1] = "8cc63f";
+        colorPallet[7][2] = "333";
+        colorPallet[7][3] = "eef6e2";
+        colorPallet[7][4] = "ff0";
+
+        colorPallet[8][0] = "3f0606";
+        colorPallet[8][1] = "9b0e00";
+        colorPallet[8][2] = "231f20";
+        colorPallet[8][3] = "e4e4e4";
+        colorPallet[8][4] = "ffdc83";
+
+        colorPallet[9][0] = "ff6990";
+        colorPallet[9][1] = "c5f9d0";
+        colorPallet[9][2] = "5cb2ff";
+        colorPallet[9][3] = "fff35c";
+        colorPallet[9][4] = "ffbdc0";
+
+        colorPallet[10][0] = "00dbdb";
+        colorPallet[10][1] = "ffbf40";
+        colorPallet[10][2] = "fff35c";
+        colorPallet[10][3] = "fde1d4";
+        colorPallet[10][4] = "b1fcd6";
+
+        colorPallet[11][0] = "9cff55";
+        colorPallet[11][1] = "e5005b";
+        colorPallet[11][2] = "9c005d";
+        colorPallet[11][3] = "f1e8f6";
+        colorPallet[11][4] = "ffb93b";
+
+        colorPallet[12][0] = "1e0658";
+        colorPallet[12][1] = "ff6990";
+        colorPallet[12][2] = "1756bc";
+        colorPallet[12][3] = "fff8ea";
+        colorPallet[12][4] = "e5005b";
+
+        colorPallet[13][0] = "b1b1b1";
+        colorPallet[13][1] = "00dbdb";
+        colorPallet[13][2] = "c5f9d0";
+        colorPallet[13][3] = "ff0";
+        colorPallet[13][4] = "f0f";
     }
 
     function addNft(address nft) public onlyOwner {
@@ -149,7 +203,7 @@ contract YourCollectible is ERC721Enumerable, IERC721Receiver, Ownable {
 
         parrots[id].colorIndex = uint256(
             ((uint8(predictableRandom[3]) << 8) | uint8(predictableRandom[4])) %
-                5
+                14
         );
 
         (bool success, ) = recipient.call{value: msg.value}("");

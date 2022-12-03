@@ -196,7 +196,6 @@ function Home({
                         onClick={() => {
                           tx(writeContracts[ContractName].transferFrom(address, transferToAddresses[id], id));
                         }}
-                        s
                       >
                         Transfer
                       </Button>

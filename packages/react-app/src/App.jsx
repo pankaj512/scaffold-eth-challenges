@@ -458,8 +458,10 @@ function App(props) {
                 setDebugAccessorySelected(value);
               }}
             >
-              {accesories.map(accesory => (
-                <Select.Option value={accesory}>{accesory}</Select.Option>
+              {accesories.map((accesory, index) => (
+                <Select.Option key={index} value={accesory}>
+                  {accesory}
+                </Select.Option>
               ))}
             </Select>
           </div>

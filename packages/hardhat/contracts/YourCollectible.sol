@@ -383,13 +383,13 @@ contract YourCollectible is ERC721Enumerable, IERC721Receiver, Ownable {
         render = string(
             abi.encodePacked(
                 render,
-                '<use xlink:href="#BGs" />',
-                '<use xlink:href="#Tail" />',
-                '<use xlink:href="#Perch" />',
-                '<use xlink:href="#Body" />',
-                '<use xlink:href="#Neck" />',
-                '<use xlink:href="#Head" />',
-                '<use xlink:href="#Eye" />'
+                '<use href="#BGs" />',
+                '<use href="#Tail" />',
+                '<use href="#Perch" />',
+                '<use href="#Body" />',
+                '<use href="#Neck" />',
+                '<use href="#Head" />',
+                '<use href="#Eye" />'
             )
         );
 

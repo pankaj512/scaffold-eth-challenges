@@ -725,7 +725,7 @@ library NeckLibrary {
                     '    y1="270.02"',
                     '    x2="470.54"',
                     '    y2="270.02"',
-                    '    xlink:href="#linear-neck-gradient-2"',
+                    '    href="#linear-neck-gradient-2"',
                     "  />"
                 )
             );
@@ -738,7 +738,7 @@ library NeckLibrary {
                     '    y1="265.01"',
                     '    x2="298.97"',
                     '    y2="294.44"',
-                    '    xlink:href="#linear-neck-gradient-2"',
+                    '    href="#linear-neck-gradient-2"',
                     "  />"
                 )
             );
@@ -752,7 +752,7 @@ library NeckLibrary {
                     '    x2="324.14"',
                     '    y2="352.28"',
                     '    gradientTransform="matrix(0.99, -0.13, 0.13, 0.99, -40.7, 34.55)"',
-                    '    xlink:href="#linear-neck-gradient-2"',
+                    '    href="#linear-neck-gradient-2"',
                     "  />"
                 )
             );
@@ -766,7 +766,7 @@ library NeckLibrary {
                     '    x2="298.18"',
                     '    y2="347.03"',
                     '    gradientTransform="translate(-21.71 20.21) rotate(-3.76)"',
-                    '    xlink:href="#linear-neck-gradient-2"',
+                    '    href="#linear-neck-gradient-2"',
                     "  />"
                 )
             );

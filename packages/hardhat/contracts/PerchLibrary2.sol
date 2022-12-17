@@ -679,7 +679,7 @@ library Perch2Library {
                     '    y1="801.65"',
                     '    x2="314.26"',
                     '    y2="801.65"',
-                    '    xlink:href="#New_Gradient_Swatch_1"',
+                    '    href="#New_Gradient_Swatch_1"',
                     "  />",
                     "  <linearGradient"
                 )
@@ -713,7 +713,7 @@ library Perch2Library {
                 abi.encodePacked(
                     perch,
                     '    y2="592.44"',
-                    '    xlink:href="#New_Gradient_Swatch_1"',
+                    '    href="#New_Gradient_Swatch_1"',
                     "  />",
                     "</defs>",
                     '<g class="cls-perch-1">'

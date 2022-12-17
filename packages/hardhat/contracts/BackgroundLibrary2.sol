@@ -879,7 +879,7 @@ library Background2Library {
                     '    y1="596.5"',
                     '    x2="888.55"',
                     '    y2="596.5"',
-                    '    xlink:href="#linear-bg-gradient-2"'
+                    '    href="#linear-bg-gradient-2"'
                 )
             );
             background = string(
@@ -897,7 +897,7 @@ library Background2Library {
             background = string(
                 abi.encodePacked(
                     background,
-                    '    xlink:href="#linear-bg-gradient-2"',
+                    '    href="#linear-bg-gradient-2"',
                     "  />",
                     "  <linearGradient",
                     '    id="linear-bg-gradient-5"',
@@ -1027,7 +1027,7 @@ library Background2Library {
                     '    y1="596.5"',
                     '    x2="888.55"',
                     '    y2="596.5"',
-                    '    xlink:href="#linear-bg-gradient-2"',
+                    '    href="#linear-bg-gradient-2"',
                     "  />",
                     "  <linearGradient",
                     '    id="linear-bg-gradient-4"'
@@ -1040,7 +1040,7 @@ library Background2Library {
                     '    y1="776.31"',
                     '    x2="888.55"',
                     '    y2="776.31"',
-                    '    xlink:href="#linear-bg-gradient-2"',
+                    '    href="#linear-bg-gradient-2"',
                     "  />",
                     "  <linearGradient"
                 )
@@ -1175,7 +1175,7 @@ library Background2Library {
             background = string(
                 abi.encodePacked(
                     background,
-                    '    xlink:href="#linear-bg-gradient-2"',
+                    '    href="#linear-bg-gradient-2"',
                     "  />",
                     "  <linearGradient",
                     '    id="linear-bg-gradient-4"',
@@ -1188,7 +1188,7 @@ library Background2Library {
                 abi.encodePacked(
                     background,
                     '    y2="776.31"',
-                    '    xlink:href="#linear-bg-gradient-2"',
+                    '    href="#linear-bg-gradient-2"',
                     "  />",
                     "  <linearGradient",
                     '    id="linear-bg-gradient-5"',

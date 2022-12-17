@@ -9,6 +9,7 @@ import "base64-sol/base64.sol";
 
 import "./BackgroundLibrary.sol";
 import "./BackgroundLibrary2.sol";
+import "./BackgroundLibrary3.sol";
 import "hardhat/console.sol";
 
 // GET LISTED ON OPENSEA: https://testnets.opensea.io/get-listed/step-two
@@ -32,10 +33,18 @@ contract Background is ERC721Enumerable {
     mapping(uint256 => uint256) public parrot_backgrounds;
 
     //! Properties types
-    string[5] public backgrounds;
+    string[7] public backgrounds;
 
     constructor() ERC721("ParrotBackground", "PRTBG") {
-        backgrounds = ["gradient", "cave", "forest", "jungle", "skate rail"];
+        backgrounds = [
+            "gradient",
+            "cave",
+            "forest",
+            "jungle",
+            "skate rail",
+            "beach",
+            "party house"
+        ];
     }
 
     function mintItem() public payable returns (uint256) {
@@ -59,7 +68,7 @@ contract Background is ERC721Enumerable {
         );
         parrot_backgrounds[id] = uint256(
             ((uint8(predictableRandom[11]) << 8) |
-                uint8(predictableRandom[12])) % 21
+                uint8(predictableRandom[12])) % 25
         );
 
         (bool success, ) = recipient.call{value: msg.value}("");
@@ -75,7 +84,8 @@ contract Background is ERC721Enumerable {
         string memory render = string(
             abi.encodePacked(
                 BackgroundLibrary.GetBackground(bgIndex),
-                Background2Library.GetBackground(bgIndex)
+                Background2Library.GetBackground(bgIndex),
+                Background3Library.GetBackground(bgIndex)
             )
         );
 
@@ -90,7 +100,7 @@ contract Background is ERC721Enumerable {
     {
         string memory svg = string(
             abi.encodePacked(
-                '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 880 880">',
+                '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300" viewBox="0 0 880 880">',
                 renderTokenById(id),
                 "</svg>"
             )
@@ -102,8 +112,13 @@ contract Background is ERC721Enumerable {
         require(_exists(id), "!exist");
         uint256 bgIndex = getPropertiesById(id);
         if (bgIndex < 9) return backgrounds[0];
-        uint256 newIndex = ((bgIndex - 9) / 3) + 1;
-        return backgrounds[newIndex];
+        if (bgIndex < 21) {
+            uint256 newIndex = ((bgIndex - 9) / 3) + 1;
+            return backgrounds[newIndex];
+        }
+
+        string memory desc = (bgIndex < 23) ? backgrounds[5] : backgrounds[6];
+        return desc;
     }
 
     function tokenURI(uint256 id) public view override returns (string memory) {
@@ -111,7 +126,11 @@ contract Background is ERC721Enumerable {
 
         uint256 bgIndex = getPropertiesById(id);
         if (bgIndex < 9) bgIndex = 0;
-        else bgIndex = ((bgIndex - 9) / 3) + 1;
+        else if (bgIndex < 21) {
+            bgIndex = ((bgIndex - 9) / 3) + 1;
+        } else {
+            bgIndex = (bgIndex < 23) ? 5 : 6;
+        }
 
         string memory name = string(
             abi.encodePacked("Parrot Background #", id.toString())

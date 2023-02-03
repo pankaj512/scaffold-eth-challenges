@@ -280,16 +280,6 @@ module.exports = {
     spacing: 2,
     pretty: false,
   },
-  customChains: [
-    {
-      network: "sepolia",
-      chainId: 11155111,
-      urls: {
-        apiURL: "https://api-sepolia.etherscan.io/api",
-        browserURL: "https://sepolia.etherscan.io",
-      },
-    },
-  ],
 };
 
 const DEBUG = false;

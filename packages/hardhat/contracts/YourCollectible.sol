@@ -1,4 +1,4 @@
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.17;
 //SPDX-License-Identifier: MIT
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
@@ -137,16 +137,8 @@ contract YourCollectible is ERC721Enumerable, IERC721Receiver, Ownable {
         string memory base = string("Parrot");
         string memory image = Base64.encode(bytes(generateSVGofTokenById(id)));
 
-        bool headFound = false;
-        bool neckFound = false;
         bool eyeFound = false;
-        bool perchFound = false;
-        bool backgroundFound = false;
-        string memory headType = "";
-        string memory neckType = "";
         string memory eyeType = "";
-        string memory perchType = "";
-        string memory backgroundType = "";
 
         for (uint256 i = 0; i < nftContracts.length; i++) {
             if (nftById[address(nftContracts[i])][id] > 0) {
@@ -155,64 +147,19 @@ contract YourCollectible is ERC721Enumerable, IERC721Receiver, Ownable {
                 );
                 string memory nftType = nftContracts[i].name();
                 if (
-                    keccak256(abi.encodePacked("ParrotHead")) ==
-                    keccak256(abi.encodePacked(nftType))
-                ) {
-                    headFound = true;
-                    headType = desc;
-                } else if (
-                    keccak256(abi.encodePacked("ParrotNeck")) ==
-                    keccak256(abi.encodePacked(nftType))
-                ) {
-                    neckFound = true;
-                    neckType = desc;
-                } else if (
                     keccak256(abi.encodePacked("ParrotEye")) ==
                     keccak256(abi.encodePacked(nftType))
                 ) {
                     eyeFound = true;
                     eyeType = desc;
-                } else if (
-                    keccak256(abi.encodePacked("ParrotPerch")) ==
-                    keccak256(abi.encodePacked(nftType))
-                ) {
-                    perchFound = true;
-                    perchType = desc;
-                } else if (
-                    keccak256(abi.encodePacked("ParrotBackground")) ==
-                    keccak256(abi.encodePacked(nftType))
-                ) {
-                    backgroundFound = true;
-                    backgroundType = desc;
                 }
             }
         }
 
-        string memory inBg = "";
-        if (backgroundFound)
-            inBg = string.concat(inBg, " in  ", backgroundType, " background");
-        else inBg = string.concat(inBg, " in ugly background");
-
-        string memory wearing = "";
-        if (neckFound || headFound)
-            wearing = string.concat(wearing, " wearing ");
-
-        if (neckFound) wearing = string.concat(wearing, neckType);
-
-        if (neckFound && headFound) wearing = string.concat(wearing, " and ");
-
-        if (headFound) wearing = string.concat(wearing, headType);
-
         string memory eyes = "";
         if (eyeFound) eyes = string.concat(eyes, " with ", eyeType, " eyes");
 
-        string memory perch = "";
-        if (perchFound)
-            perch = string.concat(perch, " sitting on ", perchType, " perch");
-
-        string memory description = string(
-            abi.encodePacked(base, inBg, eyes, perch, wearing)
-        );
+        string memory description = string(abi.encodePacked(base, eyes));
 
         return
             string(

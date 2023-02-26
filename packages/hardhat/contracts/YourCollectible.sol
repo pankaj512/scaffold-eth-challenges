@@ -263,7 +263,7 @@ contract YourCollectible is ERC721Enumerable, IERC721Receiver, Ownable {
         return tempUint;
     }
 
-    function removeNftFromLoogie(address nft, uint256 id) external {
+    function removeNftComponentFromBase(address nft, uint256 id) external {
         require(
             msg.sender == ownerOf(id),
             "only the owner can undress a loogie!!"
@@ -271,10 +271,10 @@ contract YourCollectible is ERC721Enumerable, IERC721Receiver, Ownable {
         require(this.hasNft(nft, id), "the loogie is not wearing this NFT");
 
         NFTContract nftContract = NFTContract(nft);
-        _removeNftFromLoogie(nftContract, id);
+        _removeNftComponentFromBase(nftContract, id);
     }
 
-    function downgradeLoogie(uint256 id) external {
+    function downgradeBaseNFT(uint256 id) external {
         require(
             msg.sender == ownerOf(id),
             "only the owner can downgrade a loogie!!"
@@ -283,19 +283,19 @@ contract YourCollectible is ERC721Enumerable, IERC721Receiver, Ownable {
         // remove nft tokens from Parrot
         for (uint256 i = 0; i < nftContracts.length; i++) {
             if (nftById[address(nftContracts[i])][id] > 0) {
-                _removeNftFromLoogie(nftContracts[i], id);
+                _removeNftComponentFromBase(nftContracts[i], id);
             }
         }
 
-        // // transfer loogie to owner
+        // transfer loogie to owner
         // bodies.transferFrom(address(this), ownerOf(id), bodiesById[id]);
-        // bodiesById[id] = 0;
+        bodiesById[id] = 0;
 
-        // // burn Parrot
-        // _burn(id);
+        // burn Parrot
+        _burn(id);
     }
 
-    function _removeNftFromLoogie(NFTContract nftContract, uint256 id)
+    function _removeNftComponentFromBase(NFTContract nftContract, uint256 id)
         internal
     {
         nftContract.transferFrom(

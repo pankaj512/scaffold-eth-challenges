@@ -151,7 +151,10 @@ function Preview({
   const ExecutePreviewOperation = (operationType, accesoryType) => {
     if (operationType === String("remove")) {
       tx(
-        writeContracts[ContractName].removeNftFromLoogie(readContracts[accesoryType].address, selectedCollectible),
+        writeContracts[ContractName].removeNftComponentFromBase(
+          readContracts[accesoryType].address,
+          selectedCollectible,
+        ),
         function (transaction) {
           RemovePreviewAccesory(accesoryType);
         },

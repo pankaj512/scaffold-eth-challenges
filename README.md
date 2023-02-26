@@ -65,11 +65,59 @@ In `packages/assets/` you will find the SVG files required for this challenge. D
 
 ---
 
-### Checkpoint 3: 🔬 Building base Parrot NFT ⏱
+### Checkpoint 3: 🔬 Basic contract setup ⏱
+
+#### Checkpoint 3.0: 🔬 Create data structure to store color sets ⏱
+
+`YourCollectible.sol` constructor had 5 color sets. You need to create a storage variable near comment `YOUR_STORAGE_DS_HERE`. We will use this data structure to fetch the color set. Choose a data structure such that we can first find the set and then color value via random access like `YOUR_STORAGE_DS_[colorSetIndex][colorIndex]`.
+
+#### Checkpoint 3.1: 🔬 populate color sets in constructor ⏱
+
+Once you figure out data structure, you need to populate that with color data commented in constructor.
+
+#### Checkpoint 3.2: 🔬 Understanding ParrotMeta struct⏱
+
+This structure contains single entry i.e color index a given parrot has. We are filling this value in `mintItem` method. Take this information into account while solving next checkpoint 3.3
+
+```solidity
+  struct ParrotMeta {
+      uint256 colorIndex;
+  }
+```
+
+```solidity
+parrots[id].colorIndex = uint256(((uint8(predictableRandom[3]) << 8) | uint8(predictableRandom[4])) %4;
+```
+
+#### Checkpoint 3.3: 🔬 Fine the color set index given token id ⏱
+
+In contract `getPropertiesById` method, you need to return the color set index given the token id of nft. Can you fill this function with using information from 3.2 checkpoint?
+
+#### Checkpoint 3.4: 🔬 Find all color value ⏱
+
+In contract `renderTokenById` method, you need 5 color value for a given token id. Could you think of way to get these color value?
+
+hint - Can you use getPropertiesById to get color set index for a given token?
+hint2 - Can you use color data member you created in checkpoint 3.0 to find all color values?
+
+### Checkpoint 4: 🔬 Building base parrot nft ⏱
+
+In contract file `BodyLibrary.sol` some methods return empty string. You need to fill all those methods with appropriate string wrapping svg of given part like tail, feet and body. Use information from 4.0 checkpoint to build all remaining methods with proper wrapping of svg.
+
+#### Checkpoint 4.0: 🔬 GetTail method ⏱
+
+if you open `Packages/assets/ParrotBody.svg` and collapse all `</g>` tag by componets. You can see what part of code is building which part of body. Here I just copied code from `<g id="Tail">` inside `abi.encodePacked(` and replaced with hardcoded color value with arguments.
+
+#### Checkpoint 4.1: 🔬 GetFeet and GetBody method ⏱
+
+Similar to checkout 4.0 complete `GetFeet` and `GetBody`.
+
+#### Checkpoint 4.2: 🔬 Deploy the contract again ⏱
 
 ### 🥅 Goals
 
 - [ ] Can you mint base parrot NFT?
+- [ ] Did minted parrot has correct value for body, tail and feet?
 
 ---
 

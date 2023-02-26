@@ -8,24 +8,26 @@ import "hardhat/console.sol";
 // Defining Library
 library BodyLibrary {
     function GetTail(
-        string memory color1,
-        string memory color2,
-        string memory color3
+        string memory, /*color1*/
+        string memory, /*color2*/
+        string memory /*color3*/
     ) public pure returns (string memory) {
         string memory tail = string(abi.encodePacked());
         return tail;
     }
 
-    function GetFeet(string memory color) public pure returns (string memory) {
+    function GetFeet(
+        string memory /*color*/
+    ) public pure returns (string memory) {
         string memory feet = string(abi.encodePacked());
         return feet;
     }
 
     function GetBody(
-        string memory color0,
-        string memory color1,
-        string memory color2,
-        string memory color3,
+        string memory, /* color0*/
+        string memory, /* color1*/
+        string memory, /* color2*/
+        string memory, /* color3*/
         string memory color4
     ) public pure returns (string memory) {
         string memory body = string(abi.encodePacked(GetFeet(color4)));

@@ -31,10 +31,11 @@ contract Eye is ERC721Enumerable {
     mapping(uint256 => uint256) public parrot_eyes;
 
     //! Properties types
-    string[8] public eyes;
+    string[5] public eyes;
 
     constructor() ERC721("ParrotEye", "PRTEYE") {
-        // "red","glasses","angry","cross","monocle","skull","royal glasses", "red"
+        // "angry","glasses","monocle","red","cross"
+        eyes = ["angry", "glasses", "monocle", "red", "cross"];
     }
 
     function mintItem() public payable returns (uint256) {
@@ -149,5 +150,6 @@ contract Eye is ERC721Enumerable {
     // properties of the token of id
     function getPropertiesById(uint256 id) public view returns (uint256 eye) {
         // return index of eye hint: return the index of type of eye
+        eye = parrot_eyes[id];
     }
 }

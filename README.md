@@ -121,7 +121,17 @@ Similar to checkout 4.0 complete `GetFeet` and `GetBody`.
 
 ---
 
-### Checkpoint 4: 🔬 Building Component EYE NFT ⏱
+### Checkpoint 5: 🔬 Building Component EYE NFT ⏱
+
+Components are separate NFT components that gets added to base parrot. So in `Eye.sol` we are creating a EYE component NFT just like we create base parrot NFT. You don't need to change anything in `Eye.sol`. All you need to do is build the methods in `EyeLibrary.sol` file for each type of eye i.e `angry`,`glasses`,`monocle`,`red`,`cross`
+
+#### Checkpoint 5.0: 🔬 angry eye implementation ⏱
+
+if you open `Packages/assets/ParrotBody.svg` and collapse all `</g>` tag by componets. You can see what part of code is building which part of body. Here I just copied code from `<g id="Tail">` inside `abi.encodePacked(` and replaced with hardcoded color value with arguments.
+
+#### Checkpoint 4.1: 🔬 GetFeet and GetBody method ⏱
+
+Similar to checkout 4.0 complete `GetFeet` and `GetBody`.
 
 ### 🥅 Goals
 

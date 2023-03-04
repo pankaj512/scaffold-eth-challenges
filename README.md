@@ -2,15 +2,21 @@
 
 ## 🚩 Challenge 7: 🥩 Composable On Chain SVG NFT
 
-> 🦸 A superpower of Ethereum is allowing you, the builder, to create a simple set of rules that an adversarial group of players can use to work together. In this challenge, you will create a web3 application where users can mint svg nfts. This web3 application will also let user upgrade their nft with add on components. Follow the instructions to build your web3 application.
+🦸 In this challenge, you will create a web3 application where users can mint svg nfts. This web3 application will also let user upgrade their nft with add on components. Follow the instructions to build your web3 application.
 
-> 🌟 The final deliverable is deploying a Dapp that lets users mint nft and upgrade their nft with custom components, then `yarn build` and `yarn surge` your app to a public webserver. Submit the url on [SpeedRunEthereum.com](https://speedrunethereum.com)!
+<br>
 
-> 💬 Meet other builders working on this challenge and get help in the [Challenge 7 telegram]()!
+🌟 The final deliverable is deploying a Dapp that lets users mint nft and upgrade their nft with custom components, then `yarn build` and `yarn surge` your app to a public webserver. Submit the url on [SpeedRunEthereum.com](https://speedrunethereum.com)!
+
+<br>
+
+💬 Meet other builders working on this challenge and get help in the [Challenge 7 telegram]()!
 
 🧫 Front end for this challenge is already build so no need to change anything enless you want to give your custom look and feel.
 
 ---
+
+<br>
 
 ### Checkpoint 0: 📦 install 📚
 
@@ -29,6 +35,8 @@ git checkout challenge-composable-onchain-svg-nft
 yarn install
 
 ```
+
+<br>
 
 ### Checkpoint 1: 🔭 Environment 📺
 
@@ -50,6 +58,8 @@ yarn deploy  (to compile, deploy, and publish your contracts to the frontend)
 
 ---
 
+<br>
+
 ### Checkpoint 2: 🥩 Explore Design SVG files 💵
 
 In `packages/assets/` you will find the SVG files required for this challenge. Descriptions of each files is as follows:
@@ -65,18 +75,24 @@ In `packages/assets/` you will find the SVG files required for this challenge. D
 
 ---
 
+<br>
+
 ### Checkpoint 3: 🔬 Basic contract setup ⏱
 
-#### Checkpoint 3.0: 🔬 Create data structure to store color sets ⏱
+- #### Checkpoint 3.0: 🔬 Create data structure to store color sets ⏱
 
+<ul>
 `YourCollectible.sol` constructor had 5 color sets. You need to create a storage variable near comment `YOUR_STORAGE_DS_HERE`. We will use this data structure to fetch the color set. Choose a data structure such that we can first find the set and then color value via random access like `YOUR_STORAGE_DS_[colorSetIndex][colorIndex]`.
+</ul>
 
-#### Checkpoint 3.1: 🔬 populate color sets in constructor ⏱
+- #### Checkpoint 3.1: 🔬 populate color sets in constructor ⏱
 
+<ul>
 Once you figure out data structure, you need to populate that with color data commented in constructor.
+</ul>
 
-#### Checkpoint 3.2: 🔬 Understanding ParrotMeta struct⏱
-
+- #### Checkpoint 3.2: 🔬 Understanding ParrotMeta struct⏱
+<ul>
 This structure contains single entry i.e color index a given parrot has. We are filling this value in `mintItem` method. Take this information into account while solving next checkpoint 3.3
 
 ```solidity
@@ -89,30 +105,43 @@ This structure contains single entry i.e color index a given parrot has. We are 
 parrots[id].colorIndex = uint256(((uint8(predictableRandom[3]) << 8) | uint8(predictableRandom[4])) %4;
 ```
 
-#### Checkpoint 3.3: 🔬 Fine the color set index given token id ⏱
+</ul>
 
+- #### Checkpoint 3.3: 🔬 Fine the color set index given token id ⏱
+
+<ul>
 In contract `getPropertiesById` method, you need to return the color set index given the token id of nft. Can you fill this function with using information from 3.2 checkpoint?
+</ul>
 
-#### Checkpoint 3.4: 🔬 Find all color value ⏱
-
+- #### Checkpoint 3.4: 🔬 Find all color value ⏱
+<ul>
 In contract `renderTokenById` method, you need 5 color value for a given token id. Could you think of way to get these color value?
 
 hint - Can you use getPropertiesById to get color set index for a given token?
 hint2 - Can you use color data member you created in checkpoint 3.0 to find all color values?
 
+</ul>
+
 ### Checkpoint 4: 🔬 Building base parrot nft ⏱
 
 In contract file `BodyLibrary.sol` some methods return empty string. You need to fill all those methods with appropriate string wrapping svg of given part like tail, feet and body. Use information from 4.0 checkpoint to build all remaining methods with proper wrapping of svg.
 
-#### Checkpoint 4.0: 🔬 GetTail method ⏱
-
+- #### Checkpoint 4.0: 🔬 GetTail method ⏱
+<ul>
 if you open `Packages/assets/ParrotBody.svg` and collapse all `</g>` tag by componets. You can see what part of code is building which part of body. Here I just copied code from `<g id="Tail">` inside `abi.encodePacked(` and replaced with hardcoded color value with arguments.
 
-#### Checkpoint 4.1: 🔬 GetFeet and GetBody method ⏱
+</ul>
 
+- #### Checkpoint 4.1: 🔬 GetFeet and GetBody method ⏱
+<ul>
 Similar to checkout 4.0 complete `GetFeet` and `GetBody`.
 
-#### Checkpoint 4.2: 🔬 Deploy the contract again ⏱
+</ul>
+
+- #### Checkpoint 4.2: 🔬 Deploy the contract again ⏱
+<ul>
+
+</ul>
 
 ### 🥅 Goals
 
@@ -125,13 +154,18 @@ Similar to checkout 4.0 complete `GetFeet` and `GetBody`.
 
 Components are separate NFT components that gets added to base parrot. So in `Eye.sol` we are creating a EYE component NFT just like we create base parrot NFT. You don't need to change anything in `Eye.sol`. All you need to do is build the methods in `EyeLibrary.sol` file for each type of eye i.e `angry`,`glasses`,`monocle`,`red`,`cross`
 
-#### Checkpoint 5.0: 🔬 angry eye implementation ⏱
-
+- #### Checkpoint 5.0: 🔬 angry eye implementation ⏱
+<ul>
 if you open `Packages/assets/ParrotBody.svg` and collapse all `</g>` tag by componets. You can see what part of code is building which part of body. Here I just copied code from `<g id="Tail">` inside `abi.encodePacked(` and replaced with hardcoded color value with arguments.
 
-#### Checkpoint 4.1: 🔬 GetFeet and GetBody method ⏱
+</ul>
 
-Similar to checkout 4.0 complete `GetFeet` and `GetBody`.
+- #### Checkpoint 5.1: 🔬 GetFeet and GetBody method ⏱
+<ul>
+
+</ul>
+
+Similar to checkout 5.0 complete `GetFeet` and `GetBody`.
 
 ### 🥅 Goals
 
@@ -139,7 +173,7 @@ Similar to checkout 4.0 complete `GetFeet` and `GetBody`.
 
 ---
 
-### Checkpoint 5: 🔬 Upgrade base NFT with component ⏱
+### Checkpoint 6: 🔬 Upgrade base NFT with component ⏱
 
 ### 🥅 Goals
 
@@ -153,7 +187,7 @@ Similar to checkout 4.0 complete `GetFeet` and `GetBody`.
 
 ---
 
-### Checkpoint 6: 🚢 Ship it 🚁
+### Checkpoint 7: 🚢 Ship it 🚁
 
 📡 Edit the `defaultNetwork` to [your choice of public EVM networks](https://ethereum.org/en/developers/docs/networks/) in `packages/hardhat/hardhat.config.js`
 
@@ -167,7 +201,7 @@ Similar to checkout 4.0 complete `GetFeet` and `GetBody`.
 
 ---
 
-### Checkpoint 7: 🎚 Frontend 🧘‍♀️
+### Checkpoint 8: 🎚 Frontend 🧘‍♀️
 
 > 📝 Edit the `targetNetwork` in `App.jsx` (in `packages/react-app/src`) to be the public network where you deployed your smart contract.
 
@@ -189,7 +223,7 @@ Similar to checkout 4.0 complete `GetFeet` and `GetBody`.
 
 ---
 
-### Checkpoint 8: 📜 Contract Verification
+### Checkpoint 9: 📜 Contract Verification
 
 Update the api-key in packages/hardhat/package.json file. You can get your key [here](https://etherscan.io/myapikey).
 

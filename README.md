@@ -162,10 +162,8 @@ if you open `Packages/assets/ParrotBody.svg` and collapse all `</g>` tag by comp
 
 - #### Checkpoint 5.1: 🔬 GetFeet and GetBody method ⏱
 <ul>
-
-</ul>
-
 Similar to checkout 5.0 complete `GetFeet` and `GetBody`.
+</ul>
 
 ### 🥅 Goals
 

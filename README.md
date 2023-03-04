@@ -65,13 +65,16 @@ yarn deploy  (to compile, deploy, and publish your contracts to the frontend)
 In `packages/assets/` you will find the SVG files required for this challenge. Descriptions of each files is as follows:
 
 - BaseParrot - This file tell about components of base parrot body. And possible color combination each set fo components can take.
-  ![Base Parrot](./packages/assets/BaseParrot.jpg)
+  <>
+  <img src="./packages/assets/BaseParrot.jpg" height="250" />
 
 - Layer Guild - This file tell what different types of component aka accessories this parrot can wear like eye, head, neck, perch & background.
-  ![Layer Guild](./packages/assets/Layer%20Guide.svg)
+  <>
+  <img src="./packages/assets/Layer%20Guide.svg" height="600" />
 
 - Finished final NFT - This is how a finished NFT will look like if added all the components.
-  ![Final Build](./packages/assets/Parrot%20NFT%20Final.svg)
+  <>
+  <img src="././packages/assets/Parrot%20NFT%20Final.svg" height="300" />
 
 ---
 

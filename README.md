@@ -35,8 +35,6 @@ yarn install
 
 ```
 
-<br>
-
 ### Checkpoint 1: 🔭 Environment 📺
 
 You'll have three terminals up for:
@@ -54,8 +52,6 @@ yarn deploy  (to compile, deploy, and publish your contracts to the frontend)
 ---
 
 ✏ Need to troubleshoot your code? If you import `hardhat/console.sol` to your contract, you can call `console.log()` right in your Solidity code. The output will appear in your `yarn chain` terminal.
-
-<br>
 
 ### Checkpoint 2: 🥩 Explore Design SVG files 🐣
 
@@ -87,7 +83,6 @@ mapping(uint256 => mapping(uint256 => string)) public colorPallet;
 ```
 
 </details>
-<br>
 
 ### Checkpoint 3.1: 🔬 populate color sets in constructor
 
@@ -106,7 +101,6 @@ colorPallet[0][4] = "ffb93b";
 ```
 
 </details>
-<br>
 
 ### Checkpoint 3.2: 🔬 Understanding ParrotMeta struct
 
@@ -122,8 +116,6 @@ This structure contains single entry i.e color index a given parrot has. We are 
 parrots[id].colorIndex = uint256(((uint8(predictableRandom[3]) << 8) | uint8(predictableRandom[4])) %4;
 ```
 
-<br>
-
 ### Checkpoint 3.3: 🔬 Fine the color set index given token id
 
 In contract `getPropertiesById` method, you need to return the color set index given the token id of nft. Can you fill this function with using information from 3.2 checkpoint?
@@ -136,7 +128,6 @@ pallet = parrots[id].colorIndex;
 ```
 
 </details>
-<br>
 
 ### Checkpoint 3.4: 🔬 Find all color value
 
@@ -160,7 +151,6 @@ string memory color4 = colorPallet[pallet][4];
 ```
 
 </details>
-<br>
 
 ### Checkpoint 4.0: 🔬 Building Base Parrot NFT
 

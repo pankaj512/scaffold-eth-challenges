@@ -17,7 +17,7 @@
 
 ---
 
-### Checkpoint 0: 📦 install 📚
+### Checkpoint 0: 📦 Install 📚
 
 Want a fresh cloud environment? Click this to open a gitpod workspace, then skip to Checkpoint 1 after the tasks are complete.
 
@@ -53,7 +53,7 @@ yarn deploy  (to compile, deploy, and publish your contracts to the frontend)
 
 ✏ Need to troubleshoot your code? If you import `hardhat/console.sol` to your contract, you can call `console.log()` right in your Solidity code. The output will appear in your `yarn chain` terminal.
 
-### Checkpoint 2: 🥩 Explore Design SVG files 🐣
+### Checkpoint 2: 🥩 Explore assets svg file 🐣
 
 In `packages/assets/` you will find the SVG files required for this challenge. Descriptions of each files is as follows:
 
@@ -84,7 +84,7 @@ mapping(uint256 => mapping(uint256 => string)) public colorPallet;
 
 </details>
 
-### Checkpoint 3.1: 🔬 populate color sets in constructor
+### Checkpoint 3.1: 🔬 Populate color sets in constructor
 
 Once you figure out data structure, you need to populate that with color data commented in constructor.
 
@@ -152,12 +152,12 @@ string memory color4 = colorPallet[pallet][4];
 
 </details>
 
-### Checkpoint 4.0: 🔬 Building Base Parrot NFT
+### Checkpoint 4.0: 🔬 Build base parrot NFT
 
 In contract file `BodyLibrary.sol` some methods return empty string. You need to fill all those methods with appropriate string wrapping svg of given part like tail, feet and body.
 <br>
 
-### Checkpoint 4.0: 🔬 Exporting Base Parrot SVG
+### Checkpoint 4.0: 🔬 Explore base parrot SVG
 
 Open `Packages/assets/ParrotBody.svg` and collapse all `<g>` tag by componets. You will see it will look like as follows.
 
@@ -177,12 +177,12 @@ Open `Packages/assets/ParrotBody.svg` and collapse all `<g>` tag by componets. Y
 
 Here `Tail Foot Body`enclose the code that build that part.
 
-### Checkpoint 4.0: 🔬 GetTail Function
+### Checkpoint 4.0: 🔬 Understand GetTail function
 
 `GetTail` function in contract file `BodyLibrary.sol` is implemented by just copying code from `<g id="Tail">` inside `abi.encodePacked(` and replaced hardcoded color value with arguments.
 <br>
 
-### Checkpoint 4.1: 🔬 GetFeet and GetBody method
+### Checkpoint 4.1: 🔬 Complete GetFeet and GetBody method
 
 Similar to checkout 4.0 complete `GetFeet` and `GetBody`.
 <br>
@@ -202,23 +202,23 @@ yar deploy --reset
 
 ---
 
-### Checkpoint 5: 🔬 Building Component EYE NFT
+### Checkpoint 5: 🔬 Build EYE NFT
 
 Components are separate NFT components that gets added to base parrot. So in `Eye.sol` we are creating a EYE component NFT just like we create base parrot NFT. You don't need to change anything in `Eye.sol`. All you need to do is complete the methods in `EyeLibrary.sol` file for each type of eye i.e `angry`,`glasses`,`monocle`,`red`,`cross`
 <br>
 
-### Checkpoint 5.0: 🔬 angry eye implementation
+### Checkpoint 5.0: 🔬 Understand angry eye implementation
 
 In `EyeLibrary.sol` you will see index 0 is already implemented. Let understand that. Notice that style part is copied too unlike base parrot. Because in base parrot we have style in a different file and for accessories we have to provide style with each type of eye.
 
 Rest is same as base parrot where code from `<g id="Eye">` is copied.
 <br>
 
-### Checkpoint 5.1: 🔬 Implementing rest of Eye Types
+### Checkpoint 5.1: 🔬 Implement all eye types
 
 Similar to checkpoint 5.0 complete rest of switch cases. Remember to copy the styles part and remaining classes as `cls-eye-x` because we don't want to overwrite the class of base parrot.
 
-### Checkpoint 5.1: 🔬 Deploy Eye Contract
+### Checkpoint 5.1: 🔬 Deploy eye contract
 
 You don't need to change anything to deploy eye contract. But let see how that is done. In `package/hardhat/deploy` we have deploy script for each contract file. You can explore the deploy script to get better understanding of it.
 

@@ -6,17 +6,16 @@
 
 <br>
 
-🌟 The final deliverable is deploying a Dapp that lets users mint nft and upgrade their nft with custom components, then `yarn build` and `yarn surge` your app to a public webserver. Submit the url on [SpeedRunEthereum.com](https://speedrunethereum.com)!
+🌟 The final deliverable is deploying a Dapp that lets users mint nft and upgrade their nft with custom components, then `yarn build` and `yarn surge` your app to a public webserver. Submit the url on [buidlguidl.com](https://buidlguidl.com/)
 
 <br>
 
 💬 Meet other builders working on this challenge and get help in the [Challenge 7 telegram]()!
 
 🧫 Front end for this challenge is already build so no need to change anything enless you want to give your custom look and feel.
+<br>
 
 ---
-
-<br>
 
 ### Checkpoint 0: 📦 install 📚
 
@@ -56,11 +55,9 @@ yarn deploy  (to compile, deploy, and publish your contracts to the frontend)
 
 ✏ Need to troubleshoot your code? If you import `hardhat/console.sol` to your contract, you can call `console.log()` right in your Solidity code. The output will appear in your `yarn chain` terminal.
 
----
-
 <br>
 
-### Checkpoint 2: 🥩 Explore Design SVG files 💵
+### Checkpoint 2: 🥩 Explore Design SVG files 🐣
 
 In `packages/assets/` you will find the SVG files required for this challenge. Descriptions of each files is as follows:
 
@@ -78,24 +75,41 @@ In `packages/assets/` you will find the SVG files required for this challenge. D
 
 ---
 
+### Checkpoint 3.0: Create data structure to store color sets
+
+`YourCollectible.sol` constructor had 5 color sets. You need to create a storage variable near comment `YOUR_STORAGE_DS_HERE`. We will use this data structure to fetch the color set. Choose a data structure such that we first find the set and then color value via random access like `YOUR_STORAGE_DS_[colorSetIndex][colorIndex]`.
+
+<details>
+  <summary>Solution</summary>
+
+```solidity
+mapping(uint256 => mapping(uint256 => string)) public colorPallet;
+```
+
+</details>
 <br>
 
-### Checkpoint 3: 🔬 Basic contract setup ⏱
+### Checkpoint 3.1: 🔬 populate color sets in constructor
 
-- #### Checkpoint 3.0: 🔬 Create data structure to store color sets ⏱
-
-<ul>
-`YourCollectible.sol` constructor had 5 color sets. You need to create a storage variable near comment `YOUR_STORAGE_DS_HERE`. We will use this data structure to fetch the color set. Choose a data structure such that we can first find the set and then color value via random access like `YOUR_STORAGE_DS_[colorSetIndex][colorIndex]`.
-</ul>
-
-- #### Checkpoint 3.1: 🔬 populate color sets in constructor ⏱
-
-<ul>
 Once you figure out data structure, you need to populate that with color data commented in constructor.
-</ul>
 
-- #### Checkpoint 3.2: 🔬 Understanding ParrotMeta struct⏱
-<ul>
+<details>
+  <summary>Solution</summary>
+
+```solidity
+colorPallet[0][0] = "056b68";
+colorPallet[0][1] = "9b0e00";
+colorPallet[0][2] = "222844";
+colorPallet[0][3] = "f7f8e7";
+colorPallet[0][4] = "ffb93b";
+        ...
+```
+
+</details>
+<br>
+
+### Checkpoint 3.2: 🔬 Understanding ParrotMeta struct
+
 This structure contains single entry i.e color index a given parrot has. We are filling this value in `mintItem` method. Take this information into account while solving next checkpoint 3.3
 
 ```solidity
@@ -108,43 +122,88 @@ This structure contains single entry i.e color index a given parrot has. We are 
 parrots[id].colorIndex = uint256(((uint8(predictableRandom[3]) << 8) | uint8(predictableRandom[4])) %4;
 ```
 
-</ul>
+<br>
 
-- #### Checkpoint 3.3: 🔬 Fine the color set index given token id ⏱
+### Checkpoint 3.3: 🔬 Fine the color set index given token id
 
-<ul>
 In contract `getPropertiesById` method, you need to return the color set index given the token id of nft. Can you fill this function with using information from 3.2 checkpoint?
-</ul>
 
-- #### Checkpoint 3.4: 🔬 Find all color value ⏱
-<ul>
+<details>
+  <summary>Solution</summary>
+
+```solidity
+pallet = parrots[id].colorIndex;
+```
+
+</details>
+<br>
+
+### Checkpoint 3.4: 🔬 Find all color value
+
 In contract `renderTokenById` method, you need 5 color value for a given token id. Could you think of way to get these color value?
 
 hint - Can you use getPropertiesById to get color set index for a given token?
+
 hint2 - Can you use color data member you created in checkpoint 3.0 to find all color values?
 
-</ul>
+<details>
+  <summary>Solution</summary>
 
-### Checkpoint 4: 🔬 Building base parrot nft ⏱
+```solidity
+uint256 pallet = getPropertiesById(id);
 
-In contract file `BodyLibrary.sol` some methods return empty string. You need to fill all those methods with appropriate string wrapping svg of given part like tail, feet and body. Use information from 4.0 checkpoint to build all remaining methods with proper wrapping of svg.
+string memory color0 = colorPallet[pallet][0];
+string memory color1 = colorPallet[pallet][1];
+string memory color2 = colorPallet[pallet][2];
+string memory color3 = colorPallet[pallet][3];
+string memory color4 = colorPallet[pallet][4];
+```
 
-- #### Checkpoint 4.0: 🔬 GetTail method ⏱
-<ul>
-if you open `Packages/assets/ParrotBody.svg` and collapse all `</g>` tag by componets. You can see what part of code is building which part of body. Here I just copied code from `<g id="Tail">` inside `abi.encodePacked(` and replaced with hardcoded color value with arguments.
+</details>
+<br>
 
-</ul>
+### Checkpoint 4.0: 🔬 Building Base Parrot NFT
 
-- #### Checkpoint 4.1: 🔬 GetFeet and GetBody method ⏱
-<ul>
+In contract file `BodyLibrary.sol` some methods return empty string. You need to fill all those methods with appropriate string wrapping svg of given part like tail, feet and body.
+<br>
+
+### Checkpoint 4.0: 🔬 Exporting Base Parrot SVG
+
+Open `Packages/assets/ParrotBody.svg` and collapse all `<g>` tag by componets. You will see it will look like as follows.
+
+```svg
+<g class="cls-1">
+  <g id="Tail">
+    ...
+  </g>
+  <g id="feet">
+    ...
+  </g>
+  <g id="Body">
+    ...
+  </g>
+</g>
+```
+
+Here `Tail Foot Body`enclose the code that build that part.
+
+### Checkpoint 4.0: 🔬 GetTail Function
+
+`GetTail` function in contract file `BodyLibrary.sol` is implemented by just copying code from `<g id="Tail">` inside `abi.encodePacked(` and replaced hardcoded color value with arguments.
+<br>
+
+### Checkpoint 4.1: 🔬 GetFeet and GetBody method
+
 Similar to checkout 4.0 complete `GetFeet` and `GetBody`.
+<br>
 
-</ul>
+### Checkpoint 4.2: 🔬 Deploy the contract again
 
-- #### Checkpoint 4.2: 🔬 Deploy the contract again ⏱
-<ul>
-
-</ul>
+```bash
+yarn deploy
+or
+yar deploy --reset
+```
 
 ### 🥅 Goals
 
@@ -153,20 +212,33 @@ Similar to checkout 4.0 complete `GetFeet` and `GetBody`.
 
 ---
 
-### Checkpoint 5: 🔬 Building Component EYE NFT ⏱
+### Checkpoint 5: 🔬 Building Component EYE NFT
 
-Components are separate NFT components that gets added to base parrot. So in `Eye.sol` we are creating a EYE component NFT just like we create base parrot NFT. You don't need to change anything in `Eye.sol`. All you need to do is build the methods in `EyeLibrary.sol` file for each type of eye i.e `angry`,`glasses`,`monocle`,`red`,`cross`
+Components are separate NFT components that gets added to base parrot. So in `Eye.sol` we are creating a EYE component NFT just like we create base parrot NFT. You don't need to change anything in `Eye.sol`. All you need to do is complete the methods in `EyeLibrary.sol` file for each type of eye i.e `angry`,`glasses`,`monocle`,`red`,`cross`
+<br>
 
-- #### Checkpoint 5.0: 🔬 angry eye implementation ⏱
-<ul>
-if you open `Packages/assets/ParrotBody.svg` and collapse all `</g>` tag by componets. You can see what part of code is building which part of body. Here I just copied code from `<g id="Tail">` inside `abi.encodePacked(` and replaced with hardcoded color value with arguments.
+### Checkpoint 5.0: 🔬 angry eye implementation
 
-</ul>
+In `EyeLibrary.sol` you will see index 0 is already implemented. Let understand that. Notice that style part is copied too unlike base parrot. Because in base parrot we have style in a different file and for accessories we have to provide style with each type of eye.
 
-- #### Checkpoint 5.1: 🔬 GetFeet and GetBody method ⏱
-<ul>
-Similar to checkout 5.0 complete `GetFeet` and `GetBody`.
-</ul>
+Rest is same as base parrot where code from `<g id="Eye">` is copied.
+<br>
+
+### Checkpoint 5.1: 🔬 Implementing rest of Eye Types
+
+Similar to checkpoint 5.0 complete rest of switch cases. Remember to copy the styles part and remaining classes as `cls-eye-x` because we don't want to overwrite the class of base parrot.
+
+### Checkpoint 5.1: 🔬 Deploy Eye Contract
+
+You don't need to change anything to deploy eye contract. But let see how that is done. In `package/hardhat/deploy` we have deploy script for each contract file. You can explore the deploy script to get better understanding of it.
+
+For now just run any of the following commands
+
+```bash
+yarn deploy
+or
+yar deploy --reset
+```
 
 ### 🥅 Goals
 
@@ -174,11 +246,22 @@ Similar to checkout 5.0 complete `GetFeet` and `GetBody`.
 
 ---
 
-### Checkpoint 6: 🔬 Upgrade base NFT with component ⏱
+### Checkpoint 6: 🔬 Upgrade base NFT with component
+
+Let add eye contract as to base contact. Uncomment the following line in `package/hardhat/deploy/02_deploy_your_collectible.js`
+
+```js
+const Eye = await deployments.get("Eye", deployer);
+```
+
+```js
+await YourCollectible.addNft(Eye.address);
+```
 
 ### 🥅 Goals
 
 - [ ] Can user upgrade their base parrot NFT with eye component?
+      <br>
 
 ---
 

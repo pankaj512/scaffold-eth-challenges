@@ -11,7 +11,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
 
   const StyleLibrary = await deployments.get("StyleLibrary", deployer);
   const BodyLibrary = await deployments.get("BodyLibrary", deployer);
-  const Eye = await deployments.get("Eye", deployer);
+  // const Eye = await deployments.get("Eye", deployer);
 
   await deploy("YourCollectible", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
@@ -26,7 +26,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
 
   // Getting a previously deployed contract
   const YourCollectible = await ethers.getContract("YourCollectible", deployer);
-  await YourCollectible.addNft(Eye.address);
+  // await YourCollectible.addNft(Eye.address);
 
   try {
     if (chainId !== localChainId) {

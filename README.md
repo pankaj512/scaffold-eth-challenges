@@ -1,6 +1,6 @@
 # 🏗 scaffold-eth | 🏰 BuidlGuidl
 
-## 🚩 Challenge 7: 🥩 Composable On Chain SVG NFT
+## 🚩 Challenge 7: 🦜 Composable On Chain SVG NFT
 
 🦸 In this challenge, you will create a web3 application where users can mint svg nfts. This web3 application will also let user upgrade their nft with add on components. Follow the instructions to build your web3 application.
 

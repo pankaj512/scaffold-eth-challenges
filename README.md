@@ -53,7 +53,7 @@ yarn deploy  (to compile, deploy, and publish your contracts to the frontend)
 
 ✏ Need to troubleshoot your code? If you import `hardhat/console.sol` to your contract, you can call `console.log()` right in your Solidity code. The output will appear in your `yarn chain` terminal.
 
-### Checkpoint 2: 🥩 Explore assets svg file 🐣
+### Checkpoint 2: Explore 🦜 assets svg file
 
 In `packages/assets/` you will find the SVG files required for this challenge. Descriptions of each files is as follows:
 
@@ -71,7 +71,7 @@ In `packages/assets/` you will find the SVG files required for this challenge. D
 
 ---
 
-### Checkpoint 3.0: Create data structure to store color sets
+### Checkpoint 3.0: 🧑‍💻 Create data structure to store color sets
 
 `YourCollectible.sol` constructor had 5 color sets. You need to create a storage variable near comment `YOUR_STORAGE_DS_HERE`. We will use this data structure to fetch the color set. Choose a data structure such that we first find the set and then color value via random access like `YOUR_STORAGE_DS_[colorSetIndex][colorIndex]`.
 
@@ -84,7 +84,7 @@ mapping(uint256 => mapping(uint256 => string)) public colorPallet;
 
 </details>
 
-### Checkpoint 3.1: 🔬 Populate color sets in constructor
+### Checkpoint 3.1: 🧑‍💻 Populate color sets in constructor
 
 Once you figure out data structure, you need to populate that with color data commented in constructor.
 
@@ -102,7 +102,7 @@ colorPallet[0][4] = "ffb93b";
 
 </details>
 
-### Checkpoint 3.2: 🔬 Understanding ParrotMeta struct
+### Checkpoint 3.2: 🧑‍🏫 Understand ParrotMeta struct
 
 This structure contains single entry i.e color index a given parrot has. We are filling this value in `mintItem` method. Take this information into account while solving next checkpoint 3.3
 
@@ -116,7 +116,7 @@ This structure contains single entry i.e color index a given parrot has. We are 
 parrots[id].colorIndex = uint256(((uint8(predictableRandom[3]) << 8) | uint8(predictableRandom[4])) %4;
 ```
 
-### Checkpoint 3.3: 🔬 Fine the color set index given token id
+### Checkpoint 3.3: 🔍️ Find color set index given token id
 
 In contract `getPropertiesById` method, you need to return the color set index given the token id of nft. Can you fill this function with using information from 3.2 checkpoint?
 
@@ -129,7 +129,7 @@ pallet = parrots[id].colorIndex;
 
 </details>
 
-### Checkpoint 3.4: 🔬 Find all color value
+### Checkpoint 3.4: 🔍️ Find all color value
 
 In contract `renderTokenById` method, you need 5 color value for a given token id. Could you think of way to get these color value?
 
@@ -152,12 +152,12 @@ string memory color4 = colorPallet[pallet][4];
 
 </details>
 
-### Checkpoint 4.0: 🔬 Build base parrot NFT
+### Checkpoint 4.0: ⚒️ Build base parrot NFT ⏳️
 
 In contract file `BodyLibrary.sol` some methods return empty string. You need to fill all those methods with appropriate string wrapping svg of given part like tail, feet and body.
 <br>
 
-### Checkpoint 4.0: 🔬 Explore base parrot SVG
+### Checkpoint 4.1: 🔍️ Explore base parrot SVG
 
 Open `Packages/assets/ParrotBody.svg` and collapse all `<g>` tag by componets. You will see it will look like as follows.
 
@@ -177,17 +177,17 @@ Open `Packages/assets/ParrotBody.svg` and collapse all `<g>` tag by componets. Y
 
 Here `Tail Foot Body`enclose the code that build that part.
 
-### Checkpoint 4.0: 🔬 Understand GetTail function
+### Checkpoint 4.2: 🧑‍🏫 Understand GetTail function
 
 `GetTail` function in contract file `BodyLibrary.sol` is implemented by just copying code from `<g id="Tail">` inside `abi.encodePacked(` and replaced hardcoded color value with arguments.
 <br>
 
-### Checkpoint 4.1: 🔬 Complete GetFeet and GetBody method
+### Checkpoint 4.3: ⚒️ Complete GetFeet and GetBody method
 
 Similar to checkout 4.0 complete `GetFeet` and `GetBody`.
 <br>
 
-### Checkpoint 4.2: 🔬 Deploy the contract again
+### Checkpoint 4.4: Deploy the contract again
 
 ```bash
 yarn deploy
@@ -195,30 +195,30 @@ or
 yar deploy --reset
 ```
 
-### 🥅 Goals
+#### 🥅 Goals
 
 - [ ] Can you mint base parrot NFT?
 - [ ] Did minted parrot has correct value for body, tail and feet?
 
 ---
 
-### Checkpoint 5: 🔬 Build EYE NFT
+### Checkpoint 5: 👁️ Build EYE NFT
 
 Components are separate NFT components that gets added to base parrot. So in `Eye.sol` we are creating a EYE component NFT just like we create base parrot NFT. You don't need to change anything in `Eye.sol`. All you need to do is complete the methods in `EyeLibrary.sol` file for each type of eye i.e `angry`,`glasses`,`monocle`,`red`,`cross`
 <br>
 
-### Checkpoint 5.0: 🔬 Understand angry eye implementation
+### Checkpoint 5.0: Angry 😠 eye implementation
 
 In `EyeLibrary.sol` you will see index 0 is already implemented. Let understand that. Notice that style part is copied too unlike base parrot. Because in base parrot we have style in a different file and for accessories we have to provide style with each type of eye.
 
 Rest is same as base parrot where code from `<g id="Eye">` is copied.
 <br>
 
-### Checkpoint 5.1: 🔬 Implement all eye types
+### Checkpoint 5.1: Implement all eye types ⏳️
 
 Similar to checkpoint 5.0 complete rest of switch cases. Remember to copy the styles part and remaining classes as `cls-eye-x` because we don't want to overwrite the class of base parrot.
 
-### Checkpoint 5.1: 🔬 Deploy eye contract
+### Checkpoint 5.2: Deploy eye contract
 
 You don't need to change anything to deploy eye contract. But let see how that is done. In `package/hardhat/deploy` we have deploy script for each contract file. You can explore the deploy script to get better understanding of it.
 
@@ -230,13 +230,13 @@ or
 yar deploy --reset
 ```
 
-### 🥅 Goals
+#### 🥅 Goals
 
 - [ ] Can you mint individual EYE component NFT?
 
 ---
 
-### Checkpoint 6: 🔬 Upgrade base NFT with component
+### Checkpoint 6: Upgrade base NFT with component
 
 Let add eye contract as to base contact. Uncomment the following line in `package/hardhat/deploy/02_deploy_your_collectible.js`
 
@@ -248,14 +248,14 @@ const Eye = await deployments.get("Eye", deployer);
 await YourCollectible.addNft(Eye.address);
 ```
 
-### 🥅 Goals
+#### 🥅 Goals
 
 - [ ] Can user upgrade their base parrot NFT with eye component?
       <br>
 
 ---
 
-## ⚔️ Side Quests
+### ⚔️ Side Quests
 
 - [ ] Can you build other remaining components i.e Head, Neck, Perch & Background?
 

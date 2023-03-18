@@ -184,7 +184,7 @@ Here `Tail Foot Body`enclose the code that build that part.
 
 ### Checkpoint 4.3: Let try deploy
 
-before processed further lets if GetTail function is correctly implemented. Run following command
+Before coding further lets check if GetTail function compiles. Run following command
 
 ```bash
 yarn deploy
@@ -250,7 +250,7 @@ tail = string(
 
 </details>
 
-> > > You need to do same for whenever arguments to `abi.encodePacked` are more that 5-7.
+> You need to do same for whenever arguments to `abi.encodePacked` are more that 5-7.
 
 ### Checkpoint 4.5: ⚒️ Complete GetFeet and GetBody method
 

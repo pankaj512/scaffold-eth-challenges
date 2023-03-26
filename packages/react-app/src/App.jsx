@@ -52,7 +52,7 @@ const { ethers } = require("ethers");
 */
 
 /// 📡 What chain are your contracts deployed to?
-const targetNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+const targetNetwork = NETWORKS.sepolia; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -248,6 +248,7 @@ function App(props) {
   const challengeEvents = useEventListener(readContracts, "Streamer", "Challenged", localProvider, 1);
   console.log("close events:", challengeEvents);
   const closeEvents = useEventListener(readContracts, "Streamer", "Closed", localProvider, 1);
+  const withdrawalEvents = useEventListener(readContracts, "Streamer", "Withdrawn", localProvider, 1);
 
   function onchainChannels() {
     let opened = [];
@@ -270,10 +271,16 @@ function App(props) {
       challenged = challenged.filter(addr => addr != chan.args[0]);
     });
 
+    const withdrawn = [];
+    withdrawalEvents.forEach(chan => {
+      withdrawn.push(chan.args[0]); // see withdrawn event in Streamer.sol
+    });
+
     return {
       opened,
       challenged,
       closed,
+      withdrawn,
     };
   }
 
@@ -329,8 +336,6 @@ function App(props) {
     return window.userChannel;
   }
 
-
-  
   //This is the wisdome the client is paying for. It'd better be good.
   let recievedWisdom = "";
 
@@ -367,6 +372,14 @@ function App(props) {
 
   function hasClosedChannel() {
     return onchainChannels().closed.includes(userAddress);
+  }
+
+  function hasWithdrawn(clientAddress) {
+    return onchainChannels().withdrawn.includes(clientAddress);
+  }
+
+  function channelIsClosing(clientAddress) {
+    return onchainChannels().challenged.includes(clientAddress);
   }
 
   /**
@@ -474,7 +487,20 @@ function App(props) {
        *  recreate the packed, hashed, and arrayified message from reimburseService (above),
        *  and then use ethers.utils.verifyMessage() to confirm that voucher signer was
        *  `clientAddress`. (If it wasn't, log some error message and return).
-      */
+       */
+
+      const packed = ethers.utils.solidityPack(["uint256"], [updatedBalance]);
+      const hashed = ethers.utils.keccak256(packed);
+      const arrayified = ethers.utils.arrayify(hashed);
+
+      const signer = ethers.utils.verifyMessage(arrayified, voucher.data.signature);
+
+      if (!signer || signer !== clientAddress) {
+        console.log(`Verification failed expected signer ${clientAddress} received ${signer}`);
+        return;
+      } else {
+        console.log(`Verification passed expected signer ${clientAddress} received ${signer}`);
+      }
 
       const existingVoucher = vouchers()[clientAddress];
 
@@ -532,6 +558,20 @@ function App(props) {
     if (channelInput) {
       const wisdom = channelInput.value;
       // console.log("sending: %s", wisdom);
+
+      const existingVoucher = vouchers()[clientAddress];
+
+      // update our stored voucher if this new one is more valuable
+      if (existingVoucher) {
+        const balancerRemaining = ethers.BigNumber.from(existingVoucher.updatedBalance);
+        const costPerCharacter = ethers.utils.parseEther("0.001");
+        const balanceRequird = costPerCharacter.mul(ethers.BigNumber.from(wisdom.length));
+        if (balanceRequird.gt(balancerRemaining)) {
+          console.log(`Balance required ${balanceRequird} but remaining: ${balancerRemaining}`);
+          return;
+        }
+      }
+
       channels[clientAddress].postMessage(wisdom);
       document.getElementById(`provided-${clientAddress}`).innerText = wisdom.length;
     } else {
@@ -554,6 +594,11 @@ function App(props) {
 
     if (vouchers()[clientAddress] == undefined) {
       console.warn(`no voucher found for ${clientAddress}`);
+      return;
+    }
+
+    if (hasWithdrawn(clientAddress)) {
+      console.warn(`Already withdrawn for ${clientAddress}`);
       return;
     }
 
@@ -778,19 +823,31 @@ function App(props) {
                   const
                   dataSource={chainChannels.opened}
                   renderItem={clientAddress => (
-                    <List.Item key={clientAddress}>
+                    <List.Item key={clientAddress} style={{ justifyContent: "space-around" }}>
                       <Address value={clientAddress} ensProvider={mainnetProvider} fontSize={12} />
-                      <TextArea
-                        style={{ margin: 5 }}
-                        rows={3}
-                        placeholder="Provide your wisdom here..."
-                        id={"input-" + clientAddress}
-                        onChange={e => {
-                          e.stopPropagation();
-                          provideService(clientAddress);
-                        }}
-                      ></TextArea>
-
+                      {channelIsClosing(clientAddress) ? (
+                        <Spin spinning={!hasWithdrawn(clientAddress)} tip={"Auto chaiming vouchers..."}>
+                          <TextArea
+                            style={{ margin: 5 }}
+                            rows={3}
+                            placeholder="Channel is closed, vouchers claimed. Thanks for your service"
+                            id={"input-closing" + clientAddress}
+                            disabled={claimPaymentOnChain(clientAddress)}
+                          ></TextArea>
+                        </Spin>
+                      ) : (
+                        <TextArea
+                          style={{ margin: 5 }}
+                          rows={3}
+                          placeholder="Provide your wisdom here..."
+                          id={"input-" + clientAddress}
+                          onChange={e => {
+                            e.stopPropagation();
+                            provideService(clientAddress);
+                          }}
+                          disabled={channelIsClosing(clientAddress)}
+                        ></TextArea>
+                      )}
                       <Card style={{ margin: 5 }} id={`status-${clientAddress}`}>
                         <div>
                           Served: <strong id={`provided-${clientAddress}`}>0</strong>&nbsp;chars
@@ -799,19 +856,6 @@ function App(props) {
                           Recieved: <strong id={`claimable-${clientAddress}`}>0</strong>&nbsp;ETH
                         </div>
                       </Card>
-
-                      {/* Checkpoint 5:
-                      <Button
-                        style={{ margin: 5 }}
-                        type="primary"
-                        danger={chainChannels.challenged.includes(clientAddress)}
-                        disabled={chainChannels.closed.includes(clientAddress)}
-                        onClick={() => {
-                          claimPaymentOnChain(clientAddress);
-                        }}
-                      >
-                        Cash out latest voucher
-                      </Button> */}
                     </List.Item>
                   )}
                 ></List>
@@ -846,15 +890,12 @@ function App(props) {
                           AutoPay
                         </Checkbox>
                       </Col>
-
                       <Col span={16}>
                         <Card title="Received Wisdom">
                           <span id={"recievedWisdom-" + userAddress}></span>
                         </Card>
                       </Col>
-
-                      {/* Checkpoint 6: challenge & closure
-
+                      {/* Checkpoint 6: challenge & closure */}
                       <Col span={5}>
                         <Button
                           disabled={hasClosingChannel()}
@@ -887,7 +928,7 @@ function App(props) {
                         >
                           Close and withdraw funds
                         </Button>
-                      </Col> */}
+                      </Col>
                     </Row>
                   </div>
                 ) : hasClosedChannel() ? (

@@ -32,7 +32,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     waitConfirmations: 5,
   });
 
-  const YourContract = await ethers.getContract("MultiSigFactory", deployer);
+  // const YourContract = await ethers.getContract("MultiSigFactory", deployer);
 
   // Getting a previously deployed contract
   // const YourContract = await ethers.getContract("YourContract", deployer);

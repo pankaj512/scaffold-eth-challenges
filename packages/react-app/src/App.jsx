@@ -57,7 +57,7 @@ const { ethers } = require("ethers");
 */
 
 /// 📡 What chain are your contracts deployed to?
-const initialNetwork = NETWORKS.kovan; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+const initialNetwork = NETWORKS.sepolia; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -75,7 +75,7 @@ const providers = [
 ];
 
 // const poolServerUrl = "https://backend.multisig.holdings:49832/"
-const poolServerUrl = "https://meta-multi-sig-backend.herokuapp.com/";
+const poolServerUrl = "https://weary-ring-cod.cyclic.app/";
 //const poolServerUrl = "http://localhost:49832/";
 
 function App(props) {
